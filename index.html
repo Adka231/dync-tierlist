@@ -3,81 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS RANK - FIXED</title>
+    <title>MCTIERS RANK - FINAL PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b1120; font-family: 'sans-serif'; color: white; overflow-x: hidden; }
-        .bg-card { background: #161f32; border: 2px solid #1e293b; border-radius: 1.25rem; transition: all 0.2s; cursor: pointer; }
+        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: white; -webkit-tap-highlight-color: transparent; }
+        
+        /* Glow Outlines for Top 3 */
+        .outline-1 { border: 2px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+        .outline-2 { border: 2px solid #cbd5e1; box-shadow: 0 0 15px rgba(203, 213, 225, 0.3); }
+        .outline-3 { border: 2px solid #d97706; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
+
+        .bg-card { background: #161f32; border: 1px solid #1e293b; border-radius: 1.25rem; transition: all 0.2s; cursor: pointer; }
         .bg-card:active { transform: scale(0.97); }
-        .tier-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; flex-shrink: 0; }
-        .tier-img { width: 26px; height: 26px; object-fit: contain; image-rendering: pixelated; }
-        .tier-label { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .row-tiers { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 12px; padding-bottom: 8px; scrollbar-width: none; }
+        .rank-badge { clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%); width: 70px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-style: italic; }
+        .tier-circle { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; flex-shrink: 0; }
+        .tier-img { width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated; }
+        .tier-label { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; text-transform: uppercase; }
+        
+        /* Warna Tier 1-5 */
+        .t-1 { color: #fbbf24; border-color: #fbbf24; } .bg-t-1 { background-color: #fbbf24; color: #000; }
+        .t-2 { color: #cbd5e1; border-color: #cbd5e1; } .bg-t-2 { background-color: #cbd5e1; color: #000; }
+        .t-3 { color: #ea580c; border-color: #ea580c; } .bg-t-3 { background-color: #ea580c; color: #fff; }
+        .t-4 { color: #a8a29e; border-color: #78716c; } .bg-t-4 { background-color: #78716c; color: #fff; }
+        .t-5 { color: #475569; border-color: #334155; } .bg-t-5 { background-color: #334155; color: #fff; }
+
+        /* Paksa Sebaris */
+        .row-tiers { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 12px; padding-bottom: 8px; scrollbar-width: none; justify-content: center; }
         .row-tiers::-webkit-scrollbar { display: none; }
+
+        /* Modal / Popup Detail */
         #profileModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
-        .modal-content { background: #1e293b; width: 100%; max-width: 360px; border-radius: 2rem; padding: 2rem; border: 2px solid #3b82f6; position: relative; text-align: center; }
-        .bg-ht { background-color: #ea580c; } .bg-lt { background-color: #475569; }
+        .modal-content { background: #1e293b; width: 100%; max-width: 380px; border-radius: 2rem; padding: 2.5rem; border: 1px solid #1f2937; position: relative; text-align: center; }
+        
+        .static-badge { background: #334155; border: 1px solid #475569; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body class="p-4">
     <div class="max-w-md mx-auto">
-        <h1 class="text-3xl font-black italic text-center mb-8 uppercase tracking-tighter text-blue-500">MCTIERS RANK</h1>
+        <h1 class="text-3xl font-black italic text-center mb-10 uppercase text-blue-500">MCTIERS RANK</h1>
         <div id="playerList" class="space-y-5"></div>
     </div>
 
     <div id="profileModal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-content shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 text-3xl font-black hover:text-white">&times;</button>
             <div id="modalBody"></div>
-            <button onclick="closeModal()" class="mt-6 bg-red-600 font-bold py-2 px-10 rounded-full">CLOSE</button>
         </div>
     </div>
 
     <script>
         const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
 
-        // Ikon cadangan (Base64/Stable Links)
+        // DATA IKON INTERNAL (Base64) - ANTI ERROR
         const icons = {
-            sword: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/diamond_sword.png",
-            crystal: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/end_crystal.png",
-            mace: "https://minecraft.wiki/images/Mace_JE1_BE1.png",
-            pot: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/potion_bottle_splash.png",
-            nethpot: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/netherite_helmet.png",
-            uhc: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/apple_golden.png",
-            pearl: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/ender_pearl.png"
+            sword: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4T2NkoBAwUqifYf+M4D8GAnbB55qZWRX+Gf5XwU4Z7Y2g85m884m984m8AACTMArFvA0/oAAAAABJRU5ErkJggg==",
+            crystal: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZ0lEQVQ4T2NkYGDgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYOFgYOFgYM4AAAwMC0YFmXgPAAAAAElRU5ErkJggg==",
+            mace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAN0lEQVQ4T2NkYGBgYGTAADXvK/hnwA4F7XN55xN75xN5AAAT4QrFvA0/oAAAAABJRU5ErkJggg==",
+            pot: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAANElEQVQ4T2NkoBAwUqifYf9U7FDTPp9pZmbVP9X7p9C+ETRPAW9mZtX/7zS/fOIsALAtC9W8DT+iAAAAAElRU5ErkJggg==",
+            nethpot: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg==",
+            uhc: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg==",
+            pearl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAM0lEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg=="
         };
 
         const players = [
-            { rank: 1, name: "ItzRealMe", tiers: [{i:icons.sword, l:"HT3"}, {i:icons.uhc, l:"HT1"}, {i:icons.mace, l:"HT1"}, {i:icons.pot, l:"HT1"}, {i:icons.nethpot, l:"HT1"}, {i:icons.pearl, l:"HT1"}] },
-            { rank: 2, name: "coldified", tiers: [{i:icons.sword, l:"LT1"}, {i:icons.crystal, l:"HT2"}, {i:icons.mace, l:"LT1"}, {i:icons.nethpot, l:"LT2"}] },
-            { rank: 3, name: "Swight", tiers: [{i:icons.sword, l:"HT1"}, {i:icons.uhc, l:"LT2"}, {i:icons.pot, l:"LT3"}] },
-            { rank: 4, name: "janekv", tiers: [{i:icons.sword, l:"HT2"}, {i:icons.mace, l:"HT3"}] },
-            { rank: 5, name: "Kylaz", tiers: [{i:icons.crystal, l:"LT1"}, {i:icons.pearl, l:"LT2"}] }
+            { rank: 1, color:"bg-yellow-500", name: "ItzRealMe", tiers: [{i:icons.sword, l:"HT3"}, {i:icons.uhc, l:"HT1"}, {i:icons.pearl, l:"HT1"}, {i:icons.crystal, l:"HT1"}, {i:icons.pot, l:"HT1"}, {i:icons.nethpot, l:"HT1"}] },
+            { rank: 2, color:"bg-slate-300", name: "coldified", tiers: [{i:icons.sword, l:"LT1"}, {i:icons.pearl, l:"HT2"}, {i:icons.mace, l:"LT1"}, {i:icons.uhc, l:"LT2"}] },
+            { rank: 3, color:"bg-orange-600", name: "Swight", tiers: [{i:icons.sword, l:"HT1"}, {i:icons.pearl, l:"LT2"}, {i:icons.crystal, l:"LT3"}] },
+            { rank: 4, color:"bg-slate-500", name: "janekv", tiers: [{i:icons.sword, l:"HT2"}, {i:icons.mace, l:"HT3"}] },
+            { rank: 5, color:"bg-slate-700", name: "Kylaz", tiers: [{i:icons.pearl, l:"LT1"}, {i:icons.uhc, l:"LT2"}] }
         ];
 
+        function getTierStyle(l) { const n = l.replace(/\D/g, ''); return { t: `t-${n}`, bg: `bg-t-${n}` }; }
         function calculatePoints(ts) { return ts.reduce((s, t) => s + (pointMap[t.l] || 0), 0); }
 
         function render() {
             const list = document.getElementById('playerList');
             players.forEach(p => {
                 const card = document.createElement('div');
-                card.className = `bg-card p-5 ${p.rank <= 3 ? 'border-blue-500/50' : ''}`;
+                card.className = `bg-card p-5 ${p.rank === 1 ? 'outline-1' : p.rank === 2 ? 'outline-2' : p.rank === 3 ? 'outline-3' : ''}`;
                 card.onclick = () => showProfile(p);
                 card.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center justify-between mb-5">
                         <div class="flex items-center gap-4">
-                            <div class="text-xl font-black italic text-gray-500">#${p.rank}</div>
+                            <div class="text-2xl font-black italic text-gray-500">#${p.rank}</div>
                             <img src="https://minotar.net/helm/${p.name}/40.png" class="rounded shadow-lg">
                             <div>
-                                <div class="font-bold text-lg leading-tight">${p.name}</div>
+                                <div class="font-bold text-lg leading-tight truncate max-w-[150px]">${p.name}</div>
                                 <div class="text-blue-400 text-[10px] font-black uppercase tracking-wider">${calculatePoints(p.tiers)} POINTS</div>
                             </div>
                         </div>
+                        <div class="rank-badge ${p.color} text-black font-black italic">Rank ${p.rank}</div>
                     </div>
-                    <div class="row-tiers">
-                        ${p.tiers.map(t => `<div class="flex flex-col items-center">
-                            <div class="tier-circle"><img src="${t.i}" class="tier-img" onerror="this.src='https://minecraft.wiki/images/Barrier_JE2_BE2.png'"></div>
-                            <span class="tier-label ${t.l.includes('HT') ? 'bg-ht' : 'bg-lt'}">${t.l}</span>
-                        </div>`).join('')}
+                    <div class="row-tiers px-2 justify-center">
+                        ${p.tiers.map(t => {
+                            const style = getTierStyle(t.l);
+                            return `<div class="flex flex-col items-center">
+                                <div class="tier-circle ${style.t}"><img src="${t.i}" class="tier-img"></div>
+                                <span class="tier-label ${style.bg}">${t.l}</span>
+                            </div>`;
+                        }).join('')}
                     </div>
                 `;
                 list.appendChild(card);
@@ -87,16 +111,45 @@
         function showProfile(p) {
             const body = document.getElementById('modalBody');
             body.innerHTML = `
-                <img src="https://minotar.net/armor/body/${p.name}/120.png" class="mx-auto mb-4">
-                <h2 class="text-2xl font-black italic uppercase">${p.name}</h2>
-                <p class="text-blue-400 font-bold mb-6">${calculatePoints(p.tiers)} TOTAL POINTS</p>
-                <div class="grid grid-cols-3 gap-3">
-                    ${p.tiers.map(t => `<div class="bg-black/40 p-2 rounded-xl border border-white/5">
-                        <img src="${t.i}" class="w-6 h-6 mx-auto mb-1">
-                        <div class="text-[9px] font-bold text-gray-400">${t.l}</div>
-                        <div class="text-[10px] text-blue-300">+${pointMap[t.l]}</div>
-                    </div>`).join('')}
-                </div>`;
+                <div class="flex items-center gap-2 text-xs font-bold text-gray-500 mb-6 text-left">
+                    <span>${players[0].name} > RealMe > realme</span>
+                </div>
+                
+                <div class="inline-block p-1 border-2 border-yellow-500 rounded-full mb-6">
+                    <img src="https://minotar.net/armor/body/${p.name}/120.png" class="mx-auto rounded-full w-28 h-28 object-cover">
+                </div>
+                
+                <h2 class="text-4xl font-black italic uppercase tracking-tighter mb-5">${p.name}</h2>
+                
+                <div class="flex items-center justify-center gap-3 mb-10">
+                    <div class="static-badge text-yellow-500 text-xs px-4 py-2 font-black italic">
+                        <span class="text-xs mr-2">⚔</span> Combat Master
+                    </div>
+                    <div class="static-badge text-gray-300 text-xs px-4 py-2 font-bold">
+                        <span class="text-xl mr-2">🌎</span> North America
+                    </div>
+                </div>
+                
+                <p class="text-left text-gray-500 text-xs font-bold mb-4 tracking-widest uppercase">POSITION</p>
+                <div class="static-badge justify-between w-full p-4 mb-10">
+                    <div class="flex items-center gap-3">
+                        <div class="rank-badge ${p.color} text-black font-black italic">Rank ${p.rank}.</div>
+                        <span class="text-xs">🏆 OVERALL</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold">(${calculatePoints(p.tiers)} points)</span>
+                </div>
+                
+                <p class="text-left text-gray-500 text-xs font-bold mb-4 tracking-widest uppercase">TIERS</p>
+                <div class="row-tiers w-full !justify-start bg-black/20 p-4 rounded-xl">
+                    ${p.tiers.map(t => {
+                        const style = getTierStyle(t.l);
+                        return `<div class="flex flex-col items-center">
+                            <div class="tier-circle w-12 h-12 ${style.t}"><img src="${t.i}" class="w-8 h-8 tier-img"></div>
+                            <span class="tier-label ${style.bg} mt-[-9px] px-2 py-0.5 text-[9px]">${t.l}</span>
+                        </div>`;
+                    }).join('')}
+                </div>
+            `;
             document.getElementById('profileModal').style.display = 'flex';
         }
 
