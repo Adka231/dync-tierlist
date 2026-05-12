@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS - Fixed Icons Edition</title>
+    <title>MCTIERS RANK - Anti-Error Icons</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -0.02em; }
+        body { background-color: #0b0f1a; font-family: 'Inter', sans-serif; color: #f8fafc; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+        .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -0.05em; }
         
         /* Ikon & Tier Styling */
-        .tier-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #161e2e; border: 2px solid #1f2937; flex-shrink: 0; position: relative; }
-        .tier-tag { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; border: 1px solid rgba(0,0,0,0.5); }
+        .tier-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0f172a; border: 2.5px solid #1e293b; flex-shrink: 0; position: relative; }
+        .tier-img { width: 26px; height: 26px; object-fit: contain; image-rendering: pixelated; }
+        .tier-label { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; border: 1px solid rgba(0,0,0,0.5); }
         
-        /* Tier Colors (Sesuai Gambar) */
+        /* Tier Colors */
         .t-1 { border-color: #fbbf24; color: #fbbf24; } .bg-t-1 { background-color: #fbbf24; color: #000; }
         .t-2 { border-color: #cbd5e1; color: #cbd5e1; } .bg-t-2 { background-color: #cbd5e1; color: #000; }
         .t-3 { border-color: #f97316; color: #f97316; } .bg-t-3 { background-color: #f97316; color: #fff; }
@@ -22,144 +23,161 @@
         .t-5 { border-color: #334155; color: #94a3b8; } .bg-t-5 { background-color: #334155; color: #fff; }
 
         /* Card Glow */
-        .mctiers-card { background: #111827; border: 1px solid #1f2937; border-radius: 16px; transition: 0.2s; cursor: pointer; }
-        .glow-1 { border-color: rgba(251, 191, 36, 0.4); box-shadow: 0 0 15px rgba(251, 191, 36, 0.05); }
+        .mctiers-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; transition: all 0.2s; cursor: pointer; }
+        .mctiers-card:hover { background: #161e2e; border-color: #3b82f6; transform: translateY(-2px); }
+        .glow-1 { border-color: rgba(251, 191, 36, 0.45); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
 
-        /* Modal Profile */
-        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(5, 8, 18, 0.96); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(8px); }
-        .modal-box { background: #0f172a; border: 1px solid #1e293b; width: 100%; max-width: 380px; border-radius: 28px; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .pos-banner { background: #161e2e; border: 1px solid #1f2937; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+        /* Paksa Sebaris di Profil */
+        .row-tiers-modal { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 12px; padding-bottom: 8px; }
+        .row-tiers-modal::-webkit-scrollbar { display: none; }
+
+        /* Modal / Popup Detail */
+        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+        .modal-content { background: #0f172a; width: 100%; max-width: 400px; border-radius: 2rem; padding: 2.5rem; border: 1px solid #1e293b; position: relative; text-align: center; }
     </style>
 </head>
-<body class="p-4">
-
+<body class="p-6">
     <div class="max-w-md mx-auto">
-        <header class="text-center py-8">
+        <header class="text-center mb-10">
             <h1 class="text-4xl font-heavy text-blue-500 italic">MCTIERS<span class="text-white">RANK</span></h1>
             <p class="text-gray-500 text-[10px] font-bold tracking-[0.4em] mt-2">OFFICIAL LEADERBOARD</p>
         </header>
 
-        <div id="playerList" class="space-y-4"></div>
+        <div id="playerList" class="space-y-5"></div>
     </div>
 
     <div id="modalOverlay" onclick="closeModal()">
-        <div class="modal-box shadow-2xl" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-500 text-3xl font-light">&times;</button>
+        <div class="modal-content shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 text-3xl font-light hover:text-white">&times;</button>
             <div id="modalContent"></div>
         </div>
     </div>
 
     <script>
-        // IKON SVG (Anti-Error, nempel di kode)
+        const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
+        const titles = { 1: "Combat Grandmaster", 2: "Combat Master", 3: "Combat Ace", 4: "Combat Cadet", 5: "Combat Novice" };
+
+        // IKON SVG ANTI-ERROR (Tertanam Langsung)
         const SVG = {
             sword: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.5 2L14.5 6L15.5 7L18.5 4L20 5.5L17 8.5L18 9.5L22 5.5L18.5 2Z" fill="#38BDF8"/><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/><path d="M4 21L2 22L3 20L4 21Z" fill="#0284C7"/></svg>`,
-            uhc: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C16.4183 21 20 17.4183 20 13C20 8.58172 16.4183 5 12 5C7.58172 5 4 8.58172 4 13C4 17.4183 7.58172 21 12 21Z" fill="#FBBF24"/><path d="M12 2V5" stroke="#4ADE80" stroke-width="2" stroke-linecap="round"/></svg>`,
-            crystal: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/><path d="M4 16L12 22L20 16L12 10L4 16Z" fill="#A855F7"/></svg>`,
-            mace: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/><path d="M12 13V21" stroke="#64748B" stroke-width="3" stroke-linecap="round"/></svg>`,
-            pot: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5V2H16V5L19 8V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V8L8 5Z" fill="#F472B6"/><path d="M9 10H15" stroke="white" stroke-opacity="0.3" stroke-width="2" stroke-linecap="round"/></svg>`,
             pearl: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8" fill="#10B981"/><circle cx="10" cy="10" r="3" fill="white" fill-opacity="0.2"/></svg>`,
-            helmet: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 11V18C4 19.6569 5.34315 21 7 21H17C18.6569 21 20 19.6569 20 18V11C20 6.58172 16.4183 3 12 3C7.58172 3 4 6.58172 4 11Z" fill="#818CF8"/></svg>`
+            crystal: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/><path d="M4 16L12 22L20 16L12 10L4 16Z" fill="#A855F7"/></svg>`,
+            pot: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5V2H16V5L19 8V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V8L8 5Z" fill="#F472B6"/><path d="M9 10H15" stroke="white" stroke-opacity="0.3" stroke-width="2" stroke-linecap="round"/></svg>`,
+            uhc: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C16.4183 21 20 17.4183 20 13C20 8.58172 16.4183 5 12 5C7.58172 5 4 8.58172 4 13C4 17.4183 7.58172 21 12 21Z" fill="#FBBF24"/><path d="M12 2V5" stroke="#4ADE80" stroke-width="2" stroke-linecap="round"/></svg>`,
+            helmet: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 11V18C4 19.6569 5.34315 21 7 21H17C18.6569 21 20 19.6569 20 18V11C20 6.58172 16.4183 3 12 3C7.58172 3 4 6.58172 4 11Z" fill="#818CF8"/></svg>`,
+            mace: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/><path d="M12 13V21" stroke="#64748B" stroke-width="3" stroke-linecap="round"/></svg>`,
+            shield: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 5V11C4 16.5228 12 22 12 22C12 22 20 16.5228 20 11V5L12 2Z" fill="#78716c"/></svg>`,
+            bow: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 2L2 4L12 14L22 4L20 2L12 10L4 2Z" fill="#d97706"/></svg>`,
+            peach: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="13" r="8" fill="#F87171"/><path d="M12 5C12 5 13 2 15 2H16" stroke="#4ADE80" stroke-width="2" stroke-linecap="round"/></svg>`
         };
 
-        const titles = { 1: "Combat Grandmaster", 2: "Combat Master", 3: "Combat Ace", 4: "Combat Cadet", 5: "Combat Novice" };
-        const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
-
         const players = [
-            { name: "ItzRealMe", rank: 1, tiers: [{m:'sword', t:'HT3'}, {m:'uhc', t:'HT1'}, {m:'mace', t:'HT1'}, {m:'pot', t:'HT1'}, {m:'helmet', t:'HT1'}, {m:'pearl', t:'HT1'}, {m:'crystal', t:'HT1'}] },
-            { name: "coldified", rank: 2, tiers: [{m:'sword', t:'LT1'}, {m:'crystal', t:'HT2'}, {m:'mace', t:'LT1'}, {m:'helmet', t:'LT2'}] },
-            { name: "Swight", rank: 3, tiers: [{m:'sword', t:'HT1'}, {m:'pearl', t:'LT2'}, {m:'crystal', t:'LT3'}] },
-            { name: "janekv", rank: 4, tiers: [{m:'sword', t:'HT2'}, {m:'mace', t:'HT3'}] },
-            { name: "Kylaz", rank: 5, tiers: [{m:'pearl', t:'LT1'}, {m:'uhc', t:'LT2'}] }
+            { name: "ItzRealMe", rank: 1, tiers: [
+                {m:'sword', t:'HT3'}, {m:'uhc', t:'HT1'}, {m:'crystal', t:'HT1'}, {m:'pearl', t:'HT1'}, {m:'pot', t:'HT1'}, {m:'helmet', t:'HT1'},
+                {m:'mace', t:'HT1'}, {m:'shield', t:'LT2'}, {m:'bow', t:'LT1'}, {m:'peach', t:'LT1'}
+            ]},
+            { name: "coldified", rank: 2, tiers: [
+                {m:'sword', t:'LT1'}, {m:'crystal', t:'HT2'}, {m:'helmet', t:'LT2'}, {m:'mace', t:'LT1'}, {m:'pearl', t:'LT1'}
+            ]},
+            { name: "Swight", rank: 3, tiers: [
+                {m:'sword', t:'HT1'}, {m:'pearl', t:'LT2'}, {m:'crystal', t:'LT3'}
+            ]},
+            { name: "janekv", rank: 4, tiers: [
+                {m:'sword', t:'HT2'}, {m:'mace', t:'HT3'}
+            ]},
+            { name: "Kylaz", rank: 5, tiers: [
+                {m:'pearl', t:'LT1'}, {m:'uhc', t:'LT2'}
+            ]}
         ];
 
         function getStyle(tier) { const n = tier.replace(/\D/g, ''); return { c: `t-${n}`, b: `bg-t-${n}` }; }
-        function getPoints(pTiers) { return pTiers.reduce((s, t) => s + (pointMap[t.t] || 0), 0); }
+        function calculatePoints(ts) { return ts.reduce((s, t) => s + (pointMap[t.t] || 0), 0); }
 
         function render() {
             const list = document.getElementById('playerList');
             players.forEach(p => {
-                const total = getPoints(p.tiers);
+                const total = calculatePoints(p.tiers);
                 const card = document.createElement('div');
                 card.className = `mctiers-card p-5 ${p.rank==1?'glow-1':''}`;
-                card.onclick = () => openProfile(p);
+                card.onclick = () => showProfile(p);
                 
                 card.innerHTML = `
                     <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg font-heavy text-gray-700">#${p.rank}</span>
-                            <img src="https://minotar.net/helm/${p.name}/36.png" class="rounded shadow-md">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xl font-heavy text-gray-700">#${p.rank}</span>
+                            <img src="https://minotar.net/helm/${p.name}/40.png" class="rounded shadow-md">
                             <div>
-                                <h3 class="font-bold text-base leading-none">${p.name}</h3>
-                                <span class="text-[9px] font-black text-blue-400 uppercase italic">${titles[p.rank]}</span>
+                                <h3 class="font-bold text-lg leading-tight truncate max-w-[150px]">${p.name}</h3>
+                                <div class="text-blue-400 text-[9px] font-black uppercase tracking-widest italic">${titles[p.rank]}</div>
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-base font-heavy text-white">${total}</div>
-                            <div class="text-[8px] text-gray-500 font-bold">POINTS</div>
+                            <div class="text-xl font-heavy text-gray-200">${total}</div>
+                            <div class="text-[8px] text-gray-500 font-bold uppercase tracking-tighter">POINTS</div>
                         </div>
                     </div>
-                    <div class="flex gap-2 overflow-x-auto no-scrollbar">
-                        ${p.tiers.map(t => {
+                    <div class="row-tiers-modal flex-wrap !overflow-x-visible !gap-x-2.5">
+                        ${p.tiers.slice(0, 6).map(t => {
                             const s = getStyle(t.t);
                             return `<div class="flex flex-col items-center">
-                                <div class="tier-circle ${s.c}">${SVG[t.m]}</div>
-                                <span class="tier-tag ${s.b}">${t.t}</span>
+                                <div class="tier-circle !w-[40px] !h-[40px] ${s.c}"><div class="scale-[0.85]">${SVG[t.m]}</div></div>
+                                <span class="tier-label ${s.b}">${t.t}</span>
                             </div>`;
                         }).join('')}
+                        ${p.tiers.length > 6 ? `<div class="flex items-center justify-center w-8 h-8 text-sm text-gray-600 font-bold">+${p.tiers.length-6}</div>` : ''}
                     </div>
                 `;
                 list.appendChild(card);
             });
         }
 
-        function openProfile(p) {
+        function showProfile(p) {
             const body = document.getElementById('modalContent');
-            const total = getPoints(p.tiers);
+            const total = calculatePoints(p.tiers);
             body.innerHTML = `
-                <div class="text-[10px] text-gray-500 font-bold mb-6 flex items-center gap-2">
-                    <span>Leaderboard</span> <span class="text-[8px]">▶</span> <span>${p.name}</span>
+                <div class="flex items-center gap-2 text-xs font-bold text-gray-500 mb-6 text-left">
+                    <span>Leaderboard</span> <span>&gt;</span> <span class="text-gray-200">${p.name}</span>
                 </div>
                 
-                <div class="text-center">
-                    <div class="relative inline-block mb-6">
-                        <div class="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full"></div>
-                        <img src="${p.customImg || 'https://minotar.net/armor/body/'+p.name+'/120.png'}" class="relative z-10 mx-auto drop-shadow-2xl">
-                    </div>
-                    
-                    <h2 class="text-3xl font-heavy italic mb-1 uppercase">${p.name}</h2>
-                    <div class="flex justify-center gap-2 mb-8">
-                        <div class="bg-blue-600/10 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-full border border-blue-500/20">✨ ${titles[p.rank]}</div>
-                        <div class="bg-white/5 text-gray-400 text-[10px] font-bold px-3 py-1 rounded-full border border-white/10">🌎 North America</div>
-                    </div>
+                <div class="relative inline-block mb-6">
+                    <img src="https://minotar.net/armor/body/${p.name}/120.png" class="mx-auto drop-shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                </div>
+                
+                <h2 class="text-4xl font-heavy italic uppercase tracking-tighter mb-1">${p.name}</h2>
+                <div class="flex justify-center gap-2 mb-10">
+                    <div class="bg-gray-800 text-[10px] font-bold px-3 py-1 rounded-full text-blue-400 border border-blue-900/50">⚔ ${titles[p.rank]}</div>
+                    <div class="bg-gray-800 text-[10px] font-bold px-3 py-1 rounded-full text-gray-300 border border-gray-700">🌎 North America</div>
+                </div>
 
-                    <div class="text-left mb-8">
-                        <h4 class="text-gray-500 text-[9px] font-black tracking-widest mb-3 uppercase">POSITION</h4>
-                        <div class="pos-banner">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-blue-600 text-[11px] font-black px-2.5 py-0.5 rounded italic">#${p.rank}</div>
-                                <span class="text-[11px] font-bold uppercase italic text-gray-300">OVERALL RANK</span>
-                            </div>
-                            <span class="text-sm font-heavy text-white">${total} <span class="text-[9px] text-gray-500">pts</span></span>
+                <div class="text-left mb-8">
+                    <h4 class="text-gray-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3">POSITION</h4>
+                    <div class="bg-card p-4 flex items-center justify-between rounded-xl border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded italic">#${p.rank}.</div>
+                            <span class="text-xs font-bold uppercase italic">Overall Rank</span>
                         </div>
+                        <span class="text-sm font-heavy text-blue-400">${total} <span class="text-[10px] text-gray-500">pts</span></span>
                     </div>
+                </div>
 
-                    <div class="text-left">
-                        <h4 class="text-gray-500 text-[9px] font-black tracking-widest mb-3 uppercase">GAMEMODE TIERS</h4>
-                        <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1 -mx-1 whitespace-nowrap">
-                            ${p.tiers.map(t => {
-                                const s = getStyle(t.t);
-                                return `<div class="bg-gray-800/40 p-3 rounded-2xl flex flex-col items-center min-w-[75px] border border-white/5">
-                                    <div class="mb-2 scale-90">${SVG[t.m]}</div>
-                                    <span class="text-[10px] font-heavy ${s.c}">${t.t}</span>
-                                    <span class="text-[8px] text-gray-600 font-bold uppercase mt-1">${t.m}</span>
-                                </div>`;
-                            }).join('')}
-                        </div>
+                <div class="text-left">
+                    <h4 class="text-gray-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3">GAMEMODE TIERS</h4>
+                    <div class="row-tiers-modal bg-black/30 p-4 rounded-xl border border-white/5 whitespace-nowrap">
+                        ${p.tiers.map(t => {
+                            const s = getStyle(t.t);
+                            return `<div class="bg-black/30 p-3 rounded-2xl flex flex-col items-center min-w-[75px] border border-white/5">
+                                <div class="tier-circle !w-10 !h-10 ${s.c} mb-3"><img src="${t.m=='bow' ? '弓.png' : ' Barriers_JE2_BE2.png'}" class="tier-img ${t.m!='bow'?'opacity-0':''}"></div>
+                                <span class="tier-label ${s.b} !mt-[-10px]">${t.t}</span>
+                                <span class="text-[8px] text-gray-500 font-bold uppercase mt-1">${t.m}</span>
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
             `;
+            // Perbaikan agar SVG muncul di modal karena innerHTML sering bermasalah dengan SVG
+            const modalCircles = body.querySelectorAll('.tier-circle');
+            p.tiers.forEach((t, i) => { if(t.m != 'bow' && modalCircles[i]) modalCircles[i].innerHTML = `<div class="scale-[0.85]">${SVG[t.m]}</div>`; });
+            
             document.getElementById('modalOverlay').style.display = 'flex';
         }
 
