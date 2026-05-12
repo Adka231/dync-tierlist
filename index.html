@@ -3,81 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCTIERS RANK</title>
+    <title>MCTIERS RANK - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b1120; font-family: sans-serif; }
-        .bg-card { background-color: #161f32; border: 2px solid #1e293b; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; }
-        .tier-circle { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; margin-bottom: 4px; }
-        .tier-img { width: 28px; height: 28px; object-fit: contain; }
-        .tier-label { font-size: 10px; font-weight: bold; padding: 1px 6px; border-radius: 4px; text-align: center; }
-        .rank-1 { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
-        .rank-2 { border-color: #cbd5e1; }
-        .rank-3 { border-color: #d97706; }
-        /* Warna Tier */
-        .bg-ht { background-color: #d97706; color: white; }
-        .bg-lt { background-color: #475569; color: white; }
+        body { background-color: #0b1120; font-family: sans-serif; color: white; }
+        .bg-card { background: #161f32; border: 2px solid #1e293b; border-radius: 1rem; transition: all 0.2s; cursor: pointer; }
+        .bg-card:hover { transform: scale(1.02); border-color: #3b82f6; }
+        .tier-circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; flex-shrink: 0; }
+        .tier-img { width: 24px; height: 24px; object-fit: contain; }
+        .tier-label { font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 4px; margin-top: -8px; z-index: 10; }
+        /* Pop-up Style */
+        #profileModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-content { background: #1e293b; width: 100%; max-width: 400px; border-radius: 1.5rem; padding: 2rem; border: 2px solid #3b82f6; position: relative; }
     </style>
 </head>
-<body class="text-white p-4">
+<body class="p-4">
     <div class="max-w-md mx-auto">
         <h1 class="text-2xl font-black italic text-center mb-6">MCTIERS <span class="text-blue-500">RANK</span></h1>
+        
+        <div id="playerList" class="space-y-4">
+            </div>
+    </div>
 
-        <div class="bg-card rank-1">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="bg-yellow-500 text-black px-3 py-1 font-bold italic rounded">1.</span>
-                <img src="https://minotar.net/helm/ItzRealMe/32.png" class="rounded">
-                <span class="text-xl font-bold">ItzRealMe</span>
-            </div>
-            <div class="flex flex-wrap gap-3 justify-center">
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT3</span>
+    <div id="profileModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400">✕</button>
+            <div id="modalBody" class="text-center">
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/End_Crystal_JE2_BE2.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Splash_Potion_of_Healing_JE2_BE2.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Netherite_Helmet_JE2_BE2.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Ender_Pearl_JE3_BE2.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT1</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-card rank-2">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="bg-slate-300 text-black px-3 py-1 font-bold italic rounded">2.</span>
-                <img src="https://minotar.net/helm/coldified/32.png" class="rounded">
-                <span class="text-xl font-bold">coldified</span>
-            </div>
-            <div class="flex flex-wrap gap-3 justify-center">
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png" class="tier-img"></div>
-                    <span class="tier-label bg-lt">LT1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/End_Crystal_JE2_BE2.png" class="tier-img"></div>
-                    <span class="tier-label bg-ht">HT2</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="tier-img"></div>
-                    <span class="tier-label bg-lt">LT1</span>
-                </div>
-            </div>
         </div>
     </div>
+
+    <script>
+        const pointMap = {
+            'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2
+        };
+
+        const icons = {
+            sword: "https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png",
+            crystal: "https://minecraft.wiki/images/End_Crystal_JE2_BE2.png",
+            mace: "https://minecraft.wiki/images/Mace_JE1_BE1.png",
+            pot: "https://minecraft.wiki/images/Splash_Potion_of_Healing_JE2_BE2.png",
+            nethpot: "https://minecraft.wiki/images/Netherite_Helmet_JE2_BE2.png",
+            uhc: "https://minecraft.wiki/images/Enchanted_Golden_Apple_JE2_BE2.gif",
+            pearl: "https://minecraft.wiki/images/Ender_Pearl_JE3_BE2.png"
+        };
+
+        const players = [
+            {
+                rank: 1, name: "ItzRealMe", 
+                tiers: [
+                    {img: icons.sword, label: "HT3"}, {img: icons.uhc, label: "HT1"}, 
+                    {img: icons.mace, label: "HT1"}, {img: icons.pot, label: "HT1"},
+                    {img: icons.nethpot, label: "HT1"}, {img: icons.pearl, label: "HT1"}
+                ]
+            },
+            {
+                rank: 2, name: "coldified", 
+                tiers: [
+                    {img: icons.sword, label: "LT1"}, {img: icons.crystal, label: "HT2"}, 
+                    {img: icons.mace, label: "LT1"}
+                ]
+            }
+        ];
+
+        function calculatePoints(playerTiers) {
+            return playerTiers.reduce((sum, t) => sum + (pointMap[t.label] || 0), 0);
+        }
+
+        function renderPlayers() {
+            const list = document.getElementById('playerList');
+            players.forEach(p => {
+                const totalPoints = calculatePoints(p.tiers);
+                const card = document.createElement('div');
+                card.className = `bg-card p-4 ${p.rank === 1 ? 'border-yellow-500 shadow-lg shadow-yellow-900/20' : ''}`;
+                card.onclick = () => showProfile(p);
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-blue-600 text-xs px-2 py-1 rounded font-bold">${p.rank}.</span>
+                            <img src="https://minotar.net/helm/${p.name}/32.png" class="w-8 h-8 rounded">
+                            <div>
+                                <div class="font-bold text-lg">${p.name}</div>
+                                <div class="text-blue-400 text-xs font-mono">${totalPoints} Pts</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-nowrap gap-2 overflow-x-auto pb-2 no-scrollbar">
+                        ${p.tiers.map(t => `
+                            <div class="flex flex-col items-center">
+                                <div class="tier-circle"><img src="${t.img}" class="tier-img"></div>
+                                <span class="tier-label ${t.label.startsWith('HT') ? 'bg-orange-600' : 'bg-slate-500'}">${t.label}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function showProfile(p) {
+            const modal = document.getElementById('profileModal');
+            const body = document.getElementById('modalBody');
+            const points = calculatePoints(p.tiers);
+            
+            body.innerHTML = `
+                <img src="https://minotar.net/armor/body/${p.name}/100.png" class="mx-auto mb-4">
+                <h2 class="text-2xl font-bold mb-1">${p.name}</h2>
+                <p class="text-blue-400 font-mono mb-4">Total: ${points} Points</p>
+                <div class="grid grid-cols-3 gap-4 bg-black/20 p-4 rounded-xl">
+                    ${p.tiers.map(t => `
+                        <div class="flex flex-col items-center">
+                            <img src="${t.img}" class="w-8 h-8 mb-1">
+                            <span class="text-xs font-bold">${t.label}</span>
+                            <span class="text-[10px] text-gray-400">${pointMap[t.label]} pts</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('profileModal').style.display = 'none'; }
+
+        renderPlayers();
+    </script>
 </body>
 </html>
