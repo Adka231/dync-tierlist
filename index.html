@@ -2,117 +2,82 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS RANK - ADKA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCTIERS RANK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b1120; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .bg-card { background-color: #161f32; border: 1px solid #1e293b; transition: transform 0.2s ease; }
-        .outline-1 { border: 2px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
-        .outline-2 { border: 2px solid #cbd5e1; box-shadow: 0 0 15px rgba(203, 213, 225, 0.3); }
-        .outline-3 { border: 2px solid #d97706; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
-        .rank-badge { clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%); width: 65px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-style: italic; }
-        .t-1 { color: #fbbf24; border-color: #fbbf24; } .bg-t-1 { background-color: #fbbf24; color: #000; }
-        .t-2 { color: #cbd5e1; border-color: #cbd5e1; } .bg-t-2 { background-color: #cbd5e1; color: #000; }
-        .t-3 { color: #d97706; border-color: #d97706; } .bg-t-3 { background-color: #d97706; color: #fff; }
-        .t-4 { color: #a8a29e; border-color: #78716c; } .bg-t-4 { background-color: #78716c; color: #fff; }
-        .t-5 { color: #475569; border-color: #334155; } .bg-t-5 { background-color: #334155; color: #fff; }
-        .tier-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0f172a; border: 2.5px solid; overflow: hidden; }
-        .mode-icon { width: 30px; height: 30px; object-fit: contain; image-rendering: pixelated; }
-        .tier-label { font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; text-transform: uppercase; }
-        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 50; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        body { background-color: #0b1120; font-family: sans-serif; }
+        .bg-card { background-color: #161f32; border: 2px solid #1e293b; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; }
+        .tier-circle { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; margin-bottom: 4px; }
+        .tier-img { width: 28px; height: 28px; object-fit: contain; }
+        .tier-label { font-size: 10px; font-weight: bold; padding: 1px 6px; border-radius: 4px; text-align: center; }
+        .rank-1 { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
+        .rank-2 { border-color: #cbd5e1; }
+        .rank-3 { border-color: #d97706; }
+        /* Warna Tier */
+        .bg-ht { background-color: #d97706; color: white; }
+        .bg-lt { background-color: #475569; color: white; }
     </style>
 </head>
 <body class="text-white p-4">
-    <div class="max-w-md mx-auto space-y-4">
-        <div class="text-center mb-6">
-            <h1 class="text-3xl font-black italic uppercase tracking-tighter">MCTIERS <span class="text-blue-500 not-italic font-bold">RANK</span></h1>
+    <div class="max-w-md mx-auto">
+        <h1 class="text-2xl font-black italic text-center mb-6">MCTIERS <span class="text-blue-500">RANK</span></h1>
+
+        <div class="bg-card rank-1">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-yellow-500 text-black px-3 py-1 font-bold italic rounded">1.</span>
+                <img src="https://minotar.net/helm/ItzRealMe/32.png" class="rounded">
+                <span class="text-xl font-bold">ItzRealMe</span>
+            </div>
+            <div class="flex flex-wrap gap-3 justify-center">
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT3</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/End_Crystal_JE2_BE2.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT1</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT1</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Splash_Potion_of_Healing_JE2_BE2.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT1</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Netherite_Helmet_JE2_BE2.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT1</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Ender_Pearl_JE3_BE2.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT1</span>
+                </div>
+            </div>
         </div>
-        <div id="playerList" class="space-y-4"></div>
-    </div>
 
-    <div id="modalOverlay" onclick="closeModal()">
-        <div class="bg-slate-900 w-11/12 max-w-sm rounded-3xl p-8 relative border border-slate-800 text-center" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute right-6 top-6 text-gray-500 text-3xl">&times;</button>
-            <img id="modalImg" src="" class="w-24 h-24 rounded-full mx-auto mb-5 border-4 border-slate-700 bg-slate-800 shadow-lg">
-            <h2 id="modalName" class="text-3xl font-extrabold mb-8 italic"></h2>
-            <div class="grid grid-cols-4 gap-y-7 gap-x-3 justify-items-center" id="modalTiers"></div>
+        <div class="bg-card rank-2">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-slate-300 text-black px-3 py-1 font-bold italic rounded">2.</span>
+                <img src="https://minotar.net/helm/coldified/32.png" class="rounded">
+                <span class="text-xl font-bold">coldified</span>
+            </div>
+            <div class="flex flex-wrap gap-3 justify-center">
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png" class="tier-img"></div>
+                    <span class="tier-label bg-lt">LT1</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/End_Crystal_JE2_BE2.png" class="tier-img"></div>
+                    <span class="tier-label bg-ht">HT2</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="tier-circle"><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="tier-img"></div>
+                    <span class="tier-label bg-lt">LT1</span>
+                </div>
+            </div>
         </div>
     </div>
-
-    <script>
-        // DATA GAMBAR ASLI (Base64 dari file yang kamu kirim)
-        const icons = {
-            sword: "https://vignette.wikia.nocookie.net/minecraft/images/4/44/Diamond_Sword_JE3_BE3.png",
-            crystal: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/03/End_Crystal_JE2_BE2.png",
-            mace: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0e/Mace_JE1_BE1.png",
-            diapot: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/4/41/Splash_Potion_of_Healing_JE2_BE2.png",
-            nethpot: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Netherite_Helmet_JE2_BE2.png",
-            smp: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/f3/Ender_Pearl_JE3_BE2.png",
-            uhc: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/53/Enchanted_Golden_Apple_JE2_BE2.gif"
-        };
-
-        const players = [
-            { username: "ItzRealMe", rank: 1, color: "bg-yellow-500", tiers: { sword: "HT3", crystal: "HT1", mace: "HT1", diapot: "HT1", nethpot: "HT1", smp: "HT1", uhc: "HT1" } },
-            { username: "coldified", rank: 2, color: "bg-slate-300", tiers: { sword: "LT1", crystal: "HT2", mace: "LT1", diapot: "LT1", nethpot: "LT2", smp: "HT2", uhc: "HT1" } },
-            { username: "Swight", rank: 3, color: "bg-orange-600", tiers: { sword: "HT1", crystal: "LT2", mace: "LT3", diapot: "HT3", nethpot: "HT2", smp: "LT3", uhc: "LT2" } }
-        ];
-
-        const modes = [
-            { id: 'sword', img: icons.sword, label: 'Sword' },
-            { id: 'crystal', img: icons.crystal, label: 'Crystal' },
-            { id: 'mace', img: icons.mace, label: 'Mace' },
-            { id: 'diapot', img: icons.diapot, label: 'Diapot' },
-            { id: 'nethpot', img: icons.nethpot, label: 'Nethpot' },
-            { id: 'smp', img: icons.smp, label: 'SMP' },
-            { id: 'uhc', img: icons.uhc, label: 'UHC' }
-        ];
-
-        function getTierStyle(tierStr) {
-            const num = tierStr.replace(/\D/g, '');
-            return { text: `t-${num}`, bg: `bg-t-${num}` };
-        }
-
-        function render() {
-            const container = document.getElementById('playerList');
-            players.forEach((p, i) => {
-                const div = document.createElement('div');
-                div.className = `bg-card rounded-2xl p-4 cursor-pointer ${i===0?'outline-1':i===1?'outline-2':i===2?'outline-3':''}`;
-                div.onclick = () => openModal(p);
-                div.innerHTML = `
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="rank-badge ${p.color} text-black">${p.rank}.</div>
-                        <img src="https://minotar.net/helm/${p.username}/32.png" class="rounded">
-                        <span class="text-xl font-bold italic">${p.username}</span>
-                    </div>
-                    <div class="flex flex-wrap gap-2.5 justify-center">
-                        ${modes.map(m => {
-                            const style = getTierStyle(p.tiers[m.id]);
-                            return `<div class="flex flex-col items-center">
-                                <div class="tier-circle ${style.text}"><img src="${m.img}" class="mode-icon"></div>
-                                <span class="tier-label ${style.bg}">${p.tiers[m.id]}</span>
-                            </div>`;
-                        }).join('')}
-                    </div>`;
-                container.appendChild(div);
-            });
-        }
-
-        function openModal(p) {
-            document.getElementById('modalName').innerText = p.username;
-            document.getElementById('modalImg').src = `https://minotar.net/helm/${p.username}/100.png`;
-            document.getElementById('modalTiers').innerHTML = modes.map(m => {
-                const style = getTierStyle(p.tiers[m.id]);
-                return `<div class="flex flex-col items-center">
-                    <div class="tier-circle w-16 h-16 ${style.text}"><img src="${m.img}" class="w-10 h-10 object-contain"></div>
-                    <span class="tier-label ${style.bg} mt-[-13px] px-2">${p.tiers[m.id]}</span>
-                </div>`;
-            }).join('');
-            document.getElementById('modalOverlay').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-        render();
-    </script>
 </body>
 </html>
