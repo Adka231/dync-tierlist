@@ -2,34 +2,39 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCTIERS RANK - Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MCTIERS RANK - FINAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b1120; font-family: sans-serif; color: white; }
-        .bg-card { background: #161f32; border: 2px solid #1e293b; border-radius: 1rem; transition: all 0.2s; cursor: pointer; }
-        .bg-card:hover { transform: scale(1.02); border-color: #3b82f6; }
-        .tier-circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; flex-shrink: 0; }
-        .tier-img { width: 24px; height: 24px; object-fit: contain; }
-        .tier-label { font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 4px; margin-top: -8px; z-index: 10; }
-        /* Pop-up Style */
-        #profileModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
-        .modal-content { background: #1e293b; width: 100%; max-width: 400px; border-radius: 1.5rem; padding: 2rem; border: 2px solid #3b82f6; position: relative; }
+        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: white; -webkit-tap-highlight-color: transparent; }
+        .bg-card { background: #161f32; border: 2px solid #1e293b; border-radius: 1.25rem; transition: all 0.2s; cursor: pointer; position: relative; overflow: hidden; }
+        .bg-card:active { transform: scale(0.98); }
+        .tier-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; background: #0f172a; flex-shrink: 0; }
+        .tier-img { width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated; }
+        .tier-label { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        /* Paksa Sebaris */
+        .row-tiers { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 12px; padding-bottom: 8px; scrollbar-width: none; }
+        .row-tiers::-webkit-scrollbar { display: none; }
+
+        /* Modal / Popup */
+        #profileModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-content { background: #1e293b; width: 100%; max-width: 350px; border-radius: 2rem; padding: 2rem; border: 2px solid #3b82f6; position: relative; text-align: center; }
+        
+        .bg-ht { background-color: #ea580c; } /* Oranye untuk HT */
+        .bg-lt { background-color: #475569; } /* Abu untuk LT */
     </style>
 </head>
 <body class="p-4">
     <div class="max-w-md mx-auto">
-        <h1 class="text-2xl font-black italic text-center mb-6">MCTIERS <span class="text-blue-500">RANK</span></h1>
-        
-        <div id="playerList" class="space-y-4">
-            </div>
+        <h1 class="text-3xl font-black italic text-center mb-8 tracking-tighter">MCTIERS <span class="text-blue-500 not-italic">RANK</span></h1>
+        <div id="playerList" class="space-y-5"></div>
     </div>
 
     <div id="profileModal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400">✕</button>
-            <div id="modalBody" class="text-center">
-                </div>
+            <div id="modalBody"></div>
+            <button onclick="closeModal()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-full transition">Tutup</button>
         </div>
     </div>
 
@@ -38,14 +43,15 @@
             'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2
         };
 
+        // Link Gambar yang Pasti Muncul
         const icons = {
-            sword: "https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png",
-            crystal: "https://minecraft.wiki/images/End_Crystal_JE2_BE2.png",
+            sword: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/diamond_sword.png",
+            crystal: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/end_crystal.png",
             mace: "https://minecraft.wiki/images/Mace_JE1_BE1.png",
-            pot: "https://minecraft.wiki/images/Splash_Potion_of_Healing_JE2_BE2.png",
-            nethpot: "https://minecraft.wiki/images/Netherite_Helmet_JE2_BE2.png",
-            uhc: "https://minecraft.wiki/images/Enchanted_Golden_Apple_JE2_BE2.gif",
-            pearl: "https://minecraft.wiki/images/Ender_Pearl_JE3_BE2.png"
+            pot: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/potion_bottle_splash.png",
+            nethpot: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/netherite_helmet.png",
+            uhc: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/apple_golden.png",
+            pearl: "https://raw.githubusercontent.com/AnisMontacer/Minecraft-Items-Icons/master/items/ender_pearl.png"
         };
 
         const players = [
@@ -61,39 +67,39 @@
                 rank: 2, name: "coldified", 
                 tiers: [
                     {img: icons.sword, label: "LT1"}, {img: icons.crystal, label: "HT2"}, 
-                    {img: icons.mace, label: "LT1"}
+                    {img: icons.mace, label: "LT1"}, {img: icons.nethpot, label: "LT2"}
                 ]
             }
         ];
 
-        function calculatePoints(playerTiers) {
-            return playerTiers.reduce((sum, t) => sum + (pointMap[t.label] || 0), 0);
+        function calculatePoints(pTiers) {
+            return pTiers.reduce((sum, t) => sum + (pointMap[t.label] || 0), 0);
         }
 
-        function renderPlayers() {
+        function render() {
             const list = document.getElementById('playerList');
             players.forEach(p => {
-                const totalPoints = calculatePoints(p.tiers);
+                const totalPts = calculatePoints(p.tiers);
                 const card = document.createElement('div');
-                card.className = `bg-card p-4 ${p.rank === 1 ? 'border-yellow-500 shadow-lg shadow-yellow-900/20' : ''}`;
+                card.className = `bg-card p-5 ${p.rank === 1 ? 'border-yellow-500 shadow-lg shadow-yellow-900/20' : ''}`;
                 card.onclick = () => showProfile(p);
                 
                 card.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <span class="bg-blue-600 text-xs px-2 py-1 rounded font-bold">${p.rank}.</span>
-                            <img src="https://minotar.net/helm/${p.name}/32.png" class="w-8 h-8 rounded">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-4">
+                            <div class="text-2xl font-black italic text-gray-500">${p.rank}</div>
+                            <img src="https://minotar.net/helm/${p.name}/40.png" class="rounded-lg shadow-md">
                             <div>
-                                <div class="font-bold text-lg">${p.name}</div>
-                                <div class="text-blue-400 text-xs font-mono">${totalPoints} Pts</div>
+                                <div class="font-bold text-xl leading-tight">${p.name}</div>
+                                <div class="text-blue-400 text-xs font-black uppercase tracking-widest">${totalPts} POINTS</div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-nowrap gap-2 overflow-x-auto pb-2 no-scrollbar">
+                    <div class="row-tiers">
                         ${p.tiers.map(t => `
                             <div class="flex flex-col items-center">
                                 <div class="tier-circle"><img src="${t.img}" class="tier-img"></div>
-                                <span class="tier-label ${t.label.startsWith('HT') ? 'bg-orange-600' : 'bg-slate-500'}">${t.label}</span>
+                                <span class="tier-label ${t.label.includes('HT') ? 'bg-ht' : 'bg-lt'}">${t.label}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -103,30 +109,30 @@
         }
 
         function showProfile(p) {
-            const modal = document.getElementById('profileModal');
             const body = document.getElementById('modalBody');
-            const points = calculatePoints(p.tiers);
-            
+            const totalPts = calculatePoints(p.tiers);
             body.innerHTML = `
-                <img src="https://minotar.net/armor/body/${p.name}/100.png" class="mx-auto mb-4">
-                <h2 class="text-2xl font-bold mb-1">${p.name}</h2>
-                <p class="text-blue-400 font-mono mb-4">Total: ${points} Points</p>
-                <div class="grid grid-cols-3 gap-4 bg-black/20 p-4 rounded-xl">
+                <div class="relative inline-block mb-4">
+                    <img src="https://minotar.net/armor/body/${p.name}/120.png" class="mx-auto">
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-blue-600 px-4 py-1 rounded-full text-xs font-bold shadow-lg">Rank #${p.rank}</div>
+                </div>
+                <h2 class="text-3xl font-black italic mb-1 uppercase">${p.name}</h2>
+                <p class="text-blue-400 font-mono text-lg font-bold mb-6">${totalPts} TOTAL POINTS</p>
+                <div class="grid grid-cols-3 gap-3">
                     ${p.tiers.map(t => `
-                        <div class="flex flex-col items-center">
-                            <img src="${t.img}" class="w-8 h-8 mb-1">
-                            <span class="text-xs font-bold">${t.label}</span>
-                            <span class="text-[10px] text-gray-400">${pointMap[t.label]} pts</span>
+                        <div class="bg-black/30 p-3 rounded-2xl border border-white/5">
+                            <img src="${t.img}" class="w-8 h-8 mx-auto mb-2">
+                            <div class="text-[10px] font-bold text-gray-400 uppercase">${t.label}</div>
+                            <div class="text-xs font-black text-blue-300">+${pointMap[t.label]}</div>
                         </div>
                     `).join('')}
                 </div>
             `;
-            modal.style.display = 'flex';
+            document.getElementById('profileModal').style.display = 'flex';
         }
 
         function closeModal() { document.getElementById('profileModal').style.display = 'none'; }
-
-        renderPlayers();
+        render();
     </script>
 </body>
 </html>
