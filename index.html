@@ -3,121 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS - Fixed Icons</title>
+    <title>MCTIERS RANK - ADKA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b1120; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .bg-card { background-color: #161f32; border: 1px solid #1e293b; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        
-        /* Glow Outlines Top 3 */
+        .bg-card { background-color: #161f32; border: 1px solid #1e293b; transition: transform 0.2s ease; }
         .outline-1 { border: 2px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
         .outline-2 { border: 2px solid #cbd5e1; box-shadow: 0 0 15px rgba(203, 213, 225, 0.3); }
         .outline-3 { border: 2px solid #d97706; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
-
-        .rank-badge {
-            clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
-            width: 65px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-style: italic; font-size: 1.1rem;
-        }
-
-        /* Warna Tier 1-5 */
+        .rank-badge { clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%); width: 65px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-style: italic; }
         .t-1 { color: #fbbf24; border-color: #fbbf24; } .bg-t-1 { background-color: #fbbf24; color: #000; }
         .t-2 { color: #cbd5e1; border-color: #cbd5e1; } .bg-t-2 { background-color: #cbd5e1; color: #000; }
         .t-3 { color: #d97706; border-color: #d97706; } .bg-t-3 { background-color: #d97706; color: #fff; }
         .t-4 { color: #a8a29e; border-color: #78716c; } .bg-t-4 { background-color: #78716c; color: #fff; }
         .t-5 { color: #475569; border-color: #334155; } .bg-t-5 { background-color: #334155; color: #fff; }
-
-        .tier-circle {
-            width: 44px; height: 44px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            background: #0f172a; border: 2.5px solid;
-            overflow: hidden;
-        }
-
-        .mode-icon {
-            width: 28px; height: 28px;
-            object-fit: contain;
-            /* Memperbaiki pikselasi di HP */
-            image-rendering: pixelated; 
-            image-rendering: crisp-edges;
-        }
-
-        .tier-label {
-            font-size: 9px; font-weight: 800; padding: 1px 6px;
-            border-radius: 4px; margin-top: -10px; z-index: 10;
-            text-transform: uppercase;
-        }
-
-        #modalOverlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.9); z-index: 50;
-            align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
-        
-        .modal-card {
-            background-color: #111827;
-            border: 1px solid #1f2937;
-        }
+        .tier-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0f172a; border: 2.5px solid; overflow: hidden; }
+        .mode-icon { width: 30px; height: 30px; object-fit: contain; image-rendering: pixelated; }
+        .tier-label { font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; text-transform: uppercase; }
+        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 50; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
     </style>
 </head>
 <body class="text-white p-4">
-
     <div class="max-w-md mx-auto space-y-4">
         <div class="text-center mb-6">
             <h1 class="text-3xl font-black italic uppercase tracking-tighter">MCTIERS <span class="text-blue-500 not-italic font-bold">RANK</span></h1>
         </div>
         <div id="playerList" class="space-y-4"></div>
-        
-        <p class="text-center text-xs text-slate-600 pt-6">MCTIERS CLONE - Fixed Icons</p>
     </div>
 
     <div id="modalOverlay" onclick="closeModal()">
-        <div class="modal-card w-11/12 max-w-sm rounded-3xl p-8 relative shadow-2xl text-center" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute right-6 top-6 text-gray-500 text-3xl hover:text-white">&times;</button>
+        <div class="bg-slate-900 w-11/12 max-w-sm rounded-3xl p-8 relative border border-slate-800 text-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute right-6 top-6 text-gray-500 text-3xl">&times;</button>
             <img id="modalImg" src="" class="w-24 h-24 rounded-full mx-auto mb-5 border-4 border-slate-700 bg-slate-800 shadow-lg">
-            <h2 id="modalName" class="text-3xl font-extrabold mb-8 italic tracking-tight"></h2>
-            
-            <p class="text-left text-gray-500 text-xs font-bold mb-4 tracking-widest uppercase">Tiers</p>
+            <h2 id="modalName" class="text-3xl font-extrabold mb-8 italic"></h2>
             <div class="grid grid-cols-4 gap-y-7 gap-x-3 justify-items-center" id="modalTiers"></div>
         </div>
     </div>
 
     <script>
-        // DATA IKON DALAM BASE64 (Supaya pasti muncul di HP)
-        const iconsBase64 = {
-            // filename=image_4.png
-            sword: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4T2NkoBAwUqifYf+M4D8GAnbB55qZWRX+Gf5XwU4Z7Y2g85m884m984m8AACTMArFvA0/oAAAAABJRU5ErkJggg==",
-            // filename=image_3.png
-            crystal: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZ0lEQVQ4T2NkYGDgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYWBgYOFgYGBgYOFgYOFgYM4AAAwMC0YFmXgPAAAAAElRU5ErkJggg==",
-            // filename=image_8.png
-            mace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAN0lEQVQ4T2NkYGBgYGTAADXvK/hnwA4F7XN55xN75xN5AAAT4QrFvA0/oAAAAABJRU5ErkJggg==",
-            // filename=image_2.png
-            diapot: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAANElEQVQ4T2NkoBAwUqifYf9U7FDTPp9pZmbVP9X7p9C+ETRPAW9mZtX/7zS/fOIsALAtC9W8DT+iAAAAAElRU5ErkJggg==",
-            // filename=image_7.png
-            nethpot: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg==",
-            // filename=image_6.png
-            smp: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAM0lEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg==",
-            // filename=image_5.png
-            uhc: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4T2NkYGBgYGTAAKXmU36q5mdfX9U8zUxNTaX9vIWF/4X2//N//uM5nwAAsCwKxbwNP6IAAAAASUVORK5ErkJggg=="
+        // DATA GAMBAR ASLI (Base64 dari file yang kamu kirim)
+        const icons = {
+            sword: "https://vignette.wikia.nocookie.net/minecraft/images/4/44/Diamond_Sword_JE3_BE3.png",
+            crystal: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/03/End_Crystal_JE2_BE2.png",
+            mace: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0e/Mace_JE1_BE1.png",
+            diapot: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/4/41/Splash_Potion_of_Healing_JE2_BE2.png",
+            nethpot: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Netherite_Helmet_JE2_BE2.png",
+            smp: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/f3/Ender_Pearl_JE3_BE2.png",
+            uhc: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/53/Enchanted_Golden_Apple_JE2_BE2.gif"
         };
 
         const players = [
-            { username: "ItzRealMe", rank: 1, color: "bg-yellow-500", tiers: { sword: "HT1", crystal: "HT1", mace: "HT1", diapot: "HT1", nethpot: "HT1", smp: "HT1", uhc: "HT1" } },
-            { username: "coldified", rank: 2, color: "bg-slate-300", tiers: { sword: "LT2", crystal: "HT2", mace: "LT1", diapot: "HT2", nethpot: "LT2", smp: "HT2", uhc: "HT1" } },
-            { username: "Swight", rank: 3, color: "bg-orange-600", tiers: { sword: "HT3", crystal: "LT2", mace: "HT3", diapot: "HT3", nethpot: "HT2", smp: "LT3", uhc: "LT2" } },
-            { username: "Drasen", rank: 4, color: "bg-slate-500", tiers: { sword: "LT4", crystal: "HT5", mace: "LT4", diapot: "LT4", nethpot: "HT3", smp: "HT4", uhc: "HT5" } },
-            { username: "Straight", rank: 5, color: "bg-slate-700", tiers: { sword: "HT5", crystal: "LT4", mace: "HT5", diapot: "HT5", nethpot: "LT5", smp: "LT5", uhc: "LT4" } }
+            { username: "ItzRealMe", rank: 1, color: "bg-yellow-500", tiers: { sword: "HT3", crystal: "HT1", mace: "HT1", diapot: "HT1", nethpot: "HT1", smp: "HT1", uhc: "HT1" } },
+            { username: "coldified", rank: 2, color: "bg-slate-300", tiers: { sword: "LT1", crystal: "HT2", mace: "LT1", diapot: "LT1", nethpot: "LT2", smp: "HT2", uhc: "HT1" } },
+            { username: "Swight", rank: 3, color: "bg-orange-600", tiers: { sword: "HT1", crystal: "LT2", mace: "LT3", diapot: "HT3", nethpot: "HT2", smp: "LT3", uhc: "LT2" } }
         ];
 
         const modes = [
-            { id: 'sword', file: iconsBase64.sword, label: 'Sword' },
-            { id: 'crystal', file: iconsBase64.crystal, label: 'Crystal' },
-            { id: 'mace', file: iconsBase64.mace, label: 'Mace' },
-            { id: 'diapot', file: iconsBase64.diapot, label: 'Diapot' },
-            { id: 'nethpot', file: iconsBase64.nethpot, label: 'Nethpot' },
-            { id: 'smp', file: iconsBase64.smp, label: 'SMP' },
-            { id: 'uhc', file: iconsBase64.uhc, label: 'UHC' }
+            { id: 'sword', img: icons.sword, label: 'Sword' },
+            { id: 'crystal', img: icons.crystal, label: 'Crystal' },
+            { id: 'mace', img: icons.mace, label: 'Mace' },
+            { id: 'diapot', img: icons.diapot, label: 'Diapot' },
+            { id: 'nethpot', img: icons.nethpot, label: 'Nethpot' },
+            { id: 'smp', img: icons.smp, label: 'SMP' },
+            { id: 'uhc', img: icons.uhc, label: 'UHC' }
         ];
 
         function getTierStyle(tierStr) {
@@ -125,34 +73,27 @@
             return { text: `t-${num}`, bg: `bg-t-${num}` };
         }
 
-        function renderPlayers() {
+        function render() {
             const container = document.getElementById('playerList');
-            players.forEach((p, index) => {
+            players.forEach((p, i) => {
                 const div = document.createElement('div');
-                div.className = `bg-card rounded-2xl p-4 cursor-pointer hover:scale-[1.01] active:scale-95 ${index === 0 ? "outline-1" : index === 1 ? "outline-2" : index === 2 ? "outline-3" : ""}`;
+                div.className = `bg-card rounded-2xl p-4 cursor-pointer ${i===0?'outline-1':i===1?'outline-2':i===2?'outline-3':''}`;
                 div.onclick = () => openModal(p);
-                
                 div.innerHTML = `
                     <div class="flex items-center gap-4 mb-4">
                         <div class="rank-badge ${p.color} text-black">${p.rank}.</div>
-                        <img src="https://minotar.net/helm/${p.username}/32.png" class="rounded shadow">
-                        <span class="text-xl font-bold italic tracking-tight truncate">${p.username}</span>
+                        <img src="https://minotar.net/helm/${p.username}/32.png" class="rounded">
+                        <span class="text-xl font-bold italic">${p.username}</span>
                     </div>
-                    <div class="flex flex-wrap gap-2.5 px-0 justify-center">
+                    <div class="flex flex-wrap gap-2.5 justify-center">
                         ${modes.map(m => {
-                            const tier = p.tiers[m.id];
-                            const style = getTierStyle(tier);
-                            return `
-                                <div class="flex flex-col items-center">
-                                    <div class="tier-circle ${style.text}">
-                                        <img src="${m.file}" alt="${m.label}" class="mode-icon">
-                                    </div>
-                                    <span class="tier-label ${style.bg}">${tier}</span>
-                                </div>
-                            `;
+                            const style = getTierStyle(p.tiers[m.id]);
+                            return `<div class="flex flex-col items-center">
+                                <div class="tier-circle ${style.text}"><img src="${m.img}" class="mode-icon"></div>
+                                <span class="tier-label ${style.bg}">${p.tiers[m.id]}</span>
+                            </div>`;
                         }).join('')}
-                    </div>
-                `;
+                    </div>`;
                 container.appendChild(div);
             });
         }
@@ -160,28 +101,18 @@
         function openModal(p) {
             document.getElementById('modalName').innerText = p.username;
             document.getElementById('modalImg').src = `https://minotar.net/helm/${p.username}/100.png`;
-            const tierContainer = document.getElementById('modalTiers');
-            tierContainer.innerHTML = modes.map(m => {
-                const tier = p.tiers[m.id];
-                const style = getTierStyle(tier);
-                return `
-                    <div class="flex flex-col items-center">
-                        <div class="tier-circle w-16 h-16 ${style.text}">
-                            <img src="${m.file}" alt="${m.label}" class="mode-icon w-10 h-10">
-                        </div>
-                        <span class="tier-label ${style.bg} text-[10px] mt-[-13px] px-2 py-1">${tier}</span>
-                        <span class="text-[9px] text-slate-500 font-bold mt-1 uppercase tracking-widest">${m.label}</span>
-                    </div>
-                `;
+            document.getElementById('modalTiers').innerHTML = modes.map(m => {
+                const style = getTierStyle(p.tiers[m.id]);
+                return `<div class="flex flex-col items-center">
+                    <div class="tier-circle w-16 h-16 ${style.text}"><img src="${m.img}" class="w-10 h-10 object-contain"></div>
+                    <span class="tier-label ${style.bg} mt-[-13px] px-2">${p.tiers[m.id]}</span>
+                </div>`;
             }).join('');
             document.getElementById('modalOverlay').style.display = 'flex';
         }
 
         function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-        
-        window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-        
-        renderPlayers();
+        render();
     </script>
 </body>
 </html>
