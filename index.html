@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS Cracked - Interactive Pro</title>
+    <title>MCTIERS Cracked - Pro Fixed</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; overflow-x: hidden; }
         .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
         
-        /* Navigasi Tab Aktif */
+        /* Navigasi Tab */
         .tab-item.active { background: #1e293b; color: #3b82f6; border-bottom: 2px solid #3b82f6; }
         .tab-bar::-webkit-scrollbar { display: none; }
 
@@ -39,15 +39,21 @@
         .t2-c { border-color: #cbd5e1; color: #cbd5e1; } .bg-t2 { background-color: #cbd5e1; color: #000; }
         .t3-c { border-color: #f97316; color: #f97316; } .bg-t3 { background-color: #f97316; color: #fff; }
 
-        /* Modal Overlay */
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(8px); }
+        /* Modal / Popup */
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(10px); }
+        .modal-box { background: #0f172a; border: 1px solid #1e293b; w-full; max-width: 400px; border-radius: 32px; p-8; position: relative; animation: slideUp 0.3s ease-out; }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="p-4 pb-20">
 
     <div class="max-w-md mx-auto">
-        <!-- Header Section -->
         <div class="flex items-center justify-between mb-4">
             <h1 class="text-2xl font-heavy italic text-white tracking-tighter">MCTIERS</h1>
             <div class="flex gap-4 items-center">
@@ -56,14 +62,12 @@
             </div>
         </div>
 
-        <!-- Search Bar (Persis Foto) -->
         <div class="relative mb-6">
-            <input type="text" id="searchInput" placeholder="Search player..." class="w-full bg-[#1e293b]/50 border border-gray-800 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-blue-500">
+            <input type="text" id="searchInput" placeholder="Search player..." class="w-full bg-[#1e293b]/50 border border-gray-800 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
-        <!-- Scrollable Tabs Navigation -->
         <div class="tab-bar flex overflow-x-auto gap-3 mb-6 no-scrollbar">
-            <div class="tab-item active flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer transition-all" onclick="filterBy('overall', this)">🏆 Overall</div>
+            <div class="tab-item active flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('overall', this)">🏆 Overall</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('sword', this)">⚔️ Sword</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('smp', this)">🛡️ SMP</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('nethpot', this)">🧪 Nethpot</div>
@@ -71,14 +75,23 @@
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('mace', this)">🔨 Mace</div>
         </div>
 
-        <!-- Player List -->
         <div id="playerContainer"></div>
     </div>
 
-    <!-- Popup Profile -->
+    <!-- Modal Profil dengan Tombol Kembali -->
     <div id="modal" onclick="closeProfile()">
-        <div class="bg-[#0f172a] border border-gray-800 w-full max-w-sm rounded-[32px] p-8 relative" onclick="event.stopPropagation()">
+        <div class="modal-box w-full bg-[#0f172a] p-8 rounded-[32px] border border-gray-800 relative" onclick="event.stopPropagation()">
+            <!-- Tombol X Close -->
+            <button onclick="closeProfile()" class="absolute top-6 right-8 text-gray-500 hover:text-white text-2xl font-light transition-colors">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+            </button>
+            
             <div id="profileBody"></div>
+
+            <!-- Tombol Kembali di Bawah -->
+            <button onclick="closeProfile()" class="w-full mt-8 py-3 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-gray-300">
+                ← Back to Rankings
+            </button>
         </div>
     </div>
 
@@ -94,45 +107,29 @@
         const players = [
             { name: "ItzRealMe", rank: 1, region: "SEA", pfp: "https://i.pinimg.com/736x/8a/95/9b/8a959b2072134547962451f2f840915d.jpg", tiers: { sword: "HT1", nethpot: "HT1", smp: "LT1", crystal: "HT2", mace: "HT1" } },
             { name: "coldified", rank: 2, region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } },
-            { name: "Vortex_PvP", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=a", tiers: { nethpot: "HT3", crystal: "LT1" } },
-            { name: "Shadow", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=b", tiers: { sword: "HT3" } },
-            { name: "Cracked_God", rank: 5, region: "EU", pfp: "https://i.pravatar.cc/150?u=c", tiers: { mace: "HT2" } }
+            { name: "Shadow", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=1", tiers: { nethpot: "HT3", crystal: "LT1" } },
+            { name: "Vortex", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { sword: "HT3" } },
+            { name: "Zenith", rank: 5, region: "EU", pfp: "https://i.pravatar.cc/150?u=3", tiers: { mace: "HT2" } }
         ];
-
-        let currentFilter = 'overall';
 
         function getStyle(t) {
             const n = t.replace(/\D/g, '');
             return { c: `t${n}-c`, bg: `bg-t${n}` };
         }
 
-        function renderList(filteredPlayers) {
+        function renderList(list) {
             const container = document.getElementById('playerContainer');
             container.innerHTML = '';
-            
-            filteredPlayers.forEach(p => {
+            list.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'mctiers-card';
                 card.onclick = () => openProfile(p);
-                
-                const tierHTML = Object.entries(p.tiers).map(([m, t]) => {
-                    const s = getStyle(t);
-                    return `
-                        <div class="flex flex-col items-center flex-shrink-0">
-                            <div class="tier-icon-box ${s.c}">${SVGS[m] || '⚔️'}</div>
-                            <div class="tier-label-small ${s.bg}">${t}</div>
-                        </div>
-                    `;
-                }).join('');
-
                 card.innerHTML = `
                     <div class="flex items-center">
-                        <div class="rank-slant rank-${p.rank}">
+                        <div class="rank-slant rank-${p.rank <= 2 ? p.rank : 'other'}">
                             <span class="text-xl font-heavy italic font-black">${p.rank}.</span>
                         </div>
-                        <div class="flex-shrink-0 -ml-4 z-10">
-                            <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover">
-                        </div>
+                        <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10">
                         <div class="ml-4 flex-1 pr-4">
                             <div class="flex justify-between items-center">
                                 <h3 class="font-bold text-lg leading-tight truncate w-32">${p.name}</h3>
@@ -143,11 +140,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-5 py-3 border-t border-gray-800/50 mt-1">
-                        <div class="text-[9px] font-black text-gray-600 mb-2 tracking-widest uppercase">TIERS</div>
-                        <div class="flex gap-2 overflow-x-auto no-scrollbar">
-                            ${tierHTML}
-                        </div>
+                    <div class="px-5 py-3 border-t border-gray-800/50 mt-1 flex gap-2 overflow-x-auto no-scrollbar">
+                        ${Object.entries(p.tiers).map(([m, t]) => {
+                            const s = getStyle(t);
+                            return `<div class="flex flex-col items-center flex-shrink-0">
+                                <div class="tier-icon-box ${s.c}">${SVGS[m] || '⚔️'}</div>
+                                <div class="tier-label-small ${s.bg}">${t}</div>
+                            </div>`;
+                        }).join('')}
                     </div>
                 `;
                 container.appendChild(card);
@@ -157,49 +157,36 @@
         function filterBy(mode, el) {
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
-            currentFilter = mode;
-            
-            if (mode === 'overall') {
-                renderList(players);
-            } else {
-                const filtered = players.filter(p => p.tiers[mode]).sort((a, b) => {
-                    return a.tiers[mode].localeCompare(b.tiers[mode]); 
-                });
-                renderList(filtered);
-            }
+            const filtered = mode === 'overall' ? players : players.filter(p => p.tiers[mode]);
+            renderList(filtered);
         }
 
         function openProfile(p) {
             const body = document.getElementById('profileBody');
             body.innerHTML = `
                 <div class="text-center">
-                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4">
+                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl">
                     <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
-                    <div class="flex justify-center gap-2 mb-6">
-                        <span class="bg-blue-600/20 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-full border border-blue-500/20">⚔ COMBAT ACE</span>
-                        <span class="bg-gray-800 text-[10px] font-bold px-3 py-1 rounded-full text-gray-400">${p.region}</span>
-                    </div>
+                    <p class="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-6">${p.region} Player</p>
                     
                     <div class="text-left mb-6">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">RANKING POSITION</p>
-                        <div class="bg-gray-800/40 p-4 rounded-xl flex justify-between items-center">
-                            <span class="text-xs font-bold text-gray-300 italic">Global Rank</span>
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">OVERALL POSITION</p>
+                        <div class="bg-gray-800/40 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                            <span class="text-xs font-bold text-gray-300 italic">Leaderboard Rank</span>
                             <span class="text-lg font-heavy text-blue-400">#${p.rank}</span>
                         </div>
                     </div>
 
                     <div class="text-left">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">SKILLS BREAKDOWN</p>
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">GAMEMODE TIERS</p>
                         <div class="flex gap-3 overflow-x-auto no-scrollbar">
                             ${Object.entries(p.tiers).map(([m, t]) => {
                                 const s = getStyle(t);
-                                return `
-                                    <div class="bg-white/5 p-3 rounded-2xl min-w-[70px] flex flex-col items-center">
-                                        <div class="tier-icon-box ${s.c} mb-2">${SVGS[m]}</div>
-                                        <span class="text-[10px] font-heavy ${s.c}">${t}</span>
-                                        <span class="text-[8px] text-gray-600 uppercase font-black">${m}</span>
-                                    </div>
-                                `;
+                                return `<div class="bg-white/5 p-3 rounded-2xl min-w-[75px] flex flex-col items-center border border-white/5">
+                                    <div class="tier-icon-box ${s.c} mb-2">${SVGS[m]}</div>
+                                    <span class="text-[10px] font-heavy ${s.c}">${t}</span>
+                                    <span class="text-[8px] text-gray-600 uppercase font-black">${m}</span>
+                                </div>`;
                             }).join('')}
                         </div>
                     </div>
@@ -210,14 +197,11 @@
 
         function closeProfile() { document.getElementById('modal').style.display = 'none'; }
 
-        // Fitur Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
-            const filtered = players.filter(p => p.name.toLowerCase().includes(val));
-            renderList(filtered);
+            renderList(players.filter(p => p.name.toLowerCase().includes(val)));
         });
 
-        // Start
         renderList(players);
     </script>
 </body>
