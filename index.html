@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS - Professional Leaderboard</title>
+    <title>MCTIERS CRACKED - Top 10</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #090e1a; font-family: 'Inter', sans-serif; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0b0f1a; font-family: 'Inter', sans-serif; color: #f8fafc; overflow-x: hidden; }
         .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -0.05em; }
         
-        /* Tier Design */
-        .tier-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0f172a; border: 2px solid #1e293b; flex-shrink: 0; position: relative; transition: 0.3s; }
-        .tier-tag { font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; margin-top: -12px; z-index: 10; border: 1px solid rgba(0,0,0,0.5); }
+        /* PFP Lingkaran */
+        .pfp-circle { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #1e293b; }
+        .pfp-large { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #3b82f6; margin: 0 auto; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+
+        /* Tier Styling */
+        .tier-circle { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #0f172a; border: 2px solid #1e293b; flex-shrink: 0; position: relative; }
+        .tier-tag { font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 4px; margin-top: -10px; z-index: 10; border: 1px solid rgba(0,0,0,0.5); }
         
         /* Tier Colors */
         .t-1 { border-color: #fbbf24; color: #fbbf24; } .bg-t-1 { background-color: #fbbf24; color: #000; }
@@ -21,29 +25,30 @@
         .t-4 { border-color: #78716c; color: #a8a29e; } .bg-t-4 { background-color: #78716c; color: #fff; }
         .t-5 { border-color: #334155; color: #94a3b8; } .bg-t-5 { background-color: #334155; color: #fff; }
 
-        /* Card Styling */
-        .mctiers-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; transition: 0.2s; cursor: pointer; }
-        .mctiers-card:hover { border-color: #3b82f6; background: #161e2e; transform: translateY(-2px); }
-        .glow-1 { border-color: rgba(251, 191, 36, 0.4); box-shadow: 0 0 25px rgba(251, 191, 36, 0.1); }
+        /* Card */
+        .mctiers-card { background: #111827; border: 1px solid #1f2937; border-radius: 16px; transition: 0.2s; cursor: pointer; }
+        .mctiers-card:hover { border-color: #3b82f6; background: #161e2e; transform: scale(1.02); }
+        .glow-top { border-color: rgba(251, 191, 36, 0.5); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
 
-        /* Modal / Profile Layout */
-        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(5, 8, 18, 0.97); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(12px); }
-        .modal-box { background: #0f172a; border: 1px solid #1e293b; width: 100%; max-width: 400px; border-radius: 32px; padding: 30px; position: relative; }
+        /* Modal */
+        #modalOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-box { background: #0f172a; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; border: 1px solid #1e293b; position: relative; }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="p-6">
 
     <div class="max-w-md mx-auto">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl font-heavy text-blue-500">MCTIERS</h1>
-            <p class="text-gray-500 text-[10px] font-bold tracking-[0.4em] mt-1 uppercase">Combat Leaderboard</p>
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-heavy text-blue-500">MCTIERS<span class="text-white font-light">CRACKED</span></h1>
+            <div class="bg-blue-600/10 text-blue-400 text-[10px] font-black inline-block px-4 py-1 rounded-full mt-2 tracking-[0.2em]">TOP 10 LEADERBOARD</div>
         </header>
 
         <div id="playerList" class="space-y-4"></div>
     </div>
 
+    <!-- Modal Profil -->
     <div id="modalOverlay" onclick="closeModal()">
         <div class="modal-box shadow-2xl" onclick="event.stopPropagation()">
             <button onclick="closeModal()" class="absolute top-6 right-8 text-gray-500 text-3xl font-light hover:text-white">&times;</button>
@@ -52,27 +57,31 @@
     </div>
 
     <script>
-        const titles = { 1: "Combat Grandmaster", 2: "Combat Master", 3: "Combat Ace", 4: "Combat Cadet", 5: "Combat Novice" };
         const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
 
-        // Ikon Anti-Error (Sesuai List Kamu)
+        // Ikon SVGs
         const SVG = {
-            sword: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 2L14.5 6L15.5 7L18.5 4L20 5.5L17 8.5L18 9.5L22 5.5L18.5 2Z" fill="#38BDF8"/><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
-            mace: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/><path d="M12 13V21" stroke="#64748B" stroke-width="3"/></svg>`,
-            crystal: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/><path d="M4 16L12 22L20 16L12 10L4 16Z" fill="#A855F7"/></svg>`,
-            axe: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 4H14L17 7V11L14 14H7V4Z" fill="#38BDF8"/><path d="M10 14V21" stroke="#78350f" stroke-width="2"/></svg>`,
-            smp: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
-            nethpot: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#475569"/></svg>`,
-            diapot: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#0EA5E9"/></svg>`,
-            uhc: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#FBBF24"/><path d="M12 5V2" stroke="#4ADE80" stroke-width="2"/></svg>`
+            sword: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18.5 2L14.5 6L15.5 7L18.5 4L20 5.5L17 8.5L18 9.5L22 5.5L18.5 2Z" fill="#38BDF8"/><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
+            mace: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/><path d="M12 13V21" stroke="#64748B" stroke-width="3"/></svg>`,
+            crystal: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/><path d="M4 16L12 22L20 16L12 10L4 16Z" fill="#A855F7"/></svg>`,
+            uhc: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#FBBF24"/><path d="M12 5V2" stroke="#4ADE80" stroke-width="2"/></svg>`,
+            smp: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
+            diapot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#0EA5E9"/></svg>`,
+            nethpot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#475569"/></svg>`
         };
 
+        // DATA PEMAIN (Ganti URL pfp di sini)
         const players = [
-            { name: "ItzRealMe", rank: 1, tiers: { sword: "HT3", mace: "HT1", crystal: "HT1", axe: "HT1", smp: "HT1", nethpot: "HT1", diapot: "HT1", uhc: "HT1" } },
-            { name: "coldified", rank: 2, tiers: { sword: "LT1", crystal: "HT2", mace: "LT1", nethpot: "LT2" } },
-            { name: "Swight", rank: 3, tiers: { sword: "HT1", uhc: "LT2", axe: "LT3" } },
-            { name: "janekv", rank: 4, tiers: { sword: "HT2", mace: "HT3" } },
-            { name: "Kylaz", rank: 5, tiers: { smp: "LT1", uhc: "LT2" } }
+            { name: "ItzRealMe", rank: 1, pfp: "https://i.pinimg.com/736x/8a/95/9b/8a959b2072134547962451f2f840915d.jpg", tiers: { sword: "HT1", crystal: "HT1", mace: "HT1", uhc: "HT1", smp: "HT1", diapot: "HT1", nethpot: "HT1" } },
+            { name: "PlayerTwo", rank: 2, pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", crystal: "HT2", mace: "LT1" } },
+            { name: "ShadowPvP", rank: 3, pfp: "https://i.pinimg.com/736x/fe/0b/4f/fe0b4f8d55122822a90022216c527f3d.jpg", tiers: { sword: "HT1", uhc: "HT3" } },
+            { name: "CrackedGod", rank: 4, pfp: "https://i.pravatar.cc/150?u=4", tiers: { crystal: "HT1", smp: "LT1" } },
+            { name: "Vortex", rank: 5, pfp: "https://i.pravatar.cc/150?u=5", tiers: { sword: "LT1", mace: "LT2" } },
+            { name: "Zenith", rank: 6, pfp: "https://i.pravatar.cc/150?u=6", tiers: { diapot: "HT3" } },
+            { name: "RacerX", rank: 7, pfp: "https://i.pravatar.cc/150?u=7", tiers: { nethpot: "LT1" } },
+            { name: "Blaze", rank: 8, pfp: "https://i.pravatar.cc/150?u=8", tiers: { uhc: "LT3" } },
+            { name: "Ghost", rank: 9, pfp: "https://i.pravatar.cc/150?u=9", tiers: { sword: "LT4" } },
+            { name: "Frost", rank: 10, pfp: "https://i.pravatar.cc/150?u=10", tiers: { smp: "HT2" } },
         ];
 
         function getStyle(t) { const n = t.replace(/\D/g, ''); return { c: `t-${n}`, b: `bg-t-${n}` }; }
@@ -83,32 +92,23 @@
             players.forEach(p => {
                 const total = getPoints(p.tiers);
                 const card = document.createElement('div');
-                card.className = `mctiers-card p-5 ${p.rank==1?'glow-1':''}`;
+                card.className = `mctiers-card p-4 ${p.rank==1?'glow-top':''}`;
                 card.onclick = () => openProfile(p);
                 
                 card.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <span class="text-xl font-heavy text-gray-700">#${p.rank}</span>
-                            <img src="https://minotar.net/helm/${p.name}/40.png" class="rounded shadow-sm">
+                            <span class="text-lg font-heavy text-gray-700 w-6">#${p.rank}</span>
+                            <img src="${p.pfp}" class="pfp-circle">
                             <div>
-                                <h3 class="font-bold text-lg leading-tight truncate max-w-[140px]">${p.name}</h3>
-                                <div class="text-blue-500 text-[9px] font-black uppercase italic">${titles[p.rank]}</div>
+                                <h3 class="font-bold text-base leading-tight">${p.name}</h3>
+                                <div class="text-[9px] font-black text-blue-500 italic uppercase">PVP RANKED</div>
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-xl font-heavy text-white">${total}</div>
-                            <div class="text-[8px] text-gray-500 font-bold">POINTS</div>
+                            <div class="text-lg font-heavy text-white">${total}</div>
+                            <div class="text-[8px] text-gray-500 font-bold uppercase">Points</div>
                         </div>
-                    </div>
-                    <div class="flex gap-2.5 overflow-x-auto no-scrollbar">
-                        ${Object.entries(p.tiers).map(([m, t]) => {
-                            const s = getStyle(t);
-                            return `<div class="flex flex-col items-center">
-                                <div class="tier-circle ${s.c} scale-90">${SVG[m]}</div>
-                                <span class="tier-tag ${s.b}">${t}</span>
-                            </div>`;
-                        }).join('')}
                     </div>
                 `;
                 list.appendChild(card);
@@ -119,42 +119,37 @@
             const body = document.getElementById('modalContent');
             const total = getPoints(p.tiers);
             body.innerHTML = `
-                <div class="flex items-center gap-2 text-[10px] font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                    <span class="hover:text-blue-500 cursor-pointer">Leaderboard</span>
-                    <span class="text-gray-700">/</span>
-                    <span class="text-gray-300">${p.name}</span>
+                <div class="flex items-center gap-2 text-[10px] font-bold text-gray-500 mb-8 uppercase tracking-widest">
+                    <span>Ranking</span> <span class="text-gray-800">/</span> <span class="text-blue-400">${p.name}</span>
                 </div>
                 
                 <div class="text-center">
-                    <img src="${p.customImg || 'https://minotar.net/armor/body/'+p.name+'/120.png'}" class="mx-auto mb-6 drop-shadow-2xl">
-                    <h2 class="text-4xl font-heavy italic uppercase mb-1">${p.name}</h2>
-                    <div class="flex justify-center gap-2 mb-8">
-                        <div class="bg-blue-600/10 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-full border border-blue-500/20">⚔ ${titles[p.rank]}</div>
-                        <div class="bg-white/5 text-gray-400 text-[10px] font-bold px-3 py-1 rounded-full border border-white/10">🌎 North America</div>
-                    </div>
+                    <img src="${p.pfp}" class="pfp-large mb-4">
+                    <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
+                    <p class="text-gray-500 text-[10px] font-bold tracking-[0.3em] uppercase mb-8">Cracked Player</p>
 
                     <div class="text-left mb-8">
-                        <h4 class="text-gray-500 text-[9px] font-black tracking-widest mb-3 uppercase">POSITION</h4>
-                        <div class="bg-gray-800/30 p-4 rounded-2xl flex items-center justify-between border border-white/5">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded italic">#${p.rank}</div>
-                                <span class="text-xs font-bold uppercase italic text-gray-300">Overall Rank</span>
+                        <h4 class="text-gray-500 text-[9px] font-black tracking-widest mb-3 uppercase">OVERALL POSITION</h4>
+                        <div class="bg-gray-800/40 p-5 rounded-2xl flex items-center justify-between border border-white/5">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-blue-600 text-xs font-black px-3 py-1 rounded italic shadow-lg shadow-blue-600/20">#${p.rank}</div>
+                                <span class="text-xs font-bold uppercase italic text-gray-300">Global Rank</span>
                             </div>
-                            <span class="text-sm font-heavy text-blue-400">${total} <span class="text-[10px] text-gray-500 italic">pts</span></span>
+                            <span class="text-base font-heavy text-blue-400">${total} <span class="text-[10px] text-gray-600">pts</span></span>
                         </div>
                     </div>
 
                     <div class="text-left">
                         <h4 class="text-gray-500 text-[9px] font-black tracking-widest mb-3 uppercase">GAMEMODE TIERS</h4>
-                        <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1 -mx-1">
-                            ${Object.entries(p.tiers).map(([m, t]) => {
+                        <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+                            ${Object.entries(p.tiers).length > 0 ? Object.entries(p.tiers).map(([m, t]) => {
                                 const s = getStyle(t);
-                                return `<div class="bg-white/5 p-4 rounded-2xl flex flex-col items-center min-w-[75px] border border-white/5">
-                                    <div class="tier-circle !w-10 !h-10 ${s.c} mb-3">${SVG[m]}</div>
+                                return `<div class="bg-white/5 p-4 rounded-2xl flex flex-col items-center min-w-[85px] border border-white/5">
+                                    <div class="tier-circle ${s.c} mb-3">${SVG[m]}</div>
                                     <span class="text-[10px] font-heavy ${s.c}">${t}</span>
-                                    <span class="text-[8px] text-gray-600 font-bold uppercase mt-1 tracking-tighter">${m}</span>
+                                    <span class="text-[8px] text-gray-500 font-bold uppercase mt-1">${m}</span>
                                 </div>`;
-                            }).join('')}
+                            }).join('') : '<div class="text-gray-600 text-xs italic p-4 w-full text-center">No tiers ranked yet.</div>'}
                         </div>
                     </div>
                 </div>
