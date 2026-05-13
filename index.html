@@ -3,127 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS - Cracked Edition</title>
+    <title>MCTIERS Cracked - Interactive Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; }
+        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; overflow-x: hidden; }
         .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
         
-        /* Navigation Tabs */
-        .tab-bar { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; border-bottom: 1px solid #1e293b; margin-bottom: 20px; }
+        /* Navigasi Tab Aktif */
+        .tab-item.active { background: #1e293b; color: #3b82f6; border-bottom: 2px solid #3b82f6; }
         .tab-bar::-webkit-scrollbar { display: none; }
-        .tab-item { flex-shrink: 0; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #64748b; cursor: pointer; transition: 0.3s; }
-        .tab-item.active { background: #1e293b; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-bottom: 2px solid #3b82f6; }
 
-        /* Card Layout (Slant Effect) */
-        .mctiers-card { background: #151c2e; border-radius: 12px; overflow: hidden; margin-bottom: 16px; border: 1px solid #1e293b; }
-        .rank-box { 
+        /* Slant Rank Box (Persis Foto) */
+        .rank-slant { 
             position: relative;
             background: #2d3748; 
-            width: 80px; height: 60px; 
-            clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+            width: 75px; height: 65px; 
+            clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
             display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
-        .rank-box.top-1 { background: #fbbf24; color: #000; }
-        
-        /* PFP Lingkaran */
-        .pfp-main { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #0b1120; margin-left: -15px; z-index: 10; }
+        .rank-1 { background: #fbbf24; color: #000; }
+        .rank-2 { background: #cbd5e1; color: #000; }
 
-        /* Tier Scroll */
-        .tier-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
-        .tier-scroll::-webkit-scrollbar { display: none; }
-        
-        .tier-item { display: flex; flex-direction: column; align-items: center; min-w: 38px; }
-        .tier-icon { width: 34px; height: 34px; border-radius: 50%; background: #0f172a; border: 1.5px solid #334155; display: flex; align-items: center; justify-content: center; }
-        .tier-label { font-size: 9px; font-weight: 900; padding: 1px 4px; border-radius: 3px; margin-top: -8px; border: 1px solid rgba(0,0,0,0.3); }
+        /* Card Player */
+        .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; }
+        .mctiers-card:hover { border-color: #3b82f6; transform: scale(1.01); }
 
-        /* Colors */
+        /* Tier Ikon */
+        .tier-icon-box { width: 32px; height: 32px; border-radius: 50%; background: #0f172a; border: 1.5px solid #334155; display: flex; align-items: center; justify-content: center; position: relative; }
+        .tier-label-small { font-size: 8px; font-weight: 900; padding: 1px 3px; border-radius: 2px; margin-top: -8px; z-index: 5; border: 1px solid rgba(0,0,0,0.4); }
+
+        /* Tier Colors */
         .t1-c { border-color: #fbbf24; color: #fbbf24; } .bg-t1 { background-color: #fbbf24; color: #000; }
         .t2-c { border-color: #cbd5e1; color: #cbd5e1; } .bg-t2 { background-color: #cbd5e1; color: #000; }
         .t3-c { border-color: #f97316; color: #f97316; } .bg-t3 { background-color: #f97316; color: #fff; }
+
+        /* Modal Overlay */
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(8px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="p-4">
+<body class="p-4 pb-20">
 
     <div class="max-w-md mx-auto">
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-heavy text-white">MCTIERS</h1>
-            <div class="text-gray-500"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-heavy italic text-white tracking-tighter">MCTIERS</h1>
+            <div class="flex gap-4 items-center">
+                <button class="text-gray-400"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35"/></svg></button>
+                <button class="text-gray-400"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+            </div>
         </div>
 
-        <!-- Tab Navigation (Persis Foto) -->
-        <div class="tab-bar">
-            <div class="tab-item active">🏆 Overall</div>
-            <div class="tab-item">⚔️ Sword</div>
-            <div class="tab-item">🛡️ SMP</div>
-            <div class="tab-item">🧪 Nethpot</div>
-            <div class="tab-item">💎 Diapot</div>
-            <div class="tab-item">🔮 Crystal</div>
-            <div class="tab-item">🔨 Mace</div>
+        <!-- Search Bar (Persis Foto) -->
+        <div class="relative mb-6">
+            <input type="text" id="searchInput" placeholder="Search player..." class="w-full bg-[#1e293b]/50 border border-gray-800 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-blue-500">
         </div>
 
-        <div id="playerList"></div>
+        <!-- Scrollable Tabs Navigation -->
+        <div class="tab-bar flex overflow-x-auto gap-3 mb-6 no-scrollbar">
+            <div class="tab-item active flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer transition-all" onclick="filterBy('overall', this)">🏆 Overall</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('sword', this)">⚔️ Sword</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('smp', this)">🛡️ SMP</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('nethpot', this)">🧪 Nethpot</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('crystal', this)">🔮 Crystal</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('mace', this)">🔨 Mace</div>
+        </div>
+
+        <!-- Player List -->
+        <div id="playerContainer"></div>
+    </div>
+
+    <!-- Popup Profile -->
+    <div id="modal" onclick="closeProfile()">
+        <div class="bg-[#0f172a] border border-gray-800 w-full max-w-sm rounded-[32px] p-8 relative" onclick="event.stopPropagation()">
+            <div id="profileBody"></div>
+        </div>
     </div>
 
     <script>
-        const SVG = {
-            sword: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18.5 2L14.5 6L15.5 7L18.5 4L20 5.5L17 8.5L18 9.5L22 5.5L18.5 2Z" fill="#38BDF8"/><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
-            mace: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/><path d="M12 13V21" stroke="#64748B" stroke-width="3"/></svg>`,
-            crystal: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/><path d="M4 16L12 22L20 16L12 10L4 16Z" fill="#A855F7"/></svg>`,
-            uhc: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#FBBF24"/><path d="M12 5V2" stroke="#4ADE80" stroke-width="2"/></svg>`,
+        const SVGS = {
+            sword: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
             smp: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
-            diapot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#0EA5E9"/></svg>`,
-            nethpot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#475569"/></svg>`
+            nethpot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#94A3B8"/></svg>`,
+            crystal: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/></svg>`,
+            mace: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/></svg>`
         };
 
         const players = [
-            { name: "ItzRealMe", rank: 1, region: "SEA", pfp: "https://i.pinimg.com/736x/8a/95/9b/8a959b2072134547962451f2f840915d.jpg", tiers: { sword: "HT3", nethpot: "HT1", smp: "HT1", crystal: "HT1", uhc: "HT1", mace: "LT2", diapot: "LT2" } },
-            { name: "coldified", rank: 2, region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { mace: "LT1", nethpot: "LT1", crystal: "LT3", uhc: "HT1", smp: "HT1", sword: "LT1" } },
-            { name: "Shadow", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=1", tiers: { sword: "HT2", crystal: "HT1" } },
-            { name: "Vortex", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { smp: "LT1", mace: "HT3" } },
-            { name: "Zenix", rank: 5, region: "EU", pfp: "https://i.pravatar.cc/150?u=3", tiers: { diapot: "LT1" } }
+            { name: "ItzRealMe", rank: 1, region: "SEA", pfp: "https://i.pinimg.com/736x/8a/95/9b/8a959b2072134547962451f2f840915d.jpg", tiers: { sword: "HT1", nethpot: "HT1", smp: "LT1", crystal: "HT2", mace: "HT1" } },
+            { name: "coldified", rank: 2, region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } },
+            { name: "Vortex_PvP", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=a", tiers: { nethpot: "HT3", crystal: "LT1" } },
+            { name: "Shadow", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=b", tiers: { sword: "HT3" } },
+            { name: "Cracked_God", rank: 5, region: "EU", pfp: "https://i.pravatar.cc/150?u=c", tiers: { mace: "HT2" } }
         ];
 
-        function getTierStyle(t) {
+        let currentFilter = 'overall';
+
+        function getStyle(t) {
             const n = t.replace(/\D/g, '');
             return { c: `t${n}-c`, bg: `bg-t${n}` };
         }
 
-        function render() {
-            const container = document.getElementById('playerList');
-            players.forEach(p => {
+        function renderList(filteredPlayers) {
+            const container = document.getElementById('playerContainer');
+            container.innerHTML = '';
+            
+            filteredPlayers.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'mctiers-card';
+                card.onclick = () => openProfile(p);
                 
-                card.innerHTML = `
-                    <div class="flex items-center p-3 pb-1">
-                        <div class="rank-box ${p.rank==1?'top-1':''}">
-                            <span class="text-xl font-heavy font-black italic">${p.rank}.</span>
+                const tierHTML = Object.entries(p.tiers).map(([m, t]) => {
+                    const s = getStyle(t);
+                    return `
+                        <div class="flex flex-col items-center flex-shrink-0">
+                            <div class="tier-icon-box ${s.c}">${SVGS[m] || '⚔️'}</div>
+                            <div class="tier-label-small ${s.bg}">${t}</div>
                         </div>
-                        <img src="${p.pfp}" class="pfp-main">
-                        <div class="ml-4 flex-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-bold tracking-tight">${p.name}</h3>
-                                <span class="bg-red-900/30 text-red-500 text-[10px] font-black px-2 py-0.5 rounded">${p.region}</span>
+                    `;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="rank-slant rank-${p.rank}">
+                            <span class="text-xl font-heavy italic font-black">${p.rank}.</span>
+                        </div>
+                        <div class="flex-shrink-0 -ml-4 z-10">
+                            <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover">
+                        </div>
+                        <div class="ml-4 flex-1 pr-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-lg leading-tight truncate w-32">${p.name}</h3>
+                                <span class="bg-red-900/20 text-red-500 text-[10px] font-black px-1.5 py-0.5 rounded">${p.region}</span>
                             </div>
-                            <div class="flex items-center gap-1 text-[10px] text-gray-500 font-bold italic">
+                            <div class="text-[9px] text-gray-500 font-bold italic flex items-center gap-1">
                                 <span class="text-yellow-500">◆</span> Combat Ace...
                             </div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4">
-                        <div class="text-[10px] font-black text-gray-600 uppercase tracking-widest mb-2">TIERS</div>
-                        <div class="tier-scroll">
-                            ${Object.entries(p.tiers).map(([m, t]) => {
-                                const s = getTierStyle(t);
-                                return `
-                                    <div class="tier-item">
-                                        <div class="tier-icon ${s.c}">${SVG[m]}</div>
-                                        <div class="tier-label ${s.bg}">${t}</div>
-                                    </div>
-                                `;
-                            }).join('')}
+                    <div class="px-5 py-3 border-t border-gray-800/50 mt-1">
+                        <div class="text-[9px] font-black text-gray-600 mb-2 tracking-widest uppercase">TIERS</div>
+                        <div class="flex gap-2 overflow-x-auto no-scrollbar">
+                            ${tierHTML}
                         </div>
                     </div>
                 `;
@@ -131,7 +154,71 @@
             });
         }
 
-        render();
+        function filterBy(mode, el) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentFilter = mode;
+            
+            if (mode === 'overall') {
+                renderList(players);
+            } else {
+                const filtered = players.filter(p => p.tiers[mode]).sort((a, b) => {
+                    return a.tiers[mode].localeCompare(b.tiers[mode]); 
+                });
+                renderList(filtered);
+            }
+        }
+
+        function openProfile(p) {
+            const body = document.getElementById('profileBody');
+            body.innerHTML = `
+                <div class="text-center">
+                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4">
+                    <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
+                    <div class="flex justify-center gap-2 mb-6">
+                        <span class="bg-blue-600/20 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-full border border-blue-500/20">⚔ COMBAT ACE</span>
+                        <span class="bg-gray-800 text-[10px] font-bold px-3 py-1 rounded-full text-gray-400">${p.region}</span>
+                    </div>
+                    
+                    <div class="text-left mb-6">
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">RANKING POSITION</p>
+                        <div class="bg-gray-800/40 p-4 rounded-xl flex justify-between items-center">
+                            <span class="text-xs font-bold text-gray-300 italic">Global Rank</span>
+                            <span class="text-lg font-heavy text-blue-400">#${p.rank}</span>
+                        </div>
+                    </div>
+
+                    <div class="text-left">
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">SKILLS BREAKDOWN</p>
+                        <div class="flex gap-3 overflow-x-auto no-scrollbar">
+                            ${Object.entries(p.tiers).map(([m, t]) => {
+                                const s = getStyle(t);
+                                return `
+                                    <div class="bg-white/5 p-3 rounded-2xl min-w-[70px] flex flex-col items-center">
+                                        <div class="tier-icon-box ${s.c} mb-2">${SVGS[m]}</div>
+                                        <span class="text-[10px] font-heavy ${s.c}">${t}</span>
+                                        <span class="text-[8px] text-gray-600 uppercase font-black">${m}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeProfile() { document.getElementById('modal').style.display = 'none'; }
+
+        // Fitur Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = players.filter(p => p.name.toLowerCase().includes(val));
+            renderList(filtered);
+        });
+
+        // Start
+        renderList(players);
     </script>
 </body>
 </html>
