@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS Cracked - Pro Fixed</title>
+    <title>MCTIERS Cracked - Top 3 Medals</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; overflow-x: hidden; }
         .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
         
-        /* Navigasi Tab */
         .tab-item.active { background: #1e293b; color: #3b82f6; border-bottom: 2px solid #3b82f6; }
         .tab-bar::-webkit-scrollbar { display: none; }
 
-        /* Slant Rank Box (Persis Foto) */
+        /* Slant Rank Box dengan Warna Top 3 */
         .rank-slant { 
             position: relative;
-            background: #2d3748; 
+            background: #2d3748; /* Default Rank */
             width: 75px; height: 65px; 
             clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
+            transition: 0.3s;
         }
-        .rank-1 { background: #fbbf24; color: #000; }
-        .rank-2 { background: #cbd5e1; color: #000; }
+        .rank-1 { background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
+        .rank-2 { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: #000; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; } /* Bronze */
 
-        /* Card Player */
         .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; }
         .mctiers-card:hover { border-color: #3b82f6; transform: scale(1.01); }
 
-        /* Tier Ikon */
         .tier-icon-box { width: 32px; height: 32px; border-radius: 50%; background: #0f172a; border: 1.5px solid #334155; display: flex; align-items: center; justify-content: center; position: relative; }
         .tier-label-small { font-size: 8px; font-weight: 900; padding: 1px 3px; border-radius: 2px; margin-top: -8px; z-index: 5; border: 1px solid rgba(0,0,0,0.4); }
 
@@ -39,15 +38,10 @@
         .t2-c { border-color: #cbd5e1; color: #cbd5e1; } .bg-t2 { background-color: #cbd5e1; color: #000; }
         .t3-c { border-color: #f97316; color: #f97316; } .bg-t3 { background-color: #f97316; color: #fff; }
 
-        /* Modal / Popup */
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(10px); }
-        .modal-box { background: #0f172a; border: 1px solid #1e293b; w-full; max-width: 400px; border-radius: 32px; p-8; position: relative; animation: slideUp 0.3s ease-out; }
+        .modal-box { background: #0f172a; border: 1px solid #1e293b; max-width: 400px; border-radius: 32px; position: relative; animation: slideUp 0.3s ease-out; }
         
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -55,10 +49,9 @@
 
     <div class="max-w-md mx-auto">
         <div class="flex items-center justify-between mb-4">
-            <h1 class="text-2xl font-heavy italic text-white tracking-tighter">MCTIERS</h1>
-            <div class="flex gap-4 items-center">
-                <button class="text-gray-400"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35"/></svg></button>
-                <button class="text-gray-400"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+            <h1 id="mainTitle" class="text-2xl font-heavy italic text-white tracking-tighter">MCTIERS</h1>
+            <div class="flex gap-4 items-center text-gray-400">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
             </div>
         </div>
 
@@ -78,24 +71,20 @@
         <div id="playerContainer"></div>
     </div>
 
-    <!-- Modal Profil dengan Tombol Kembali -->
+    <!-- Modal Profil -->
     <div id="modal" onclick="closeProfile()">
         <div class="modal-box w-full bg-[#0f172a] p-8 rounded-[32px] border border-gray-800 relative" onclick="event.stopPropagation()">
-            <!-- Tombol X Close -->
-            <button onclick="closeProfile()" class="absolute top-6 right-8 text-gray-500 hover:text-white text-2xl font-light transition-colors">
+            <button onclick="closeProfile()" class="absolute top-6 right-8 text-gray-500 hover:text-white transition-colors">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
             </button>
-            
             <div id="profileBody"></div>
-
-            <!-- Tombol Kembali di Bawah -->
-            <button onclick="closeProfile()" class="w-full mt-8 py-3 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-gray-300">
-                ← Back to Rankings
-            </button>
+            <button onclick="closeProfile()" class="w-full mt-8 py-3 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-bold uppercase tracking-widest text-gray-300 transition-all">← Back to Rankings</button>
         </div>
     </div>
 
     <script>
+        const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
+
         const SVGS = {
             sword: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
             smp: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
@@ -108,9 +97,12 @@
             { name: "ItzRealMe", rank: 1, region: "SEA", pfp: "https://i.pinimg.com/736x/8a/95/9b/8a959b2072134547962451f2f840915d.jpg", tiers: { sword: "HT1", nethpot: "HT1", smp: "LT1", crystal: "HT2", mace: "HT1" } },
             { name: "coldified", rank: 2, region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } },
             { name: "Shadow", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=1", tiers: { nethpot: "HT3", crystal: "LT1" } },
-            { name: "Vortex", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { sword: "HT3" } },
-            { name: "Zenith", rank: 5, region: "EU", pfp: "https://i.pravatar.cc/150?u=3", tiers: { mace: "HT2" } }
+            { name: "Vortex", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { sword: "HT3" } }
         ];
+
+        function getPoints(tiers) {
+            return Object.values(tiers).reduce((total, tier) => total + (pointMap[tier] || 0), 0);
+        }
 
         function getStyle(t) {
             const n = t.replace(/\D/g, '');
@@ -121,19 +113,23 @@
             const container = document.getElementById('playerContainer');
             container.innerHTML = '';
             list.forEach(p => {
+                const totalPts = getPoints(p.tiers);
                 const card = document.createElement('div');
                 card.className = 'mctiers-card';
                 card.onclick = () => openProfile(p);
                 card.innerHTML = `
                     <div class="flex items-center">
-                        <div class="rank-slant rank-${p.rank <= 2 ? p.rank : 'other'}">
+                        <div class="rank-slant ${p.rank <= 3 ? 'rank-'+p.rank : ''}">
                             <span class="text-xl font-heavy italic font-black">${p.rank}.</span>
                         </div>
                         <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10">
                         <div class="ml-4 flex-1 pr-4">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-bold text-lg leading-tight truncate w-32">${p.name}</h3>
-                                <span class="bg-red-900/20 text-red-500 text-[10px] font-black px-1.5 py-0.5 rounded">${p.region}</span>
+                            <div class="flex justify-between items-center mb-0.5">
+                                <h3 class="font-bold text-lg leading-tight truncate w-24">${p.name}</h3>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">${totalPts} PTS</span>
+                                    <span class="bg-red-900/20 text-red-500 text-[10px] font-black px-1.5 py-0.5 rounded">${p.region}</span>
+                                </div>
                             </div>
                             <div class="text-[9px] text-gray-500 font-bold italic flex items-center gap-1">
                                 <span class="text-yellow-500">◆</span> Combat Ace...
@@ -154,26 +150,23 @@
             });
         }
 
-        function filterBy(mode, el) {
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            const filtered = mode === 'overall' ? players : players.filter(p => p.tiers[mode]);
-            renderList(filtered);
-        }
-
         function openProfile(p) {
             const body = document.getElementById('profileBody');
+            const totalPts = getPoints(p.tiers);
             body.innerHTML = `
                 <div class="text-center">
                     <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl">
                     <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
-                    <p class="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-6">${p.region} Player</p>
+                    <div class="flex justify-center gap-2 mb-6">
+                        <span class="bg-blue-600/20 text-blue-400 text-[9px] font-bold px-3 py-1 rounded-full border border-blue-500/20">${totalPts} TOTAL POINTS</span>
+                        <span class="bg-gray-800 text-[9px] font-bold px-3 py-1 rounded-full text-gray-400">${p.region}</span>
+                    </div>
                     
                     <div class="text-left mb-6">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">OVERALL POSITION</p>
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">RANK POSITION</p>
                         <div class="bg-gray-800/40 p-4 rounded-xl flex justify-between items-center border border-white/5">
                             <span class="text-xs font-bold text-gray-300 italic">Leaderboard Rank</span>
-                            <span class="text-lg font-heavy text-blue-400">#${p.rank}</span>
+                            <span class="text-lg font-heavy ${p.rank==1?'text-yellow-400':p.rank==2?'text-slate-300':p.rank==3?'text-orange-400':'text-blue-400'}">#${p.rank}</span>
                         </div>
                     </div>
 
@@ -195,11 +188,16 @@
             document.getElementById('modal').style.display = 'flex';
         }
 
-        function closeProfile() { document.getElementById('modal').style.display = 'none'; }
+        function filterBy(mode, el) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            const filtered = mode === 'overall' ? players : players.filter(p => p.tiers[mode]);
+            renderList(filtered);
+        }
 
+        function closeProfile() { document.getElementById('modal').style.display = 'none'; }
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            renderList(players.filter(p => p.name.toLowerCase().includes(val)));
+            renderList(players.filter(p => p.name.toLowerCase().includes(e.target.value.toLowerCase())));
         });
 
         renderList(players);
