@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS Cracked - Top 7 Complete</title>
+    <title>MCTIERS Cracked - Top 7 (Points Restored)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@
         .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
         .rank-other { background: #1e293b; color: #64748b; }
 
-        .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; }
+        .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; overflow: hidden;}
         .mctiers-card:hover { border-color: #3b82f6; transform: scale(1.01); }
 
         /* Ikon & Label Persis Screenshot */
@@ -33,6 +33,7 @@
             margin-bottom: -11px;
         }
         .tier-circle img { width: 24px; height: 24px; object-fit: contain; }
+        
         .tier-box { 
             width: 40px; height: 21px; border-radius: 4px; 
             display: flex; align-items: center; justify-content: center;
@@ -60,11 +61,9 @@
     <div class="max-w-md mx-auto">
         <h1 class="text-2xl font-heavy italic mb-6 tracking-tighter">MCTIERS</h1>
 
-        <!-- Daftar Pemain -->
         <div id="playerContainer"></div>
     </div>
 
-    <!-- Modal Profil -->
     <div id="modal" onclick="closeProfile()">
         <div class="w-full max-w-sm bg-[#0f172a] p-8 rounded-[32px] border border-gray-800 relative" onclick="event.stopPropagation()">
             <div id="profileBody"></div>
@@ -73,15 +72,18 @@
     </div>
 
     <script>
+        const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10 };
+        
+        // Ikon yang disederhanakan namanya (Sangat penting!)
         const iconFiles = {
-            sword: "sword [CDB80F2]_2.png",
-            uhc: "uhc [2EE8F6D]_2.png",
-            crystal: "Crystal [328CA19]_2.png",
-            diapot: "diapot [29E2609]_2.png",
-            mace: "mace [97DCD4D]_2.png",
-            nethpot: "nethpot [4469556]_2.png",
-            smp: "smp [B1B3CCC]_2.png",
-            axe: "axe [67BD866]_2.png"
+            sword: "sword.png",
+            uhc: "uhc.png",
+            crystal: "crystal.png",
+            diapot: "diapot.png",
+            mace: "mace.png",
+            nethpot: "nethpot.png",
+            smp: "smp.png",
+            axe: "axe.png"
         };
 
         const players = [
@@ -94,21 +96,29 @@
             { name: "Luv", rank: 7, title: "Rising Star", region: "SEA", pfp: "https://i.pravatar.cc/150?u=5", tiers: { sword: "LT1", nethpot: "HT4" } }
         ];
 
+        function getPoints(tiers) {
+            return Object.values(tiers).reduce((total, tier) => total + (pointMap[tier] || 0), 0);
+        }
+
         function renderList() {
             const container = document.getElementById('playerContainer');
             container.innerHTML = players.map(p => {
                 const rankClass = p.rank <= 3 ? `rank-${p.rank}` : 'rank-other';
+                const totalPts = getPoints(p.tiers);
                 return `
                 <div class="mctiers-card" onclick="openProfile(${players.indexOf(p)})">
                     <div class="flex items-center">
                         <div class="rank-slant ${rankClass}">
                             <span class="text-xl font-heavy font-black">${p.rank}.</span>
                         </div>
-                        <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10">
-                        <div class="ml-4 flex-1">
-                            <div class="flex justify-between items-center pr-4">
-                                <h3 class="font-bold text-lg leading-tight">${p.name}</h3>
-                                <span class="bg-red-900/20 text-red-500 text-[9px] font-black px-2 py-0.5 rounded">${p.region}</span>
+                        <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
+                        <div class="ml-4 flex-1 pr-3">
+                            <div class="flex justify-between items-center mb-0.5">
+                                <h3 class="font-bold text-lg leading-tight truncate w-32">${p.name}</h3>
+                                <div class="flex gap-1.5 items-center flex-shrink-0">
+                                    <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">${totalPts} PTS</span>
+                                    <span class="bg-red-900/20 text-red-500 text-[9px] font-black px-2 py-0.5 rounded">${p.region}</span>
+                                </div>
                             </div>
                             <p class="text-[10px] text-yellow-500 font-bold italic">◆ ${p.title}</p>
                         </div>
@@ -116,10 +126,10 @@
                     <div class="px-5 py-4 border-t border-gray-800/50 mt-1 flex gap-3 overflow-x-auto no-scrollbar">
                         ${Object.entries(p.tiers).map(([mode, tier]) => {
                             const level = tier.replace(/\D/g, '');
-                            const imgPath = encodeURIComponent(iconFiles[mode]);
+                            const imgPath = iconFiles[mode];
                             return `
                             <div class="tier-wrapper t${level}-theme">
-                                <div class="tier-circle"><img src="${imgPath}" onerror="this.style.opacity='0.2'"></div>
+                                <div class="tier-circle"><img src="${imgPath}" onerror="this.src='https://i.imgur.com/S5kYg8E.png'"></div>
                                 <div class="tier-box">${tier}</div>
                             </div>`;
                         }).join('')}
@@ -131,9 +141,10 @@
         function openProfile(index) {
             const p = players[index];
             const body = document.getElementById('profileBody');
+            const totalPts = getPoints(p.tiers);
             body.innerHTML = `
                 <div class="text-center">
-                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl">
+                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
                     <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
                     <p class="text-yellow-500 font-bold italic mb-6 text-sm">◆ ${p.title} ◆</p>
                     
@@ -146,15 +157,16 @@
                     </div>
 
                     <div class="text-left">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">TIER BREAKDOWN</p>
-                        <div class="grid grid-cols-4 gap-3">
+                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">TIER BREAKDOWN (TOTAL: ${totalPts} PTS)</p>
+                        <div class="grid grid-cols-4 gap-3 overflow-x-auto no-scrollbar">
                             ${Object.entries(p.tiers).map(([mode, tier]) => {
                                 const level = tier.replace(/\D/g, '');
-                                const imgPath = encodeURIComponent(iconFiles[mode]);
+                                const imgPath = iconFiles[mode];
                                 return `
-                                <div class="bg-white/5 p-2 rounded-xl flex flex-col items-center border border-white/5 t${level}-theme">
-                                    <div class="tier-circle scale-75 mb-[-5px]"><img src="${imgPath}"></div>
+                                <div class="bg-white/5 p-2 rounded-xl flex flex-col items-center border border-white/5 t${level}-theme min-w-[70px]">
+                                    <div class="tier-circle scale-75 mb-[-5px]"><img src="${imgPath}" onerror="this.src='https://i.imgur.com/S5kYg8E.png'"></div>
                                     <span class="text-[9px] font-heavy text-white">${tier}</span>
+                                    <span class="text-[7px] text-gray-500 font-black uppercase tracking-widest">${mode}</span>
                                 </div>`;
                             }).join('')}
                         </div>
