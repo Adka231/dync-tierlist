@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS Cracked - Top 3 Medals</title>
+    <title>MCTIERS Cracked - Updated</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -13,10 +13,9 @@
         .tab-item.active { background: #1e293b; color: #3b82f6; border-bottom: 2px solid #3b82f6; }
         .tab-bar::-webkit-scrollbar { display: none; }
 
-        /* Slant Rank Box dengan Warna Top 3 */
         .rank-slant { 
             position: relative;
-            background: #2d3748; /* Default Rank */
+            background: #2d3748; 
             width: 75px; height: 65px; 
             clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
             display: flex; align-items: center; justify-content: center;
@@ -25,7 +24,7 @@
         }
         .rank-1 { background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
         .rank-2 { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: #000; }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; } /* Bronze */
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
 
         .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; }
         .mctiers-card:hover { border-color: #3b82f6; transform: scale(1.01); }
@@ -37,6 +36,7 @@
         .t1-c { border-color: #fbbf24; color: #fbbf24; } .bg-t1 { background-color: #fbbf24; color: #000; }
         .t2-c { border-color: #cbd5e1; color: #cbd5e1; } .bg-t2 { background-color: #cbd5e1; color: #000; }
         .t3-c { border-color: #f97316; color: #f97316; } .bg-t3 { background-color: #f97316; color: #fff; }
+        .t4-c { border-color: #94a3b8; color: #94a3b8; } .bg-t4 { background-color: #94a3b8; color: #fff; }
 
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(10px); }
         .modal-box { background: #0f172a; border: 1px solid #1e293b; max-width: 400px; border-radius: 32px; position: relative; animation: slideUp 0.3s ease-out; }
@@ -59,13 +59,17 @@
             <input type="text" id="searchInput" placeholder="Search player..." class="w-full bg-[#1e293b]/50 border border-gray-800 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
+        <!-- Tab Bar Updated -->
         <div class="tab-bar flex overflow-x-auto gap-3 mb-6 no-scrollbar">
             <div class="tab-item active flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('overall', this)">🏆 Overall</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('sword', this)">⚔️ Sword</div>
-            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('smp', this)">🛡️ SMP</div>
-            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('nethpot', this)">🧪 Nethpot</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('crystal', this)">🔮 Crystal</div>
             <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('mace', this)">🔨 Mace</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('smp', this)">🛡️ SMP</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('diapot', this)">🥤 Diapot</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('nethpot', this)">🧪 Nethpot</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('axe', this)">🪓 Axe</div>
+            <div class="tab-item flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold cursor-pointer" onclick="filterBy('uhc', this)">🍎 UHC</div>
         </div>
 
         <div id="playerContainer"></div>
@@ -85,19 +89,47 @@
     <script>
         const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10, 'HT5': 5, 'LT5': 2 };
 
+        // Icons for all modes
         const SVGS = {
             sword: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 7L3 18L6 21L17 10L14 7Z" fill="#0EA5E9"/></svg>`,
-            smp: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
-            nethpot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#94A3B8"/></svg>`,
             crystal: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 8L12 14L20 8L12 2Z" fill="#C084FC"/></svg>`,
-            mace: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/></svg>`
+            mace: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="10" rx="2" fill="#94A3B8"/></svg>`,
+            smp: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="#10B981"/></svg>`,
+            diapot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3H18V6L15 9V19C15 20.1 14.1 21 13 21H11C9.9 21 9 20.1 9 19V9L6 6V3Z" fill="#F43F5E"/></svg>`,
+            nethpot: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 10C5 6 8 3 12 3C16 3 19 6 19 10V18C19 20 17 21 15 21H9C7 21 5 20 5 18V10Z" fill="#8B5CF6"/></svg>`,
+            axe: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 7V12L12 22L20 12V7L12 2ZM11 10H7L12 4L17 10H13V16H11V10Z" fill="#F97316"/></svg>`,
+            uhc: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C10.3 2 9 3.3 9 5C9 5.3 9.1 5.7 9.2 6H8C5.8 6 4 7.8 4 10C4 12.2 5.8 14 8 14H8.2C9.1 14.3 10.3 14.5 11.5 14.5C12.7 14.5 13.9 14.3 14.8 14H15C17.2 14 19 12.2 19 10C19 7.8 17.2 6 15 6H13.8C13.9 5.7 14 5.3 14 5C14 3.3 12.7 2 11 2H12Z" fill="#FACC15"/></svg>`
         };
 
         const players = [
-            { name: "X1an_", rank: 1, region: "AS", pfp: "data:image/png;base64,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", tiers: { sword: "HT3", nethpot: "HT4", smp: "HT3", crystal: "LT3", mace: "HT4", uhc: "HT4", axe: "LT3", diapot: "LT3"} },
-            { name: "coldified", rank: 2, region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } },
-            { name: "Shadow", rank: 3, region: "NA", pfp: "https://i.pravatar.cc/150?u=1", tiers: { nethpot: "HT3", crystal: "LT1" } },
-            { name: "Vortex", rank: 4, region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { sword: "HT3" } }
+            { 
+                name: "X1an_", 
+                rank: 1, 
+                region: "AS", 
+                pfp: "https://i.postimg.cc/7G76yCM9/custom-ava-6.png", 
+                tiers: { sword: "HT3", crystal: "LT3", mace: "HT4", smp: "HT3", diapot: "HT4", nethpot: "HT4", axe: "LT3", uhc: "LT3" } 
+            },
+            { 
+                name: "coldified", 
+                rank: 2, 
+                region: "EU", 
+                pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", 
+                tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } 
+            },
+            { 
+                name: "Shadow", 
+                rank: 3, 
+                region: "NA", 
+                pfp: "https://i.pravatar.cc/150?u=1", 
+                tiers: { nethpot: "HT3", crystal: "LT1", diapot: "LT2" } 
+            },
+            { 
+                name: "Vortex", 
+                rank: 4, 
+                region: "SEA", 
+                pfp: "https://i.pravatar.cc/150?u=2", 
+                tiers: { sword: "HT3", axe: "HT4" } 
+            }
         ];
 
         function getPoints(tiers) {
@@ -122,7 +154,7 @@
                         <div class="rank-slant ${p.rank <= 3 ? 'rank-'+p.rank : ''}">
                             <span class="text-xl font-heavy italic font-black">${p.rank}.</span>
                         </div>
-                        <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10">
+                        <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
                         <div class="ml-4 flex-1 pr-4">
                             <div class="flex justify-between items-center mb-0.5">
                                 <h3 class="font-bold text-lg leading-tight truncate w-24">${p.name}</h3>
@@ -155,7 +187,7 @@
             const totalPts = getPoints(p.tiers);
             body.innerHTML = `
                 <div class="text-center">
-                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl">
+                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
                     <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
                     <div class="flex justify-center gap-2 mb-6">
                         <span class="bg-blue-600/20 text-blue-400 text-[9px] font-bold px-3 py-1 rounded-full border border-blue-500/20">${totalPts} TOTAL POINTS</span>
@@ -176,7 +208,7 @@
                             ${Object.entries(p.tiers).map(([m, t]) => {
                                 const s = getStyle(t);
                                 return `<div class="bg-white/5 p-3 rounded-2xl min-w-[75px] flex flex-col items-center border border-white/5">
-                                    <div class="tier-icon-box ${s.c} mb-2">${SVGS[m]}</div>
+                                    <div class="tier-icon-box ${s.c} mb-2">${SVGS[m] || '⚔️'}</div>
                                     <span class="text-[10px] font-heavy ${s.c}">${t}</span>
                                     <span class="text-[8px] text-gray-600 uppercase font-black">${m}</span>
                                 </div>`;
