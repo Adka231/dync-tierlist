@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS - Auto-Points & SVG Icons</title>
+    <title>MCTIERS - Professional Leaderboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -62,6 +62,7 @@
 <body class="p-4">
 
     <div class="max-w-md mx-auto">
+        <!-- Klik 5x di judul untuk munculin Edit Mode -->
         <h1 id="mainTitle" class="text-2xl font-heavy italic mb-4 cursor-pointer select-none tracking-tighter">MCTIERS</h1>
 
         <!-- Menu Tab -->
@@ -90,7 +91,7 @@
     </div>
 
     <!-- Admin Button -->
-    <button id="editBtn" onclick="openAdmin()" class="hidden fixed bottom-6 right-6 bg-blue-600 text-white px-5 py-3 rounded-full shadow-xl font-bold text-xs uppercase z-50">Admin Mode</button>
+    <button id="editBtn" onclick="openAdmin()" class="hidden fixed bottom-6 right-6 bg-blue-600 text-white px-5 py-3 rounded-full shadow-xl font-bold text-xs uppercase z-50">Edit Player</button>
 
     <!-- Admin Panel -->
     <div id="adminPanel">
@@ -100,31 +101,33 @@
                 <button onclick="document.getElementById('adminPanel').style.display='none'" class="text-gray-500">✕</button>
             </div>
             <textarea id="jsonInput" class="w-full h-[450px] bg-gray-900 text-green-400 font-mono text-[10px] p-4 rounded-xl border border-gray-700 outline-none mb-4 no-scrollbar"></textarea>
-            <button onclick="saveChanges()" class="w-full bg-blue-600 py-4 rounded-xl font-bold uppercase mb-2">Simpan Perubahan</button>
-            <p class="text-[10px] text-gray-400 text-center uppercase">Poin akan dihitung otomatis oleh sistem.</p>
+            <button onclick="saveChanges()" class="w-full bg-blue-600 py-4 rounded-xl font-bold uppercase mb-2">Simpan & Update</button>
+            <p class="text-[10px] text-gray-400 text-center uppercase">Poin otomatis dihitung oleh sistem.</p>
         </div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "admin123";
+        const ADMIN_PASSWORD = "abcsampaiz123"; // PASSWORD BARU
         let clickCount = 0;
         let currentFilter = 'overall';
 
-        // Aturan Poin Kamu
+        // Aturan Poin
         const POINT_VALUES = {
             'HT1': 65, 'LT1': 50, 'HT2': 40, 'LT2': 35,
             'HT3': 20, 'LT3': 15, 'HT4': 10, 'LT4': 5,
             'HT5': 3, 'LT5': 1
         };
 
-        // Ikon SVG Manual (Tanpa perlu internet untuk gambar)
+        // Ikon SVG Update
         const svgs = {
             sword: `<svg viewBox="0 0 24 24"><path d="M19.5,2L17,4.5L13,8.5L11.5,7L9.5,9L11,10.5L3,18.5L5.5,21L13.5,13L15,14.5L17,12.5L15.5,11L19.5,7L22,4.5L19.5,2Z"/></svg>`,
             crystal: `<svg viewBox="0 0 24 24"><path d="M12,2L4.5,12L12,22L19.5,12L12,2Z"/></svg>`,
             mace: `<svg viewBox="0 0 24 24"><path d="M9,2H15V8H9V2M11,10H13V22H11V10Z"/></svg>`,
             smp: `<svg viewBox="0 0 24 24"><path d="M4,4H20V20H4V4M6,6V18H18V6H6M8,8H16V16H8V8Z"/></svg>`,
-            diapot: `<svg viewBox="0 0 24 24"><path d="M10,2V5H7V7H17V5H14V2H10M7,8V21A1,1 0 0,0 8,22H16A1,1 0 0,0 17,21V8H7Z" fill="#3b82f6"/></svg>`,
-            nethpot: `<svg viewBox="0 0 24 24"><path d="M10,2V5H7V7H17V5H14V2H10M7,8V21A1,1 0 0,0 8,22H16A1,1 0 0,0 17,21V8H7Z" fill="#ef4444"/></svg>`,
+            // Diapot: Potion of Health
+            diapot: `<svg viewBox="0 0 24 24"><path d="M10,2L10,5H7V7H17V5H14V2H10M7,8V21A1,1 0 0,0 8,22H16A1,1 0 0,0 17,21V8H7M12,11L13.1,13.2L15.5,13.5L13.8,15.2L14.2,17.6L12,16.5L9.8,17.6L10.2,15.2L8.5,13.5L10.9,13.2L12,11Z"/></svg>`,
+            // Nethpot: Netherite Helmet
+            nethpot: `<svg viewBox="0 0 24 24"><path d="M4,2H20V14H22V19H18V17H6V19H2V14H4V2M7,5V12H10V10H14V12H17V5H7Z"/></svg>`,
             axe: `<svg viewBox="0 0 24 24"><path d="M14,2H18V6H14V2M10,2H13V10H10V2M10,12H13V22H10V12Z"/></svg>`,
             uhc: `<svg viewBox="0 0 24 24"><path d="M12,2C10.89,2 10,2.89 10,4C10,5.11 10.89,6 12,6C13.11,6 14,5.11 14,4C14,2.89 13.11,2 12,2M12,8C7,8 3,11 3,11V18C3,19.11 3.9,20 5,20H19C20.11,20 21,19.11 21,18V11C21,11 17,8 12,8Z"/></svg>`
         };
@@ -139,9 +142,8 @@
             { id: 7, name: "Luv", title: "Rising Star", region: "SEA", pfp: "https://i.pravatar.cc/150?u=5", tiers: { sword: "LT1", nethpot: "HT4", axe: "LT2" } }
         ];
 
-        let players = JSON.parse(localStorage.getItem('mctiers_v6_auto')) || defaultPlayers;
+        let players = JSON.parse(localStorage.getItem('mctiers_v7_final')) || defaultPlayers;
 
-        // FUNGSI HITUNG POIN OTOMATIS
         function calculatePoints(tierList) {
             return Object.values(tierList).reduce((acc, tier) => acc + (POINT_VALUES[tier] || 0), 0);
         }
@@ -160,7 +162,6 @@
             const container = document.getElementById('playerContainer');
             container.innerHTML = '';
             
-            // Hitung poin dan sortir
             players.forEach(p => p.computedPts = calculatePoints(p.tiers));
             let sorted = [...players].sort((a, b) => b.computedPts - a.computedPts);
 
@@ -173,7 +174,7 @@
                     tiersHtml = Object.entries(p.tiers).map(([mode, tier]) => getTierIconHtml(mode, tier)).join('');
                 } else if (p.tiers[currentFilter]) {
                     tiersHtml = getTierIconHtml(currentFilter, p.tiers[currentFilter]);
-                } else { return; } // Skip if doesn't have the filtered tier
+                } else { return; }
 
                 const card = document.createElement('div');
                 card.className = 'mctiers-card';
@@ -240,6 +241,7 @@
 
         function closeProfile() { document.getElementById('profileModal').style.display = 'none'; }
 
+        // Fitur 5-Klik Rahasia
         document.getElementById('mainTitle').onclick = () => {
             clickCount++;
             if(clickCount === 5) { document.getElementById('editBtn').classList.remove('hidden'); clickCount = 0; }
@@ -250,16 +252,19 @@
             if(pass === ADMIN_PASSWORD) {
                 document.getElementById('jsonInput').value = JSON.stringify(players, null, 4);
                 document.getElementById('adminPanel').style.display = 'flex';
+            } else if (pass !== null) {
+                alert("Password Salah!");
             }
         }
 
         function saveChanges() {
             try {
                 players = JSON.parse(document.getElementById('jsonInput').value);
-                localStorage.setItem('mctiers_v6_auto', JSON.stringify(players));
+                localStorage.setItem('mctiers_v7_final', JSON.stringify(players));
                 renderList();
                 document.getElementById('adminPanel').style.display = 'none';
-            } catch (e) { alert("JSON Error!"); }
+                alert("Data berhasil diperbarui!");
+            } catch (e) { alert("JSON Error! Cek penulisan datanya."); }
         }
 
         renderList();
