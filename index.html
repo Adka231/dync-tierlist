@@ -3,133 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS Cracked - Top 7 (Points Restored)</title>
+    <title>MCTIERS - Server Leaderboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; overflow-x: hidden; }
+        body { background-color: #0b1120; font-family: 'Inter', sans-serif; color: #f8fafc; padding-bottom: 50px; }
         .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
         
-        /* Rank Styling */
         .rank-slant { 
             background: #2d3748; width: 75px; height: 65px; 
             clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .rank-1 { background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
+        .rank-1 { background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; }
         .rank-2 { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: #000; }
         .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
         .rank-other { background: #1e293b; color: #64748b; }
 
-        .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; transition: 0.2s; cursor: pointer; overflow: hidden;}
-        .mctiers-card:hover { border-color: #3b82f6; transform: scale(1.01); }
+        .mctiers-card { background: #151c2e; border-radius: 12px; margin-bottom: 12px; border: 1px solid #1e293b; overflow: hidden; }
 
-        /* Ikon & Label Persis Screenshot */
+        /* Ikon Tier */
         .tier-wrapper { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
         .tier-circle { 
             width: 42px; height: 42px; border-radius: 50%; 
             background: #0f172a; border: 2.5px solid; 
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: -11px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: -11px;
         }
         .tier-circle img { width: 24px; height: 24px; object-fit: contain; }
-        
         .tier-box { 
-            width: 40px; height: 21px; border-radius: 4px; 
+            width: 40px; height: 21px; border-radius: 4px; border: 1.5px solid;
             display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: 900; color: white;
-            border: 1.5px solid; z-index: 10;
+            font-size: 10px; font-weight: 900; color: white; z-index: 10;
         }
 
-        /* Warna Tier */
-        .t1-theme .tier-circle { border-color: #fbbf24; }
-        .t1-theme .tier-box { background: #d97706; border-color: #fbbf24; }
-        .t2-theme .tier-circle { border-color: #94a3b8; }
-        .t2-theme .tier-box { background: #475569; border-color: #94a3b8; }
-        .t3-theme .tier-circle { border-color: #f97316; }
-        .t3-theme .tier-box { background: #c2410c; border-color: #f97316; }
-        .t4-theme .tier-circle { border-color: #475569; }
-        .t4-theme .tier-box { background: #1e293b; border-color: #475569; }
+        /* Themes */
+        .t1-theme .tier-circle { border-color: #fbbf24; } .t1-theme .tier-box { background: #d97706; border-color: #fbbf24; }
+        .t2-theme .tier-circle { border-color: #94a3b8; } .t2-theme .tier-box { background: #475569; border-color: #94a3b8; }
+        .t3-theme .tier-circle { border-color: #f97316; } .t3-theme .tier-box { background: #c2410c; border-color: #f97316; }
+        .t4-theme .tier-circle { border-color: #475569; } .t4-theme .tier-box { background: #1e293b; border-color: #475569; }
 
-        /* Modal */
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(12px); }
+        #adminPanel { display: none; position: fixed; inset: 0; background: #0b1120; z-index: 200; overflow-y: auto; padding: 20px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="p-4 pb-20">
+<body class="p-4">
 
     <div class="max-w-md mx-auto">
-        <h1 class="text-2xl font-heavy italic mb-6 tracking-tighter">MCTIERS</h1>
-
-        <div id="playerContainer"></div>
+        <!-- Klik 5x di sini buat munculin tombol edit -->
+        <h1 id="mainTitle" class="text-2xl font-heavy italic mb-6 cursor-pointer select-none">MCTIERS</h1>
+        <div id="playerList"></div>
     </div>
 
-    <div id="modal" onclick="closeProfile()">
-        <div class="w-full max-w-sm bg-[#0f172a] p-8 rounded-[32px] border border-gray-800 relative" onclick="event.stopPropagation()">
-            <div id="profileBody"></div>
-            <button onclick="closeProfile()" class="w-full mt-8 py-3 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-bold uppercase tracking-widest text-gray-400">← Kembali</button>
+    <!-- Tombol Edit Tersembunyi -->
+    <button id="editBtn" onclick="openAdmin()" class="hidden fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-full shadow-xl font-bold text-xs uppercase">Edit Mode</button>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel">
+        <div class="max-w-md mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-heavy text-blue-400">Admin Editor</h2>
+                <button onclick="document.getElementById('adminPanel').style.display='none'" class="text-gray-500">✕ Close</button>
+            </div>
+            <textarea id="jsonInput" class="w-full h-[450px] bg-gray-900 text-green-400 font-mono text-[10px] p-4 rounded-xl border border-gray-700 outline-none mb-4"></textarea>
+            <button onclick="saveChanges()" class="w-full bg-blue-600 py-4 rounded-xl font-bold uppercase mb-2">Simpan Perubahan</button>
+            <p class="text-[10px] text-gray-600 text-center uppercase">Edit JSON dengan teliti (cek koma & tanda petik)</p>
         </div>
     </div>
 
     <script>
-        const pointMap = { 'HT1': 60, 'LT1': 55, 'HT2': 45, 'LT2': 40, 'HT3': 35, 'LT3': 25, 'HT4': 15, 'LT4': 10 };
-        
-        // Ikon yang disederhanakan namanya (Sangat penting!)
+        const ADMIN_PASSWORD = "admin123"; // GANTI PASSWORD DI SINI
+        let clickCount = 0;
+
         const iconFiles = {
-            sword: "sword.png",
-            uhc: "uhc.png",
-            crystal: "crystal.png",
-            diapot: "diapot.png",
-            mace: "mace.png",
-            nethpot: "nethpot.png",
-            smp: "smp.png",
-            axe: "axe.png"
+            sword: "sword [CDB80F2]_2.png", uhc: "uhc [2EE8F6D]_2.png",
+            crystal: "Crystal [328CA19]_2.png", diapot: "diapot [29E2609]_2.png",
+            mace: "mace [97DCD4D]_2.png", nethpot: "nethpot [4469556]_2.png",
+            smp: "smp [B1B3CCC]_2.png", axe: "axe [67BD866]_2.png"
         };
 
-        const players = [
-            { name: "X1an_", rank: 1, title: "Combat Grandmaster", region: "AS", pfp: "https://i.postimg.cc/7G76yCM9/custom-ava-6.png", tiers: { sword: "HT3", crystal: "LT3", mace: "HT4", smp: "HT3", diapot: "HT4", nethpot: "HT4", axe: "LT3", uhc: "LT3" } },
-            { name: "coldified", rank: 2, title: "Sword Legend", region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } },
-            { name: "Shadow", rank: 3, title: "Crystal Elite", region: "NA", pfp: "https://i.pravatar.cc/150?u=1", tiers: { nethpot: "HT3", crystal: "LT1", diapot: "LT2" } },
-            { name: "Vortex", rank: 4, title: "Versatile Duelist", region: "SEA", pfp: "https://i.pravatar.cc/150?u=2", tiers: { sword: "HT3", axe: "HT4" } },
-            { name: "Dante", rank: 5, title: "Mace Specialist", region: "EU", pfp: "https://i.pravatar.cc/150?u=3", tiers: { crystal: "HT2", mace: "LT2" } },
-            { name: "Nifty", rank: 6, title: "Survival Pro", region: "NA", pfp: "https://i.pravatar.cc/150?u=4", tiers: { smp: "HT3", uhc: "LT1" } },
-            { name: "Luv", rank: 7, title: "Rising Star", region: "SEA", pfp: "https://i.pravatar.cc/150?u=5", tiers: { sword: "LT1", nethpot: "HT4" } }
+        const defaultPlayers = [
+            { name: "X1an_", rank: 1, pts: 850, title: "Combat Grandmaster", region: "AS", pfp: "https://i.postimg.cc/7G76yCM9/custom-ava-6.png", tiers: { sword: "HT3", crystal: "LT3", mace: "HT4", smp: "HT3" } },
+            { name: "coldified", rank: 2, pts: 720, title: "Sword Legend", region: "EU", pfp: "https://i.pinimg.com/736x/21/f0/26/21f026364f89d38977c012879572797e.jpg", tiers: { sword: "HT2", smp: "HT1", mace: "LT1" } }
         ];
 
-        function getPoints(tiers) {
-            return Object.values(tiers).reduce((total, tier) => total + (pointMap[tier] || 0), 0);
-        }
+        let players = JSON.parse(localStorage.getItem('mctiers_pub')) || defaultPlayers;
 
-        function renderList() {
-            const container = document.getElementById('playerContainer');
-            container.innerHTML = players.map(p => {
+        function render() {
+            const list = document.getElementById('playerList');
+            list.innerHTML = players.map(p => {
                 const rankClass = p.rank <= 3 ? `rank-${p.rank}` : 'rank-other';
-                const totalPts = getPoints(p.tiers);
                 return `
-                <div class="mctiers-card" onclick="openProfile(${players.indexOf(p)})">
+                <div class="mctiers-card">
                     <div class="flex items-center">
-                        <div class="rank-slant ${rankClass}">
-                            <span class="text-xl font-heavy font-black">${p.rank}.</span>
-                        </div>
+                        <div class="rank-slant ${rankClass}"><span class="text-xl font-heavy">${p.rank}.</span></div>
                         <img src="${p.pfp}" class="w-12 h-12 rounded-full border-2 border-[#0b1120] object-cover -ml-4 z-10" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
                         <div class="ml-4 flex-1 pr-3">
-                            <div class="flex justify-between items-center mb-0.5">
+                            <div class="flex justify-between items-center">
                                 <h3 class="font-bold text-lg leading-tight truncate w-32">${p.name}</h3>
-                                <div class="flex gap-1.5 items-center flex-shrink-0">
-                                    <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">${totalPts} PTS</span>
-                                    <span class="bg-red-900/20 text-red-500 text-[9px] font-black px-2 py-0.5 rounded">${p.region}</span>
+                                <div class="flex gap-2 items-center">
+                                    <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">${p.pts} PTS</span>
+                                    <span class="bg-red-900/20 text-red-500 text-[9px] font-black px-2 py-0.5 rounded uppercase">${p.region}</span>
                                 </div>
                             </div>
                             <p class="text-[10px] text-yellow-500 font-bold italic">◆ ${p.title}</p>
                         </div>
                     </div>
-                    <div class="px-5 py-4 border-t border-gray-800/50 mt-1 flex gap-3 overflow-x-auto no-scrollbar">
+                    <div class="px-5 py-4 border-t border-gray-800/30 mt-1 flex gap-3 overflow-x-auto no-scrollbar">
                         ${Object.entries(p.tiers).map(([mode, tier]) => {
                             const level = tier.replace(/\D/g, '');
-                            const imgPath = iconFiles[mode];
+                            const file = iconFiles[mode] || "default.png";
                             return `
                             <div class="tier-wrapper t${level}-theme">
-                                <div class="tier-circle"><img src="${imgPath}" onerror="this.src='https://i.imgur.com/S5kYg8E.png'"></div>
+                                <div class="tier-circle"><img src="${encodeURIComponent(file)}" onerror="this.style.opacity='0.2'"></div>
                                 <div class="tier-box">${tier}</div>
                             </div>`;
                         }).join('')}
@@ -138,47 +123,38 @@
             }).join('');
         }
 
-        function openProfile(index) {
-            const p = players[index];
-            const body = document.getElementById('profileBody');
-            const totalPts = getPoints(p.tiers);
-            body.innerHTML = `
-                <div class="text-center">
-                    <img src="${p.pfp}" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-500 object-cover mb-4 shadow-2xl" onerror="this.src='https://i.imgur.com/8pw9fS0.png'">
-                    <h2 class="text-3xl font-heavy italic mb-1">${p.name}</h2>
-                    <p class="text-yellow-500 font-bold italic mb-6 text-sm">◆ ${p.title} ◆</p>
-                    
-                    <div class="text-left mb-6">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">RANK POSITION</p>
-                        <div class="bg-gray-800/40 p-4 rounded-xl flex justify-between items-center border border-white/5">
-                            <span class="text-xs font-bold text-gray-300 italic">Leaderboard Rank</span>
-                            <span class="text-lg font-heavy text-blue-400">#${p.rank}</span>
-                        </div>
-                    </div>
+        // Fitur Rahasia: Klik Judul 5x
+        document.getElementById('mainTitle').onclick = () => {
+            clickCount++;
+            if(clickCount === 5) {
+                document.getElementById('editBtn').classList.remove('hidden');
+                alert("Edit Mode Unlocked!");
+            }
+        };
 
-                    <div class="text-left">
-                        <p class="text-[9px] font-black text-gray-500 mb-2 uppercase">TIER BREAKDOWN (TOTAL: ${totalPts} PTS)</p>
-                        <div class="grid grid-cols-4 gap-3 overflow-x-auto no-scrollbar">
-                            ${Object.entries(p.tiers).map(([mode, tier]) => {
-                                const level = tier.replace(/\D/g, '');
-                                const imgPath = iconFiles[mode];
-                                return `
-                                <div class="bg-white/5 p-2 rounded-xl flex flex-col items-center border border-white/5 t${level}-theme min-w-[70px]">
-                                    <div class="tier-circle scale-75 mb-[-5px]"><img src="${imgPath}" onerror="this.src='https://i.imgur.com/S5kYg8E.png'"></div>
-                                    <span class="text-[9px] font-heavy text-white">${tier}</span>
-                                    <span class="text-[7px] text-gray-500 font-black uppercase tracking-widest">${mode}</span>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal').style.display = 'flex';
+        function openAdmin() {
+            const pass = prompt("Masukkan Password Admin:");
+            if(pass === ADMIN_PASSWORD) {
+                document.getElementById('jsonInput').value = JSON.stringify(players, null, 4);
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                alert("Password Salah!");
+            }
         }
 
-        function closeProfile() { document.getElementById('modal').style.display = 'none'; }
+        function saveChanges() {
+            try {
+                players = JSON.parse(document.getElementById('jsonInput').value);
+                localStorage.setItem('mctiers_pub', JSON.stringify(players));
+                render();
+                document.getElementById('adminPanel').style.display = 'none';
+                alert("Berhasil disimpan!");
+            } catch (e) {
+                alert("Format JSON Error! Cek penulisan datanya.");
+            }
+        }
 
-        renderList();
+        render();
     </script>
 </body>
 </html>
