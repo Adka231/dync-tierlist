@@ -18,17 +18,17 @@ function calculatePoints(tierList) { return Object.values(tierList).reduce((acc,
 
 function handleImgError(image) {
     image.onerror = null;
-    image.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(image.dataset.name)}&backgroundType=solid&backgroundColor=131316`;
+    image.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(image.dataset.name)}&backgroundType=solid&backgroundColor=f4f5f7`;
 }
 
 function getTierIconHtml(mode, tier, isProfile = false, delayIndex = 0) {
     const level = tier.replace(/\D/g, '');
-    const delayStyle = `style="animation-delay: ${delayIndex * 30}ms;"`;
+    const delayStyle = `style="animation-delay: ${delayIndex * 40}ms;"`;
     return `
     <div class="tier-capsule t${level}-theme animate-tier-bar" ${delayStyle}>
-        <span class="text-[9px] font-bold opacity-45 tracking-widest">${abbreviations[mode]}</span>
+        <span class="text-[9px] font-black opacity-50 tracking-widest">${abbreviations[mode]}</span>
         <span class="text-xs font-black mt-0.5 tracking-tight">${tier}</span>
-        ${isProfile ? `<span class="text-[8px] opacity-30 font-bold mt-1.5 text-center truncate w-full tracking-wider uppercase">${fullNames[mode]}</span>` : ''}
+        ${isProfile ? `<span class="text-[8px] opacity-40 font-bold mt-1.5 text-center truncate w-full tracking-wider uppercase">${fullNames[mode]}</span>` : ''}
     </div>`;
 }
 
@@ -37,9 +37,9 @@ function buildLedger() {
     ledger.innerHTML = Object.entries(POINT_VALUES).map(([tier, pts]) => {
         const level = tier.replace(/\D/g, '');
         return `
-            <div class="bg-white/[0.02] backdrop-blur border border-white/[0.04] p-3 rounded-xl flex items-center justify-between">
-                <span class="px-2.5 py-1 rounded-md text-[11px] font-black bg-black border border-white/[0.05] t${level}-theme">${tier}</span>
-                <span class="text-xs font-extrabold text-white">${pts} <span class="text-[9px] opacity-40 font-medium">PTS</span></span>
+            <div class="bg-white/60 backdrop-blur border border-black/[0.03] p-3.5 rounded-2xl flex items-center justify-between shadow-sm">
+                <span class="px-3 py-1 rounded-xl text-[11px] font-black border t${level}-theme shadow-sm">${tier}</span>
+                <span class="text-xs font-black text-neutral-800">${pts} <span class="text-[9px] opacity-40 font-bold">PTS</span></span>
             </div>
         `;
     }).join('');
@@ -53,13 +53,12 @@ function renderList() {
 
     players.forEach((p, index) => {
         const rank = index + 1;
-        let cardRankTheme = 'border-white/[0.04]';
+        let cardRankTheme = 'border-black/[0.02]';
         if (rank === 1) cardRankTheme = 'card-top-1';
         else if (rank === 2) cardRankTheme = 'card-top-2';
         else if (rank === 3) cardRankTheme = 'card-top-3';
 
         const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-        if (rank > 3) cardRankTheme += ' hover:shadow-[0_40px_80px_-15px_rgba(255,255,255,0.05)]';
         
         let TiersHtml = (currentFilter === 'overall') 
             ? Object.entries(p.tiers).map(([m, t], i) => getTierIconHtml(m, t, false, i)).join('')
@@ -68,32 +67,32 @@ function renderList() {
         if (!TiersHtml) return;
 
         const card = document.createElement('div');
-        card.className = `mctiers-card ${cardRankTheme} p-5.5`;
+        card.className = `mctiers-card ${cardRankTheme} p-6`;
         card.onclick = () => handlePlayerClick(p.id, rank);
         
         card.innerHTML = `
             <div class="flex items-center justify-between gap-4">
                 <div class="flex items-center gap-4 min-w-0">
                     <div class="rank-box ${rankClass}"><span>${rank}</span></div>
-                    <div class="relative flex-shrink-0" style="width: 52px; height: 52px;">
-                        <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="w-full h-full rounded-2xl object-cover bg-neutral-900 border border-white/[0.08] shadow-lg">
-                        <div class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-white border-2 border-neutral-950 rounded-full shadow-md"></div>
+                    <div class="relative flex-shrink-0" style="width: 54px; height: 54px;">
+                        <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="w-full h-full rounded-2xl object-cover bg-white border border-black/[0.05] shadow-sm">
+                        <div class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-neutral-900 border-2 border-white rounded-full shadow-sm"></div>
                     </div>
                     <div class="min-w-0">
-                        <h3 class="font-extrabold text-base text-white tracking-tight truncate max-w-[160px] md:max-w-[240px]">${p.name}</h3>
-                        <p class="text-xs text-neutral-400 font-semibold flex items-center gap-1 mt-0.5">
-                            <span class="truncate text-neutral-500">${p.title}</span>
+                        <h3 class="font-black text-base text-neutral-900 tracking-tight truncate max-w-[160px] md:max-w-[240px]">${p.name}</h3>
+                        <p class="text-xs text-neutral-500 font-bold flex items-center gap-1 mt-0.5">
+                            <span class="truncate text-neutral-400">${p.title}</span>
                         </p>
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <div class="pts-pill px-3.5 py-1.5 rounded-xl border text-xs font-black inline-block bg-black/50 border-white/[0.05] shadow-inner tracking-tight">
+                    <div class="pts-pill px-4 py-1.5 rounded-xl border text-xs font-black inline-block bg-white border-black/[0.04] shadow-sm tracking-tight">
                         ${p.computedPts} <span class="text-[9px] font-bold text-neutral-400 ml-0.5 tracking-wider">PTS</span>
                     </div>
-                    <p class="text-[9px] text-neutral-500 font-black mt-2.5 uppercase tracking-widest">${p.region}</p>
+                    <p class="text-[9px] text-neutral-400 font-black mt-2.5 uppercase tracking-widest">${p.region}</p>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-white/[0.04] flex gap-2 overflow-x-auto no-scrollbar">${TiersHtml}</div>
+            <div class="mt-4 pt-4 border-t border-black/[0.03] flex gap-2 overflow-x-auto no-scrollbar">${TiersHtml}</div>
         `;
         container.appendChild(card);
     });
@@ -113,66 +112,65 @@ function handlePlayerClick(id, rank) {
 function filterBy(mode, el) {
     currentFilter = mode;
     document.querySelectorAll('.tab-item').forEach(t => {
-        t.classList.remove('active', 'text-black');
-        t.classList.add('text-neutral-400');
+        t.classList.remove('active', 'text-white');
+        t.classList.add('text-neutral-500');
     });
     el.classList.add('active');
-    el.classList.remove('text-neutral-400');
+    el.classList.remove('text-neutral-500');
     renderList();
 }
 
 function buildProfileMarkup(p, rank, rankPillColor, avatarBorder) {
     const tiersDetail = Object.entries(p.tiers).map(([mode, tier], i) => getTierIconHtml(mode, tier, true, i)).join('');
     return `
-        <div class="p-6 text-center border-b border-white/[0.04] bg-white/[0.01]">
-            <div class="relative inline-block mt-2 mb-4" style="width: 88px; height: 88px;">
-                <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="modal-avatar-frame rounded-3xl ${avatarBorder} shadow-2xl mx-auto transition-all duration-500">
-                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 ${rankPillColor} border text-[9px] px-3.5 py-1 rounded-full uppercase tracking-widest shadow-xl font-bold whitespace-nowrap">RANK #${rank}</div>
-            </div>
-            <h2 class="text-2xl font-black text-white tracking-tight mb-1 mt-2">${p.name}</h2>
-            <p class="text-xs text-neutral-500 font-bold uppercase tracking-widest mb-4">📍 ${p.region} Network</p>
-            <div class="inline-flex items-center bg-white/[0.04] border border-white/[0.08] px-5 py-2 rounded-2xl shadow-2xl">
-                <span class="text-white text-xs font-extrabold tracking-wide">🏆 ${p.title}</span>
-            </div>
-        </div>
-        <div class="p-6 space-y-6">
-            <div class="grid grid-cols-2 gap-3.5">
-                <div class="bg-black/30 backdrop-blur border border-white/[0.04] rounded-2xl p-4 text-left shadow-inner">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase tracking-widest block mb-0.5">POSITION</span>
-                    <span class="text-xl font-black text-white tracking-tight">#${rank} Place</span>
+        <div class="profile-dynamic-wrapper">
+            <div class="p-6 text-center border-b border-black/[0.03] bg-white/[0.2]">
+                <div class="relative inline-block mt-2 mb-4" style="width: 92px; height: 92px;">
+                    <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="modal-avatar-frame rounded-3xl ${avatarBorder} shadow-xl mx-auto transition-all duration-500">
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 ${rankPillColor} border text-[9px] px-3.5 py-1 rounded-full uppercase tracking-widest shadow-md font-black whitespace-nowrap">RANK #${rank}</div>
                 </div>
-                <div class="bg-black/30 backdrop-blur border border-white/[0.04] rounded-2xl p-4 text-left shadow-inner">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase tracking-widest block mb-0.5">NET WORTH</span>
-                    <span class="text-xl font-black text-white tracking-tight">${p.computedPts} <span class="text-xs font-bold text-neutral-500">PTS</span></span>
+                <h2 class="text-2xl font-black text-neutral-900 tracking-tight mb-1 mt-2">${p.name}</h2>
+                <p class="text-xs text-neutral-400 font-bold uppercase tracking-widest mb-4">📍 ${p.region} Region</p>
+                <div class="inline-flex items-center bg-white border border-black/[0.06] px-5 py-2 rounded-2xl shadow-sm">
+                    <span class="text-neutral-800 text-xs font-black tracking-wide">🏆 ${p.title}</span>
                 </div>
             </div>
-            <div class="text-left">
-                <p class="text-[10px] font-black text-neutral-400 mb-4 uppercase tracking-widest pl-0.5 opacity-80 flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span> COMPETITIVE TIER MATRIX
-                </p>
-                <div class="grid grid-cols-4 gap-2 pb-2">${tiersDetail}</div>
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white border border-black/[0.02] rounded-2xl p-4 text-left shadow-sm">
+                        <span class="text-[9px] text-neutral-400 font-black uppercase tracking-widest block mb-0.5">POSITION</span>
+                        <span class="text-xl font-black text-neutral-900 tracking-tight">#${rank} Place</span>
+                    </div>
+                    <div class="bg-white border border-black/[0.02] rounded-2xl p-4 text-left shadow-sm">
+                        <span class="text-[9px] text-neutral-400 font-black uppercase tracking-widest block mb-0.5">NET WORTH</span>
+                        <span class="text-xl font-black text-neutral-900 tracking-tight">${p.computedPts} <span class="text-xs font-bold text-neutral-400">PTS</span></span>
+                    </div>
+                </div>
+                <div class="text-left">
+                    <p class="text-[10px] font-black text-neutral-400 mb-4 uppercase tracking-widest pl-0.5 opacity-80 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-black"></span> COMPETITIVE TIER MATRIX
+                    </p>
+                    <div class="grid grid-cols-4 gap-2 pb-2">${tiersDetail}</div>
+                </div>
             </div>
         </div>
     `;
 }
 
 function getStyleConfig(rank) {
-    let config = { containerClass: '', pill: 'bg-neutral-900 text-neutral-300 border-white/[0.08] font-bold', avatar: 'border-white/[0.08]', button: 'bg-neutral-900 text-neutral-400' };
+    let config = { containerClass: '', pill: 'bg-white text-neutral-700 border-black/[0.06] font-black', avatar: 'border-black/[0.05]', button: 'bg-neutral-900 text-white hover:bg-neutral-800' };
     if (rank === 1) {
         config.containerClass = 'top-1';
-        config.pill = 'bg-white text-black border-white font-black';
-        config.avatar = 'border-white ring-4 ring-white/10';
-        config.button = 'bg-white text-black hover:bg-neutral-200';
+        config.pill = 'bg-gradient-to-r from-amber-400 to-amber-500 text-white border-transparent font-black';
+        config.avatar = 'border-amber-400 ring-4 ring-amber-400/10';
     } else if (rank === 2) {
         config.containerClass = 'top-2';
-        config.pill = 'bg-neutral-200 text-black border-neutral-300 font-black';
-        config.avatar = 'border-neutral-300 ring-4 ring-white/5';
-        config.button = 'bg-neutral-800 text-white hover:bg-neutral-700';
+        config.pill = 'bg-gradient-to-r from-zinc-400 to-zinc-500 text-white border-transparent font-black';
+        config.avatar = 'border-zinc-300 ring-4 ring-zinc-300/10';
     } else if (rank === 3) {
         config.containerClass = 'top-3';
-        config.pill = 'bg-neutral-700 text-white border-neutral-600 font-black';
-        config.avatar = 'border-neutral-600 ring-4 ring-white/5';
-        config.button = 'bg-neutral-800 text-white hover:bg-neutral-700';
+        config.pill = 'bg-gradient-to-r from-amber-700 to-amber-800 text-white border-transparent font-black';
+        config.avatar = 'border-amber-700 ring-4 ring-amber-700/10';
     }
     return config;
 }
@@ -183,7 +181,7 @@ function updateDesktopProfile(id, rank) {
     const deskBody = document.getElementById('desktopProfileBody');
     const config = getStyleConfig(rank);
 
-    deskCard.classList.remove('desktop-top-1', 'desktop-top-2', 'desktop-top-3');
+    deskCard.className = "bg-white/40 backdrop-blur-3xl border border-white/80 rounded-3xl relative overflow-hidden p-1 shadow-xl min-h-[520px] flex flex-col justify-center items-center text-center transition-all duration-700";
     if (config.containerClass) deskCard.classList.add(`desktop-${config.containerClass}`);
     deskBody.innerHTML = buildProfileMarkup(p, rank, config.pill, config.avatar);
 }
@@ -195,12 +193,12 @@ function openMobileProfile(id, rank) {
     const modalBody = document.getElementById('modalBody');
     const config = getStyleConfig(rank);
 
-    modalContainer.classList.remove('modal-top-1', 'modal-top-2', 'modal-top-3');
+    modalContainer.className = "modal-box relative shadow-2xl border border-white/80";
     if (config.containerClass) modalContainer.classList.add(`modal-${config.containerClass}`);
 
     modalBody.innerHTML = buildProfileMarkup(p, rank, config.pill, config.avatar) + `
         <div class="p-6 pt-0">
-            <button onclick="closeProfile()" class="w-full py-4 ${config.button} border border-transparent rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300">Close Data Feed</button>
+            <button onclick="closeProfile()" class="w-full py-4 ${config.button} border border-transparent rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-500 shadow-md">Close Data Feed</button>
         </div>
     `;
     modal.style.display = 'flex';
@@ -210,7 +208,7 @@ function openMobileProfile(id, rank) {
 function closeProfile() { 
     const modal = document.getElementById('profileModal');
     modal.classList.remove('modal-visible');
-    setTimeout(() => { modal.style.display = 'none'; }, 600);
+    setTimeout(() => { modal.style.display = 'none'; }, 750);
 }
 
 function openOthersModal() {
@@ -222,7 +220,7 @@ function openOthersModal() {
 function closeOthersModal() {
     const modal = document.getElementById('othersModal');
     modal.classList.remove('modal-visible');
-    setTimeout(() => { modal.style.display = 'none'; }, 600);
+    setTimeout(() => { modal.style.display = 'none'; }, 750);
 }
 
 // Run Systems
