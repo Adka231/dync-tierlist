@@ -1,96 +1,138 @@
 let currentFilter = 'overall';
-const POINT_VALUES = { 'HT1': 65, 'LT1': 50, 'HT2': 40, 'LT2': 35, 'HT3': 20, 'LT3': 15, 'HT4': 10, 'LT4': 5, 'HT5': 3, 'LT5': 1 };
 const abbreviations = { sword: "SW", crystal: "CR", mace: "ME", smp: "SM", diapot: "DP", nethpot: "NP", axe: "AX", uhc: "UHC" };
 
 const players = [
-    { id: 1, name: "X1an_", title: "Combat Grandmaster", region: "Asia", pfp: "https://i.postimg.cc/zfhd3dML/custom-ava-(6).png", tiers: { sword: "LT1", crystal: "LT3", mace: "HT4", smp: "LT2", diapot: "LT2", nethpot: "HT4", axe: "LT3", uhc: "LT3" } },
-    { id: 2, name: "ugood", title: "Average pros", region: "Asia", pfp: "https://i.postimg.cc/02qqHcHW/custom-ava-(10).png", tiers: { sword: "HT3", smp: "LT3", mace: "LT3" } },
-    { id: 3, name: "aozora", title: "Sword carried", region: "Asia", pfp: "https://i.postimg.cc/mrnwppVs/custom-ava-(8).png", tiers: { sword: "LT4" } },
-    { id: 4, name: "Nelllwkwkwk", title: "Top 1 wannabe", region: "Asia", pfp: "https://i.postimg.cc/bJzzMLv1/custom-ava-(9).png", tiers: { sword: "HT5", uhc: "LT5" } },
-    { id: 5, name: "owllyarv", title: "Mace Specialist", region: "Asia", pfp: "https://i.postimg.cc/fT79Sq90/custom-ava-(7).png", tiers: { crystal: "HT5", mace: "LT4", sword: "HT5" } }
+    { id: 1, name: "X1an_", title: "Combat Grandmaster", region: "AS", pfp: "https://i.postimg.cc/zfhd3dML/custom-ava-(6).png", tiers: { sword: "LT1", crystal: "LT3", mace: "HT4", smp: "LT2", diapot: "LT2", nethpot: "HT4", axe: "LT3", uhc: "LT3" } },
+    { id: 2, name: "ugood", title: "Average pros", region: "AS", pfp: "https://i.postimg.cc/02qqHcHW/custom-ava-(10).png", tiers: { sword: "HT3", smp: "LT3", mace: "LT3" } },
+    { id: 3, name: "aozora", title: "Sword carried", region: "AS", pfp: "https://i.postimg.cc/mrnwppVs/custom-ava-(8).png", tiers: { sword: "LT4" } },
+    { id: 4, name: "Nelllwkwkwk", title: "Top 1 wannabe", region: "AS", pfp: "https://i.postimg.cc/bJzzMLv1/custom-ava-(9).png", tiers: { sword: "HT5", uhc: "LT5" } },
+    { id: 5, name: "owllyarv", title: "Mace Specialist", region: "AS", pfp: "https://i.postimg.cc/fT79Sq90/custom-ava-(7).png", tiers: { crystal: "HT5", mace: "LT4", sword: "HT5" } }
 ];
 
-function calculatePoints(tierList) { return Object.values(tierList).reduce((acc, tier) => acc + (POINT_VALUES[tier] || 0), 0); }
-
-function handleImgError(image) {
+function fallbackAvatar(image) {
     image.onerror = null;
-    image.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(image.dataset.name)}&backgroundType=solid&backgroundColor=1e2638`;
+    image.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(image.dataset.name)}&backgroundColor=0d121f`;
 }
 
-function getTierIconHtml(mode, tier) {
-    const level = tier.replace(/\D/g, '');
+function getTierBadge(mode, tier) {
+    if (!tier) return '<span class="text-slate-700 font-bold text-xs pointer-events-none">—</span>';
+    const parsedLevel = tier.toLowerCase();
     return `
-    <div class="tier-capsule t${level}-theme">
-        <span class="opacity-40 text-[9px] font-bold">${abbreviations[mode]}</span>
-        <span>${tier}</span>
-    </div>`;
+        <div class="tier-tag t-${parsedLevel}">
+            <span class="opacity-35 text-[9px] uppercase font-black">${abbreviations[mode]}</span>
+            <span>${tier}</span>
+        </div>
+    `;
 }
 
-function renderList() {
-    const container = document.getElementById('playerContainer');
-    container.innerHTML = '';
-    players.forEach(p => p.computedPts = calculatePoints(p.tiers));
-    players.sort((a, b) => b.computedPts - a.computedPts);
+// Fixed Render Engine Logic loops to completely clear initial-boot render blocks
+function renderTable() {
+    const tableBody = document.getElementById('leaderboardRows');
+    const tableHeader = document.getElementById('dynamicTableHeader');
+    tableBody.innerHTML = '';
 
-    players.forEach((p, index) => {
-        const rank = index + 1;
-        const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-        
-        let TiersHtml = (currentFilter === 'overall') 
-            ? Object.entries(p.tiers).map(([m, t]) => getTierIconHtml(m, t)).join('')
-            : (p.tiers[currentFilter] ? getTierIconHtml(currentFilter, p.tiers[currentFilter]) : '');
+    // Update table header contextual layout depending on navigation filter selection
+    if (currentFilter === 'overall') {
+        tableHeader.innerHTML = "Tiers";
+    } else {
+        const titleName = currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1);
+        tableHeader.innerHTML = `${titleName} Tier`;
+    }
 
-        if (!TiersHtml) return;
+    // Sort strategy modeled directly after competitive list ranking
+    const sorted = [...players].sort((a, b) => {
+        if (currentFilter === 'overall') {
+            return (Object.keys(b.tiers).length) - (Object.keys(a.tiers).length);
+        }
+        const tierA = a.tiers[currentFilter] || "ZZZ";
+        const tierB = b.tiers[currentFilter] || "ZZZ";
+        return tierA.localeCompare(tierB);
+    });
 
-        const card = document.createElement('div');
-        card.className = "mctiers-card p-4";
-        card.onclick = () => openMobileProfile(p.id, rank);
-        
-        card.innerHTML = `
-            <div class="flex items-center justify-between gap-4">
-                <div class="flex items-center gap-4 min-w-0">
-                    <div class="rank-box ${rankClass} flex-shrink-0"><span>${rank}</span></div>
-                    <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="w-11 h-11 rounded-lg object-cover bg-slate-900 border border-slate-800 shadow-inner flex-shrink-0">
+    sorted.forEach((p, index) => {
+        const rankNum = index + 1;
+        let rankHtml = `<span class="rank-badge rb-other">${rankNum}</span>`;
+        if (rankNum === 1) rankHtml = `<span class="rank-badge rb-1">1</span>`;
+        if (rankNum === 2) rankHtml = `<span class="rank-badge rb-2">2</span>`;
+        if (rankNum === 3) rankHtml = `<span class="rank-badge rb-3">3</span>`;
+
+        let tiersDisplayContainer = '';
+        if (currentFilter === 'overall') {
+            // Render all existing game mode skill metrics in horizontal array mapping
+            tiersDisplayContainer = `
+                <div class="flex flex-wrap gap-1.5 max-w-[420px]">
+                    ${Object.entries(p.tiers).map(([mode, t]) => getTierBadge(mode, t)).join('')}
+                </div>
+            `;
+        } else {
+            tiersDisplayContainer = getTierBadge(currentFilter, p.tiers[currentFilter]);
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "mctiers-row cursor-pointer border-b border-slate-900/40";
+        tr.onclick = () => showModal(p.id, rankNum);
+
+        tr.innerHTML = `
+            <td class="py-3.5 px-4 text-center">${rankHtml}</td>
+            <td class="py-3.5 px-4">
+                <div class="flex items-center gap-3">
+                    <img src="${p.pfp}" data-name="${p.name}" onerror="fallbackAvatar(this)" class="w-8 h-8 rounded-md bg-slate-950 object-cover border border-slate-800/40 flex-shrink-0">
                     <div class="min-w-0">
-                        <h3 class="font-bold text-base text-slate-100 tracking-tight truncate">${p.name}</h3>
-                        <p class="text-xs text-slate-400 truncate mt-0.5">${p.title}</p>
+                        <div class="font-bold text-sm text-slate-100 hover:text-blue-400 transition-colors truncate">${p.name}</div>
+                        <div class="text-[11px] text-slate-400 truncate font-medium mt-0.5">${p.title}</div>
                     </div>
                 </div>
-                <div class="text-right flex-shrink-0">
-                    <div class="text-sm font-black text-blue-400">${p.computedPts} <span class="text-[9px] text-slate-500 font-bold">PTS</span></div>
-                    <p class="text-[10px] text-slate-500 font-bold mt-0.5 tracking-wider uppercase">${p.region}</p>
-                </div>
-            </div>
-            <div class="mt-3 pt-3 border-t border-slate-800/50 flex gap-1.5 overflow-x-auto no-scrollbar">${TiersHtml}</div>
+            </td>
+            <td class="py-3.5 px-4 text-center">
+                <span class="text-xs font-bold text-slate-400 tracking-wide uppercase">${p.region}</span>
+            </td>
+            <td class="py-3.5 px-4">${tiersDisplayContainer}</td>
         `;
-        container.appendChild(card);
+        tableBody.appendChild(tr);
     });
 }
 
-function filterBy(mode, el) {
+function setFilter(mode, element) {
     currentFilter = mode;
-    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    renderList();
+    document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+    renderTable();
 }
 
-function openMobileProfile(id, rank) {
+function showModal(id, rank) {
     const p = players.find(x => x.id === id);
     const modal = document.getElementById('profileModal');
-    const modalBody = document.getElementById('modalBody');
-    const tiersDetail = Object.entries(p.tiers).map(([mode, tier]) => getTierIconHtml(mode, tier)).join('');
+    const content = document.getElementById('modalContent');
+    const fullGrid = Object.entries(p.tiers).map(([m, t]) => getTierBadge(m, t)).join('');
 
-    modalBody.innerHTML = `
-        <div class="p-6 text-center">
-            <img src="${p.pfp}" data-name="${p.name}" onerror="handleImgError(this)" class="w-20 h-20 rounded-xl mx-auto border border-slate-800 shadow-md object-cover">
-            <h2 class="text-xl font-bold text-slate-100 tracking-tight mt-3">${p.name}</h2>
-            <p class="text-xs text-slate-400 mt-1">${p.title} • Rank #${rank}</p>
-            <div class="mt-5 flex flex-wrap justify-center gap-1.5">${tiersDetail}</div>
-            <button onclick="closeProfile()" class="w-full mt-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-bold transition-all">Dismiss Feed</button>
+    content.innerHTML = `
+        <div class="p-6">
+            <div class="flex items-start gap-4">
+                <img src="${p.pfp}" data-name="${p.name}" onerror="fallbackAvatar(this)" class="w-16 h-16 rounded-xl object-cover bg-slate-950 border border-slate-800">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xl font-black text-white tracking-tight truncate">${p.name}</h2>
+                        <span class="text-[10px] font-bold px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded uppercase">${p.region}</span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-medium mt-1">${p.title}</p>
+                    <p class="text-[11px] text-slate-500 font-bold mt-0.5">Leaderboard Ranking: #${rank}</p>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-slate-800/60 pt-5">
+                <h4 class="text-xs font-extrabold tracking-wider text-slate-400 uppercase mb-3">Registered Tier Rankings</h4>
+                <div class="flex flex-wrap gap-1.5">${fullGrid}</div>
+            </div>
+            <button onclick="closeModal()" class="w-full mt-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Return to Matrix</button>
         </div>
     `;
     modal.style.display = 'flex';
 }
 
-function closeProfile() { document.getElementById('profileModal').style.display = 'none'; }
-document.addEventListener("DOMContentLoaded", renderList);
+function closeModal() {
+    document.getElementById('profileModal').style.display = 'none';
+}
+
+// CRITICAL FIX: Direct function call execution to resolve the empty starting viewport state.
+document.addEventListener("DOMContentLoaded", () => {
+    renderTable();
+});
