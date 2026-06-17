@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MCTIERS - iOS 26 Liquid Glass Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=500;600;700;800&family=Inter:wght=400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- App Header -->
+        <div class="flex items-center justify-between mb-10">
+            <div>
+                <h1 class="text-4xl font-black tracking-tight text-white bg-clip-text bg-gradient-to-b from-white via-neutral-100 to-neutral-500">MCTIERS</h1>
+                <p class="text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest mt-2 pl-0.5">Database Tracking System</p>
+            </div>
+            <button onclick="openOthersModal()" class="group flex items-center gap-2 bg-white/[0.03] hover:bg-white border border-white/[0.06] hover:border-white px-5 py-2.5 rounded-2xl shadow-xl backdrop-blur-2xl transition-all duration-500 active:scale-95">
+                <span class="text-[11px] font-black uppercase tracking-wider text-neutral-300 group-hover:text-black transition-colors duration-300">Others</span>
+                <span class="text-[9px] text-neutral-500 group-hover:text-black transition-colors duration-300">▼</span>
+            </button>
+        </div>
+
+        <!-- Navigation Filter Deck -->
+        <div class="tab-bar flex overflow-x-auto gap-2.5 mb-10 no-scrollbar p-2.5 bg-white/[0.01] backdrop-blur-3xl border border-white/[0.04] rounded-2xl shadow-2xl">
+            <div class="tab-item active px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('overall', this)">🏆 Overall</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('sword', this)">Sword</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('crystal', this)">Crystal</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('mace', this)">Mace</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('smp', this)">SMP</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('diapot', this)">Diapot</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('nethpot', this)">Nethpot</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('axe', this)">Axe</div>
+            <div class="tab-item text-neutral-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold" onclick="filterBy('uhc', this)">UHC</div>
+        </div>
+
+        <!-- Adaptive Grid System -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- LEFT COLUMN: Desktop Profile Frame -->
+            <div class="hidden lg:block lg:col-span-4 sticky top-8">
+                <div id="desktopProfileCard" class="bg-white/[0.01] backdrop-blur-3xl border border-white/[0.05] rounded-3xl relative overflow-hidden p-1 shadow-2xl min-h-[520px] flex flex-col justify-center items-center text-center transition-all duration-700">
+                    <div class="modal-glow-source absolute inset-0 pointer-events-none z-0"></div>
+                    <div id="desktopProfileBody" class="relative z-10 w-full p-6">
+                        <div class="text-neutral-500 text-sm font-semibold tracking-wide">Select a combatant profile</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Main Leaderboard Stream -->
+            <div id="playerContainer" class="col-span-1 lg:col-span-8 space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- FLOATING WINDOW MODAL: Tier Points Ledger System -->
+    <div id="othersModal" class="universal-modal" onclick="closeOthersModal()">
+        <div class="modal-box relative shadow-2xl overflow-hidden border border-white/20" onclick="event.stopPropagation()">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
+            
+            <div class="p-6 border-b border-white/[0.06] flex items-center justify-between relative z-10 bg-black/20">
+                <div>
+                    <h2 class="text-lg font-black text-white tracking-tight">Tier Matrix Ledger</h2>
+                    <p class="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-0.5">System Point Distributions</p>
+                </div>
+                <button onclick="closeOthersModal()" class="w-8 h-8 flex items-center justify-center bg-neutral-900 border border-white/[0.08] rounded-xl text-neutral-400 hover:text-white text-xs transition-all duration-300">✕</button>
+            </div>
+
+            <div class="p-6 space-y-3 max-h-[70vh] overflow-y-auto no-scrollbar relative z-10">
+                <div class="grid grid-cols-2 gap-2" id="ledgerContainer"></div>
+            </div>
+            
+            <div class="p-6 pt-0 relative z-10">
+                <button onclick="closeOthersModal()" class="w-full py-4 bg-white hover:bg-neutral-200 border border-transparent rounded-2xl text-xs font-black uppercase tracking-widest text-black transition-all duration-500">Dismiss View</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE SCREEN ONLY: Profile Modal Overlap -->
+    <div id="profileModal" class="universal-modal" onclick="closeProfile()">
+        <div id="modalContainer" class="modal-box relative shadow-2xl" onclick="event.stopPropagation()">
+            <div class="modal-glow-source absolute inset-0 pointer-events-none z-0"></div>
+            <button onclick="closeProfile()" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center bg-neutral-900/80 backdrop-blur border border-white/[0.08] rounded-xl text-slate-400 hover:text-white text-xs z-30 transition-all duration-300">✕</button>
+            <div id="modalBody" class="relative z-10"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
