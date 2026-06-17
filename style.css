@@ -1,67 +1,91 @@
-/* Core Styling Matching the Iconic McTiers Dark Aesthetic */
-body { 
-    background-color: #0c0f17;
-    font-family: 'Inter', sans-serif; 
-    color: #e2e8f0; 
-    padding-bottom: 60px; 
-    -webkit-font-smoothing: antialiased;
+/* Core Palette Configurations Mapping to McTiers Dark Framework */
+body {
+    background-color: #060913;
+    color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Authentic Row List Formatting */
-.mctiers-card { 
-    background: #131824; 
-    border-radius: 12px; 
-    border: 1px solid #1e2638; 
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-    cursor: pointer; 
-}
-.mctiers-card:hover {
-    background: #182030;
-    border-color: #3b82f6;
-    transform: translateX(4px);
+/* Background Ambient Glow */
+.glow-radial-orb {
+    position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px; opacity: 0.06; pointer-events: none;
+    background: radial-gradient(circle, #3b82f6 0%, transparent 80%);
+    z-index: 1;
 }
 
-/* Rank Block Framework */
-.rank-box {
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; 
-    font-weight: 800; font-size: 1.1rem; border-radius: 8px;
-}
-.rank-1 { background: rgba(234, 179, 8, 0.15); color: #fbbf24; border: 1px solid rgba(234, 179, 8, 0.3); }
-.rank-2 { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
-.rank-3 { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
-.rank-other { background: #1e2638; color: #94a3b8; border: 1px solid #2d3954; }
-
-/* Custom Tier Colorizations (HT1 - LT5) */
-.tier-capsule {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 0.75rem;
-    border-width: 1px; transition: transform 0.15s ease;
-}
-.tier-capsule:hover { transform: translateY(-1px); }
-
-/* Classic Skill Level Layout Themes */
-.t1-theme { border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; background: rgba(239, 68, 68, 0.1); }
-.t2-theme { border-color: rgba(249, 115, 22, 0.4); color: #fdbb2d; background: rgba(249, 115, 22, 0.1); }
-.t3-theme { border-color: rgba(234, 179, 8, 0.4); color: #fef08a; background: rgba(234, 179, 8, 0.1); }
-.t4-theme { border-color: rgba(59, 130, 246, 0.4); color: #93c5fd; background: rgba(59, 130, 246, 0.1); }
-.t5-theme { border-color: rgba(16, 185, 129, 0.4); color: #a7f3d0; background: rgba(16, 185, 129, 0.1); }
-
-/* Navigation Tab Array */
-.tab-item { transition: all 0.2s ease; cursor: pointer; font-weight: 600; font-size: 0.85rem; color: #94a3b8; }
-.tab-item.active { 
-    background: #1e2638; 
-    color: #ffffff; 
-    border: 1px solid #2d3954;
+/* Liquid Glass Elements Layering */
+.glass-board {
+    background: linear-gradient(135deg, rgba(13, 18, 31, 0.7) 0%, rgba(9, 12, 22, 0.8) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-/* Modal Window Layout Override */
-.universal-modal { 
-    display: none; position: fixed; inset: 0; z-index: 100; 
-    align-items: center; justify-content: center; padding: 16px; 
-    background: rgba(4, 6, 10, 0.7); backdrop-filter: blur(6px);
+/* Row Rendering Animations */
+.mctiers-row {
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: transparent;
 }
-.modal-box { 
-    background: #131824; border: 1px solid #1e2638; border-radius: 16px; 
-    width: 100%; max-width: 400px;
+.mctiers-row:hover {
+    background: rgba(59, 130, 246, 0.04);
 }
+
+/* Fixed Navigation Tab Rail Layout */
+.tab-item {
+    padding: 7px 16px; border-radius: 8px; font-weight: 700; font-size: 0.8rem;
+    color: #64748b; background: transparent; transition: all 0.2s ease;
+    white-space: nowrap; border: 1px solid transparent;
+}
+.tab-item:hover {
+    color: #94a3b8;
+}
+.tab-item.active {
+    color: #ffffff;
+    background: #161f38;
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom McTiers Style Ranking Framework */
+.rank-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; font-weight: 900; font-size: 0.85rem; border-radius: 6px;
+}
+.rb-1 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.rb-2 { background: rgba(148, 163, 184, 0.15); color: #e2e8f0; border: 1px solid rgba(148, 163, 184, 0.3); }
+.rb-3 { background: rgba(217, 119, 6, 0.15); color: #f97316; border: 1px solid rgba(217, 119, 6, 0.3); }
+.rb-other { color: #475569; }
+
+/* Authentic Competitive Skill Level Layout Themes */
+.tier-tag {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    padding: 3px 8px; border-radius: 4px; font-weight: 800; font-size: 0.72rem;
+    letter-spacing: -0.01em; border: 1px solid transparent; min-width: 52px;
+    transition: transform 0.15s ease;
+}
+.tier-tag:hover { transform: scale(1.05); }
+
+.t-ht1, .t-lt1 { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.25); }
+.t-ht2, .t-lt2 { background: rgba(249, 115, 22, 0.1); color: #f97316; border-color: rgba(249, 115, 22, 0.25); }
+.t-ht3, .t-lt3 { background: rgba(234, 179, 8, 0.1); color: #eab308; border-color: rgba(234, 179, 8, 0.25); }
+.t-ht4, .t-lt4 { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border-color: rgba(59, 130, 246, 0.25); }
+.t-ht5, .t-lt5 { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.25); }
+
+/* Liquid Glass Overlay Interface */
+.modal-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    align-items: center; justify-content: center; padding: 20px;
+    background: rgba(3, 5, 10, 0.6); backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation: fade-in 0.2s ease-out;
+}
+.modal-surface {
+    background: linear-gradient(135deg, #111726 0%, #0c101d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%; max-width: 440px; border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-up { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 .no-scrollbar::-webkit-scrollbar { display: none; }
