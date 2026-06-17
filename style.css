@@ -1,0 +1,129 @@
+body { 
+    background: radial-gradient(150% 150% at 50% 0%, #0a0a0c 0%, #020203 100%);
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    color: #ffffff; 
+    padding-bottom: 80px; 
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased;
+}
+
+/* iOS 26 Physics Elastic Spring Animations */
+@keyframes liquidSpringIn {
+    0% { opacity: 0; transform: translateY(32px) scale(0.94); filter: blur(8px); }
+    60% { transform: translateY(-2px) scale(1.01); filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+.animate-tier-bar {
+    animation: liquidSpringIn 0.75s cubic-bezier(0.2, 1.2, 0.2, 1) both;
+}
+
+/* Fluid Glass Interactive Controls */
+.tab-item { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; flex-shrink: 0; cursor: pointer; }
+.tab-item.active { 
+    background: rgba(255, 255, 255, 0.96); 
+    color: #000000; 
+    box-shadow: 0 16px 32px rgba(255, 255, 255, 0.12), inset 0 1px 2px rgba(255, 255, 255, 1);
+    transform: scale(1.04);
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+
+/* Custom Geometric Rank Boxes */
+.rank-box {
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; 
+    font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.15rem; border-radius: 14px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Advanced Specular Refraction Slabs */
+.card-top-1 { 
+    background: rgba(255, 255, 255, 0.04); 
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    box-shadow: inset 0 1.5px 3px rgba(255, 255, 255, 0.25), 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.card-top-1:hover { box-shadow: 0 40px 70px -10px rgba(255, 255, 255, 0.15), inset 0 1.5px 4px rgba(255, 255, 255, 0.4); }
+.card-top-1 .rank-box { background: #ffffff; color: #000000; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25); }
+.card-top-1 .pts-pill { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.3); color: #ffffff; }
+
+.card-top-2 { 
+    background: rgba(255, 255, 255, 0.025); 
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+.card-top-2:hover { box-shadow: 0 35px 65px -10px rgba(255, 255, 255, 0.1); }
+.card-top-2 .rank-box { background: linear-gradient(135deg, #f5f5f7, #74747c); color: #000000; box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1); }
+.card-top-2 .pts-pill { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.18); color: #f5f5f7; }
+
+.card-top-3 { 
+    background: rgba(255, 255, 255, 0.015); 
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+.card-top-3:hover { box-shadow: 0 30px 60px -10px rgba(255, 255, 255, 0.06); }
+.card-top-3 .rank-box { background: linear-gradient(135deg, #a1a1aa, #27272a); color: #ffffff; }
+.card-top-3 .pts-pill { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.1); color: #e4e4e7; }
+
+/* Thick Liquid Glass Card Architecture */
+.mctiers-card { 
+    background: rgba(255, 255, 255, 0.01); 
+    backdrop-filter: blur(40px) saturate(190%); 
+    -webkit-backdrop-filter: blur(40px) saturate(190%);
+    border-radius: 28px; 
+    border: 1px solid rgba(255, 255, 255, 0.05); 
+    transition: all 0.6s cubic-bezier(0.2, 1, 0.2, 1); 
+    cursor: pointer; 
+}
+.mctiers-card:hover {
+    transform: scale(1.02) translateY(-4px);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 50px 90px -20px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+
+/* Segmented Floating Pill Capsules */
+.tier-capsule {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 16px; border-radius: 16px; min-width: 68px; 
+    background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.5s cubic-bezier(0.2, 1, 0.2, 1);
+}
+.tier-capsule:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); }
+
+/* Dynamic Spectral Monochromatic Themes */
+.t1-theme { border-color: rgba(255, 255, 255, 0.85) !important; color: #ffffff !important; box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.2) !important; }
+.t2-theme { border-color: rgba(244, 244, 245, 0.5) !important; color: #f4f4f5 !important; }
+.t3-theme { border-color: rgba(161, 161, 170, 0.35) !important; color: #a1a1aa !important; }
+.t4-theme { border-color: rgba(113, 113, 122, 0.2) !important; color: #71717a !important; }
+.t5-theme { border-color: rgba(63, 63, 70, 0.15) !important; color: #3f3f46 !important; }
+
+/* Unified iOS Modal Backdrop Engine */
+.universal-modal { 
+    display: none; position: fixed; inset: 0; z-index: 100; 
+    align-items: center; justify-content: center; padding: 16px; 
+    backdrop-filter: blur(0px); background: rgba(0, 0, 0, 0);
+    transition: backdrop-filter 0.6s cubic-bezier(0.2, 1, 0.2, 1), background-color 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+}
+.universal-modal.modal-visible {
+    backdrop-filter: blur(50px) saturate(160%); background: rgba(0, 0, 0, 0.65);
+}
+
+.modal-box { 
+    background: rgba(15, 15, 18, 0.5); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 36px; 
+    width: 100%; max-width: 430px; opacity: 0;
+    transform: scale(0.93) translateY(50px);
+    transition: transform 0.75s cubic-bezier(0.2, 1.2, 0.2, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(30px);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+.universal-modal.modal-visible .modal-box { opacity: 1; transform: scale(1) translateY(0); }
+.modal-avatar-frame { width: 92px !important; height: 92px !important; object-fit: cover; }
+
+/* Light Projection Underglows */
+.modal-top-1, .desktop-top-1 { border: 1px solid rgba(255, 255, 255, 0.4) !important; }
+.modal-top-1 .modal-glow-source, .desktop-top-1 .modal-glow-source { background: radial-gradient(circle at top, rgba(255, 255, 255, 0.09) 0%, transparent 65%); }
+.modal-top-2, .desktop-top-2 { border: 1px solid rgba(244, 244, 245, 0.25) !important; }
+.modal-top-2 .modal-glow-source, .desktop-top-2 .modal-glow-source { background: radial-gradient(circle at top, rgba(244, 244, 245, 0.05) 0%, transparent 65%); }
+.modal-top-3, .desktop-top-3 { border: 1px solid rgba(113, 113, 122, 0.2) !important; }
+.modal-top-3 .modal-glow-source, .desktop-top-3 .modal-glow-source { background: radial-gradient(circle at top, rgba(113, 113, 122, 0.03) 0%, transparent 65%); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
