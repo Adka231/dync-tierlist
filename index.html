@@ -3,106 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MCTIERS – Cross-Platform Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <title>DyncTiers – Ranked Players</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-<div class="max-w-7xl mx-auto relative z-10">
-
-    <!-- ── HEADER ──────────────────────────────────────────────── -->
-    <div class="site-header flex items-center justify-between mb-7">
-        <div>
-            <div class="logo-text">MCTIERS</div>
-            <div class="logo-sub">Cross-Platform Edition</div>
-        </div>
-        <button class="others-btn" onclick="openOthersModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Others
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
+<!-- HEADER -->
+<header class="site-header">
+    <div class="logo-wrap">
+        <img src="Dync_Tiers_Logo.png" alt="DyncTiers">
     </div>
+    <button class="others-btn" onclick="openOthersModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Others
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+</header>
 
-    <!-- ── TAB BAR ─────────────────────────────────────────────── -->
-    <div class="tab-bar mb-7">
-        <div class="tab-item active" onclick="filterBy('overall', this)">
-            🏆 Overall
-        </div>
-        <div class="tab-item" onclick="filterBy('sword', this)">
-            <img src="Sword.png" alt="Sword"> Sword
-        </div>
-        <div class="tab-item" onclick="filterBy('crystal', this)">
-            <img src="Crystal.png" alt="Crystal"> Crystal
-        </div>
-        <div class="tab-item" onclick="filterBy('mace', this)">
-            <img src="Mace.png" alt="Mace"> Mace
-        </div>
-        <div class="tab-item" onclick="filterBy('smp', this)">
-            <img src="SMP.png" alt="SMP"> SMP
-        </div>
-        <div class="tab-item" onclick="filterBy('diapot', this)">
-            <img src="Diapot.png" alt="Diapot"> Diapot
-        </div>
-        <div class="tab-item" onclick="filterBy('nethpot', this)">
-            <img src="NethOp.png" alt="Nethpot"> Nethpot
-        </div>
-        <div class="tab-item" onclick="filterBy('axe', this)">
-            <img src="Axe.png" alt="Axe"> Axe
-        </div>
-        <div class="tab-item" onclick="filterBy('uhc', this)">
-            <img src="UHC.png" alt="UHC"> UHC
-        </div>
+<!-- TAB BAR -->
+<nav class="tab-bar">
+    <div class="tab-item active" onclick="filterBy('overall',this)">
+        <span class="tab-emoji">🏆</span>
+        <span>Overall</span>
     </div>
-
-    <!-- ── MAIN GRID ───────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-        <!-- Desktop Profile Panel (sticky left) -->
-        <div class="hidden lg:block lg:col-span-4 sticky top-8">
-            <div id="desktopProfileCard" style="min-height:480px;display:flex;flex-direction:column;justify-content:center;">
-                <div class="modal-glow-source"></div>
-                <div id="desktopProfileBody" style="position:relative;z-index:1;opacity:1">
-                    <div style="text-align:center;padding:40px 24px;color:rgba(100,116,139,0.5)">
-                        <div style="font-size:2rem;margin-bottom:12px">🎮</div>
-                        <div style="font-size:0.8rem;font-weight:600;letter-spacing:0.05em">Select a player to view their profile</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Leaderboard list -->
-        <div id="playerContainer" class="col-span-1 lg:col-span-8 space-y-3"></div>
-
+    <div class="tab-item" onclick="filterBy('sword',this)">
+        <img src="Sword.png" alt="Sword">
+        <span>Sword</span>
     </div>
+    <div class="tab-item" onclick="filterBy('crystal',this)">
+        <img src="Crystal.png" alt="Crystal">
+        <span>Crystal</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('mace',this)">
+        <img src="Mace.png" alt="Mace">
+        <span>Mace</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('smp',this)">
+        <img src="SMP.png" alt="SMP">
+        <span>SMP</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('diapot',this)">
+        <img src="Diapot.png" alt="Diapot">
+        <span>Diapot</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('nethpot',this)">
+        <img src="NethOp.png" alt="Nethpot">
+        <span>Nethpot</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('axe',this)">
+        <img src="Axe.png" alt="Axe">
+        <span>Axe</span>
+    </div>
+    <div class="tab-item" onclick="filterBy('uhc',this)">
+        <img src="UHC.png" alt="UHC">
+        <span>UHC</span>
+    </div>
+</nav>
+
+<!-- COLUMN HEADERS -->
+<div class="col-header">
+    <span>#</span>
+    <span>PLAYER</span>
+    <span>REGION</span>
 </div>
 
-<!-- ── OTHERS MODAL ─────────────────────────────────────────── -->
+<!-- LEADERBOARD -->
+<div id="playerContainer"></div>
+
+<!-- OTHERS MODAL -->
 <div id="othersModal" class="universal-modal" onclick="closeOthersModal()">
-    <div class="modal-box" onclick="event.stopPropagation()" style="max-width:400px">
-        <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div style="padding:20px 20px 14px;border-bottom:1px solid #21262d;display:flex;justify-content:space-between;align-items:center">
             <div>
-                <h2 style="font-size:1rem;font-weight:900;color:#fff;letter-spacing:-0.02em">Tier Point Ledger</h2>
-                <p style="font-size:0.6rem;color:rgba(96,165,250,0.7);font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-top:2px">Point system breakdown</p>
+                <div style="font-size:1rem;font-weight:900;color:#e6edf3">Tier Point Ledger</div>
+                <div style="font-size:0.62rem;color:#58a6ff;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Point system</div>
             </div>
-            <button onclick="closeOthersModal()" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:rgba(148,163,184,0.7);cursor:pointer;font-size:0.8rem;transition:all 0.2s ease" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(148,163,184,0.7)'">✕</button>
+            <button onclick="closeOthersModal()" style="width:32px;height:32px;background:#21262d;border:1px solid #30363d;border-radius:8px;color:#8b949e;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center">✕</button>
         </div>
-        <div style="padding:20px 24px;max-height:65vh;overflow-y:auto;scrollbar-width:none">
+        <div style="padding:16px 20px;max-height:60vh;overflow-y:auto;scrollbar-width:none">
             <div id="ledgerContainer" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
         </div>
-        <div style="padding:0 24px 24px">
-            <button onclick="closeOthersModal()" style="width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#94a3b8;cursor:pointer;transition:all 0.3s ease">Dismiss</button>
+        <div style="padding:0 20px 20px">
+            <button onclick="closeOthersModal()" style="width:100%;padding:12px;background:#21262d;border:1px solid #30363d;border-radius:10px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#8b949e;cursor:pointer">Dismiss</button>
         </div>
     </div>
 </div>
 
-<!-- ── MOBILE PROFILE MODAL ──────────────────────────────────── -->
+<!-- PROFILE MODAL -->
 <div id="profileModal" class="universal-modal" onclick="closeProfile()">
     <div id="modalContainer" class="modal-box" onclick="event.stopPropagation()">
-        <div class="modal-glow-source"></div>
-        <button onclick="closeProfile()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(148,163,184,0.8);cursor:pointer;z-index:50;font-size:0.8rem">✕</button>
-        <div id="modalBody" style="position:relative;z-index:1"></div>
+        <div id="modalBody"></div>
     </div>
 </div>
 
