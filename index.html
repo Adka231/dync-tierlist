@@ -4,96 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DyncTiers – Ranked Players</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d1117;font-family:'Inter',sans-serif;color:#e6edf3;overflow-x:hidden;padding-bottom:80px;-webkit-font-smoothing:antialiased}
+body{background:#111214;font-family:'Inter',sans-serif;color:#dcddde;overflow-x:hidden;padding-bottom:80px;-webkit-font-smoothing:antialiased;min-height:100vh}
 
-/* HEADER */
-.site-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 0;max-width:900px;margin:0 auto}
-.logo-wrap img{height:52px;object-fit:contain}
-.logo-wrap .logo-broken{font-size:1.6rem;font-weight:900;color:#e6edf3;letter-spacing:-0.03em}
-.others-btn{display:flex;align-items:center;gap:8px;background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:10px;padding:9px 16px;font-size:0.75rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
-.others-btn:hover{background:#21262d;border-color:#58a6ff;color:#58a6ff}
+/* ── HEADER ── */
+.site-header{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 0;max-width:860px;margin:0 auto}
+.logo-wrap img{height:48px;object-fit:contain}
+.logo-fallback{font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-0.03em;display:none}
+.others-btn{display:flex;align-items:center;gap:7px;background:#1e1f22;border:1px solid #2b2d31;color:#949ba4;border-radius:8px;padding:8px 14px;font-size:0.73rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer}
+.others-btn:hover{background:#2b2d31;color:#dcddde}
 
-/* TAB BAR */
-.tab-bar{display:flex;gap:0;overflow-x:auto;padding:14px 12px 0;max-width:900px;margin:0 auto;scrollbar-width:none;border-bottom:1px solid #21262d}
+/* ── TAB BAR ── */
+.tab-bar{display:flex;gap:0;overflow-x:auto;padding:0 14px;max-width:860px;margin:14px auto 0;scrollbar-width:none;border-bottom:1px solid #2b2d31}
 .tab-bar::-webkit-scrollbar{display:none}
-.tab-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 14px 12px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;color:#8b949e;border-bottom:2px solid transparent;transition:all .2s ease;position:relative;background:transparent;margin-bottom:-1px}
-.tab-item img{width:26px;height:26px;object-fit:contain;filter:grayscale(60%) brightness(0.6);transition:all .2s ease}
-.tab-item:hover{color:#e6edf3}
-.tab-item:hover img{filter:grayscale(0%) brightness(1)}
-.tab-item.active{color:#e6edf3;border-bottom-color:#f0a500;font-weight:700}
-.tab-item.active img{filter:grayscale(0%) brightness(1)}
-.tab-emoji{font-size:1.3rem;line-height:1}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 12px 12px;font-size:0.73rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;color:#949ba4;border-bottom:2px solid transparent;margin-bottom:-1px;background:transparent}
+.tab-item img{width:24px;height:24px;object-fit:contain;opacity:0.5}
+.tab-item.active{color:#fff;border-bottom-color:#f0a500;font-weight:700}
+.tab-item.active img{opacity:1}
+.tab-emoji{font-size:1.2rem;line-height:1}
 
-/* COLUMN HEADERS */
-.col-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;padding:10px 16px 6px;max-width:900px;margin:0 auto;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#484f58}
+/* ── COL HEADERS ── */
+.col-header{display:flex;align-items:center;padding:8px 14px;max-width:860px;margin:0 auto;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#4e5058;gap:12px}
+.col-hash{width:32px;flex-shrink:0}
+.col-player{flex:1}
+.col-region{margin-left:auto}
 
-/* PLAYER CARDS */
-#playerContainer{max-width:900px;margin:0 auto;padding:0 12px;display:flex;flex-direction:column;gap:8px}
-.mc-card{background:#161b22;border:1px solid #21262d;border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .2s ease,transform .2s ease;animation:cardIn .4s ease both}
-.mc-card:hover{border-color:#388bfd;transform:translateY(-1px)}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ── PLAYER LIST ── */
+#playerContainer{max-width:860px;margin:0 auto;padding:0 10px;display:flex;flex-direction:column;gap:6px}
 
-/* CARD BANNER */
-.card-banner{display:flex;align-items:stretch;position:relative;min-height:72px}
-.card-left{display:flex;align-items:stretch;flex-shrink:0;position:relative;overflow:hidden}
-.rank-num{font-weight:900;font-size:2rem;color:#fff;opacity:.9;padding:0 10px 0 14px;display:flex;align-items:center;text-shadow:0 2px 4px rgba(0,0,0,.5);z-index:2;position:relative;min-width:60px}
-.rank-avatar{width:72px;height:72px;object-fit:cover;display:block;flex-shrink:0}
-/* colored left block per rank */
-.top1 .card-left{background:linear-gradient(105deg,#c9930a 0%,#7a5500 65%,#161b22 100%)}
-.top2 .card-left{background:linear-gradient(105deg,#4a4a55 0%,#2a2a2a 65%,#161b22 100%)}
-.top3 .card-left{background:linear-gradient(105deg,#8b5a1a 0%,#4a3000 65%,#161b22 100%)}
+/* ── CARD ── */
+.mc-card{background:#1e1f22;border:1px solid #2b2d31;border-radius:12px;overflow:hidden;cursor:pointer}
+.mc-card:hover{border-color:#5865f2}
 
-.card-info{flex:1;padding:14px 12px;min-width:0;display:flex;flex-direction:column;justify-content:center}
-.card-name{font-size:1.05rem;font-weight:800;color:#e6edf3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.01em}
-.card-sub{display:flex;align-items:center;gap:5px;margin-top:3px}
-.card-sub-icon{color:#f0a500;font-size:0.8rem}
-.card-sub-text{font-size:0.72rem;color:#8b949e;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.region-badge{flex-shrink:0;padding:5px 10px;border-radius:8px;font-size:0.7rem;font-weight:800;margin-right:14px;align-self:center;color:#fff}
-.r-AS,.r-NA{background:#6b1a1a}.r-EU{background:#1a5e2a}.r-SEA{background:#1a3a6b}.r-OC{background:#4a1a6b}
+/* top banner: rank bg + avatar + info + region */
+.card-top{display:flex;align-items:center;gap:0;min-height:80px;position:relative}
 
-/* TIERS SECTION */
-.card-tiers{padding:10px 14px 14px;border-top:1px solid #21262d}
-.tiers-lbl{font-size:0.6rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#484f58;margin-bottom:8px}
-.tiers-row{display:flex;flex-wrap:wrap;gap:8px}
+/* left colored strip */
+.card-strip{width:100%;height:100%;position:absolute;top:0;left:0;z-index:0}
+.top1 .card-strip{background:#b8860b}
+.top2 .card-strip{background:#4a4a55}
+.top3 .card-strip{background:#7a4a1a}
 
-/* TIER CAPSULE */
-.tier-cap{display:flex;flex-direction:column;align-items:center;gap:0;animation:capIn .35s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes capIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-.tier-ring{width:44px;height:44px;border-radius:50%;background:#0d1117;border:2px solid #30363d;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .2s ease}
-.tier-cap:hover .tier-ring{transform:scale(1.1)}
-.tier-ring img{width:26px;height:26px;object-fit:contain}
-.tier-lbl{font-size:0.68rem;font-weight:800;margin-top:4px}
-/* tier colors */
-.t1 .tier-ring{border-color:#c9930a}.t1 .tier-lbl{color:#c9930a}
-.t2 .tier-ring{border-color:#484f58}.t2 .tier-lbl{color:#8b949e}
-.t3 .tier-ring{border-color:#30363d}.t3 .tier-lbl{color:#8b949e}
-.t4 .tier-ring{border-color:#21262d}.t4 .tier-lbl{color:#484f58}
-.t5 .tier-ring{border-color:#21262d}.t5 .tier-lbl{color:#30363d}
+.card-rank{font-weight:900;font-size:1.7rem;color:#fff;width:52px;flex-shrink:0;text-align:center;position:relative;z-index:1;text-shadow:0 2px 6px rgba(0,0,0,0.6);padding-left:4px}
 
-/* MODAL */
-.modal-wrap{display:none;position:fixed;inset:0;z-index:200;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);transition:background .3s ease}
-.modal-wrap.open{background:rgba(0,0,0,.75)}
-.modal-box{background:#0d1117;border:1px solid #21262d;border-radius:24px 24px 0 0;width:100%;max-width:480px;opacity:0;transform:translateY(60px);transition:transform .4s cubic-bezier(.34,1.2,.64,1),opacity .3s ease;overflow:hidden;max-height:92vh;overflow-y:auto;scrollbar-width:none}
-.modal-box::-webkit-scrollbar{display:none}
-.modal-wrap.open .modal-box{opacity:1;transform:translateY(0)}
+/* rectangular full-height avatar like mctiers */
+.card-avatar-wrap{position:relative;z-index:1;flex-shrink:0;margin-right:0;align-self:stretch;width:80px;overflow:hidden}
+.card-avatar{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;min-height:80px}
+
+.card-info{flex:1;min-width:0;position:relative;z-index:1;padding:14px 12px}
+.card-name{font-size:1rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-title{display:flex;align-items:center;gap:4px;margin-top:3px}
+.card-title-icon{color:#f0a500;font-size:0.75rem;flex-shrink:0}
+.card-title-text{font-size:0.7rem;color:#949ba4;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.region-badge{flex-shrink:0;margin:0 14px 0 10px;padding:4px 9px;border-radius:6px;font-size:0.68rem;font-weight:800;color:#fff;position:relative;z-index:1}
+.r-NA,.r-AS{background:#7c2020}
+.r-EU{background:#1a6b35}
+.r-SEA{background:#1a3a8b}
+.r-OC{background:#5a1a8b}
+
+/* tiers row */
+.card-tiers{padding:8px 14px 13px;border-top:1px solid #2b2d31}
+.tiers-lbl{font-size:0.58rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#4e5058;margin-bottom:7px}
+.tiers-row{display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.tiers-row::-webkit-scrollbar{display:none}
+
+/* tier capsule — circular icon + label below */
+.tier-cap{display:flex;flex-direction:column;align-items:center;gap:0}
+.tier-ring{width:42px;height:42px;border-radius:50%;background:#111214;border:2px solid #3a3c42;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tier-ring img{width:24px;height:24px;object-fit:contain}
+.tier-lbl{font-size:0.65rem;font-weight:800;margin-top:4px;color:#949ba4}
+.t1 .tier-ring{border-color:#f0a500}.t1 .tier-lbl{color:#f0a500}
+.t2 .tier-ring{border-color:#c0c8d8}.t2 .tier-lbl{color:#c0c8d8}
+.t3 .tier-ring{border-color:#cd7f32}.t3 .tier-lbl{color:#cd7f32}
+.t4 .tier-ring{border-color:#7a5530}.t4 .tier-lbl{color:#7a5530}
+.t5 .tier-ring{border-color:#3a3c42}.t5 .tier-lbl{color:#4e5058}
+
+/* ── MODAL BACKDROP ── */
+.modal-wrap{display:none;position:fixed;inset:0;z-index:300;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0)}
+.modal-wrap.open{background:rgba(0,0,0,0.8)}
+.modal-sheet{background:#111214;border:1px solid #2b2d31;border-radius:16px 16px 0 0;width:100%;max-width:480px;max-height:93vh;overflow-y:auto;scrollbar-width:none;transform:translateY(100%)}
+.modal-sheet::-webkit-scrollbar{display:none}
+.modal-wrap.open .modal-sheet{transform:translateY(0)}
+
+/* others modal — center */
 #othersModal{align-items:center;padding:16px}
-#othersModal .modal-box{border-radius:20px;max-width:400px;max-height:80vh}
+#othersModal .modal-sheet{border-radius:14px;max-width:400px;max-height:80vh}
 
-/* PROFILE AVATAR */
-.modal-ava{width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid #30363d}
-.ava-gold{border-color:#f0a500}.ava-silver{border-color:#8b949e}.ava-bronze{border-color:#cd7f32}
+/* profile avatar */
+.prof-ava{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #3a3c42;background:#2b2d31}
+.ava-gold{border-color:#f0a500}
+.ava-silver{border-color:#8b949e}
+.ava-bronze{border-color:#cd7f32}
 
-/* POSITION BANNER */
-.pos-row{display:flex;align-items:stretch;border-radius:10px;overflow:hidden;border:1px solid #21262d}
-.pos-num{padding:12px 18px;font-size:1.4rem;font-weight:900;color:#fff;flex-shrink:0}
-.pos-gold{background:#c9930a}.pos-silver{background:#4a4a55}.pos-bronze{background:#8b5a1a}.pos-other{background:#21262d;color:#8b949e}
-.pos-info{display:flex;align-items:center;gap:8px;padding:0 16px;font-size:0.85rem;font-weight:800;color:#e6edf3;letter-spacing:0.04em}
-.pos-pts{font-size:0.75rem;color:#8b949e;font-weight:500}
+/* position banner */
+.pos-row{display:flex;align-items:stretch;border-radius:8px;overflow:hidden;border:1px solid #2b2d31}
+.pos-num{padding:11px 16px;font-size:1.3rem;font-weight:900;color:#fff;flex-shrink:0}
+.pos-gold{background:#b8860b}
+.pos-silver{background:#4a4a55}
+.pos-bronze{background:#7a4a1a}
+.pos-def{background:#2b2d31;color:#949ba4}
+.pos-info{display:flex;align-items:center;gap:8px;padding:0 14px;font-size:0.82rem;font-weight:800;color:#dcddde;letter-spacing:0.04em}
+.pos-pts{font-size:0.72rem;color:#949ba4;font-weight:500}
 
-.sec-lbl{font-size:1rem;font-weight:800;color:#8b949e;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px}
+.sec-lbl{font-size:0.85rem;font-weight:800;color:#949ba4;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -101,13 +117,14 @@ body{background:#0d1117;font-family:'Inter',sans-serif;color:#e6edf3;overflow-x:
 <!-- HEADER -->
 <header class="site-header">
   <div class="logo-wrap">
-    <img src="Dync_Tiers_Logo.png" alt="DyncTiers" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="logo-broken" style="display:none">DYNCTIERS</span>
+    <img src="Dync_Tiers_Logo.png" alt="DyncTiers"
+         onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
+    <span class="logo-fallback">DYNCTIERS</span>
   </div>
   <button class="others-btn" onclick="openOthers()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     Others
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
   </button>
 </header>
 
@@ -125,33 +142,37 @@ body{background:#0d1117;font-family:'Inter',sans-serif;color:#e6edf3;overflow-x:
 </nav>
 
 <!-- COL HEADERS -->
-<div class="col-header"><span>#</span><span>PLAYER</span><span>REGION</span></div>
+<div class="col-header">
+  <span class="col-hash">#</span>
+  <span class="col-player">PLAYER</span>
+  <span class="col-region">REGION</span>
+</div>
 
 <!-- LIST -->
 <div id="playerContainer"></div>
 
 <!-- OTHERS MODAL -->
 <div id="othersModal" class="modal-wrap" onclick="closeOthers()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <div style="padding:18px 20px 14px;border-bottom:1px solid #21262d;display:flex;justify-content:space-between;align-items:center">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div style="padding:16px 18px 12px;border-bottom:1px solid #2b2d31;display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:1rem;font-weight:900;color:#e6edf3">Tier Point Ledger</div>
-        <div style="font-size:0.62rem;color:#58a6ff;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Point system</div>
+        <div style="font-size:0.95rem;font-weight:900;color:#fff">Tier Point Ledger</div>
+        <div style="font-size:0.6rem;color:#5865f2;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Point system</div>
       </div>
-      <button onclick="closeOthers()" style="width:32px;height:32px;background:#21262d;border:1px solid #30363d;border-radius:8px;color:#8b949e;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">✕</button>
+      <button onclick="closeOthers()" style="width:30px;height:30px;background:#2b2d31;border:1px solid #3a3c42;border-radius:6px;color:#949ba4;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
-    <div style="padding:16px 20px;max-height:55vh;overflow-y:auto;scrollbar-width:none">
-      <div id="ledger" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    <div style="padding:14px 18px;max-height:55vh;overflow-y:auto;scrollbar-width:none">
+      <div id="ledger" style="display:grid;grid-template-columns:1fr 1fr;gap:7px"></div>
     </div>
-    <div style="padding:0 20px 20px">
-      <button onclick="closeOthers()" style="width:100%;padding:12px;background:#21262d;border:1px solid #30363d;border-radius:10px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;cursor:pointer">Dismiss</button>
+    <div style="padding:0 18px 18px">
+      <button onclick="closeOthers()" style="width:100%;padding:11px;background:#2b2d31;border:1px solid #3a3c42;border-radius:8px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#949ba4;cursor:pointer">Dismiss</button>
     </div>
   </div>
 </div>
 
 <!-- PROFILE MODAL -->
 <div id="profileModal" class="modal-wrap" onclick="closeProfile()">
-  <div class="modal-box" onclick="event.stopPropagation()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
     <div id="profileBody"></div>
   </div>
 </div>
@@ -160,7 +181,6 @@ body{background:#0d1117;font-family:'Inter',sans-serif;color:#e6edf3;overflow-x:
 var filter = 'overall';
 
 var PTS = {'HT1':65,'LT1':50,'HT2':40,'LT2':35,'HT3':20,'LT3':15,'HT4':10,'LT4':5,'HT5':3,'LT5':1};
-
 var ICONS = {sword:'Sword.png',crystal:'Crystal.png',mace:'Mace.png',smp:'SMP.png',diapot:'Diapot.png',nethpot:'NethOp.png',axe:'Axe.png',uhc:'UHC.png'};
 var NAMES = {sword:'Sword',crystal:'Crystal',mace:'Mace',smp:'SMP',diapot:'Diapot',nethpot:'Nethpot',axe:'Axe',uhc:'UHC'};
 
@@ -184,9 +204,9 @@ var PLAYERS = [
   {id:7,name:'none',title:'Rising Star',region:'South East Asia',pfp:'',tiers:{sword:'LT5'}}
 ];
 
-function pts(tiers){var t=0;for(var k in tiers)t+=(PTS[tiers[k]]||0);return t;}
+function calcPts(tiers){var t=0;for(var k in tiers)t+=(PTS[tiers[k]]||0);return t;}
 
-function rBadge(region){
+function getRegion(region){
   if(!region)return{cls:'r-AS',lbl:'AS'};
   var r=region.toLowerCase();
   if(r.indexOf('europe')!==-1||r==='eu')return{cls:'r-EU',lbl:'EU'};
@@ -198,14 +218,14 @@ function rBadge(region){
 
 function imgErr(img){
   img.onerror=null;
-  img.src='https://api.dicebear.com/7.x/identicon/svg?seed='+encodeURIComponent(img.dataset.n||'x')+'&backgroundType=solid&backgroundColor=161b22';
+  img.src='https://api.dicebear.com/7.x/identicon/svg?seed='+encodeURIComponent(img.dataset.n||'x')+'&backgroundType=solid&backgroundColor=111214';
 }
 
-function capHtml(mode,tier,delay){
+function capHtml(mode,tier){
   var lv=tier.replace(/\D/g,'');
   var ic=ICONS[mode]||'';
   var inner=ic?'<img src="'+ic+'" alt="'+mode+'" onerror="this.style.display=\'none\'">':'';
-  return '<div class="tier-cap t'+lv+'" style="animation-delay:'+delay+'ms">'
+  return '<div class="tier-cap t'+lv+'">'
         +'<div class="tier-ring">'+inner+'</div>'
         +'<div class="tier-lbl">'+tier+'</div>'
         +'</div>';
@@ -216,9 +236,9 @@ function buildLedger(){
   var h='';
   for(var tier in PTS){
     var lv=tier.replace(/\D/g,'');
-    h+='<div style="background:#161b22;border:1px solid #21262d;padding:10px 14px;border-radius:10px;display:flex;align-items:center;justify-content:space-between">'
-      +'<span class="tier-lbl t'+lv+'" style="font-size:.75rem;padding:4px 10px;background:#0d1117;border-radius:6px;border:1px solid #21262d">'+tier+'</span>'
-      +'<span style="font-size:.8rem;font-weight:800;color:#e6edf3">'+PTS[tier]+'<span style="font-size:.62rem;color:#484f58;margin-left:3px">PTS</span></span>'
+    h+='<div style="background:#1e1f22;border:1px solid #2b2d31;padding:9px 12px;border-radius:8px;display:flex;align-items:center;justify-content:space-between">'
+      +'<span class="tier-lbl t'+lv+'" style="font-size:.72rem;padding:3px 9px;background:#111214;border-radius:5px;border:1px solid #2b2d31">'+tier+'</span>'
+      +'<span style="font-size:.78rem;font-weight:800;color:#dcddde">'+PTS[tier]+'<span style="font-size:.6rem;color:#4e5058;margin-left:3px">PTS</span></span>'
       +'</div>';
   }
   el.innerHTML=h;
@@ -227,34 +247,32 @@ function buildLedger(){
 function render(){
   var c=document.getElementById('playerContainer');if(!c)return;
   c.innerHTML='';
-  for(var i=0;i<PLAYERS.length;i++)PLAYERS[i]._pts=pts(PLAYERS[i].tiers);
+  for(var i=0;i<PLAYERS.length;i++)PLAYERS[i]._pts=calcPts(PLAYERS[i].tiers);
   PLAYERS.sort(function(a,b){return b._pts-a._pts;});
   var shown=0;
   for(var idx=0;idx<PLAYERS.length;idx++){
     var p=PLAYERS[idx];var rank=idx+1;
     var th='';
     if(filter==='overall'){
-      var di=0;for(var m in p.tiers){th+=capHtml(m,p.tiers[m],di*35);di++;}
+      for(var m in p.tiers)th+=capHtml(m,p.tiers[m]);
     } else {
       if(!p.tiers[filter])continue;
-      th=capHtml(filter,p.tiers[filter],0);
+      th=capHtml(filter,p.tiers[filter]);
     }
-    var rb=rBadge(p.region);
+    var rb=getRegion(p.region);
     var tc=rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
     var card=document.createElement('div');
     card.className='mc-card '+tc;
-    card.style.animationDelay=(shown*55)+'ms';
-    card.setAttribute('data-id',p.id);
-    card.setAttribute('data-rank',rank);
     card.innerHTML=
-      '<div class="card-banner">'
-      +'<div class="card-left">'
-      +'<div class="rank-num">'+rank+'.</div>'
-      +'<img class="rank-avatar" src="'+(p.pfp||'')+'" data-n="'+p.name+'" onerror="imgErr(this)" alt="'+p.name+'">'
+      '<div class="card-top">'
+      +'<div class="card-strip"></div>'
+      +'<div class="card-rank">'+rank+'.</div>'
+      +'<div class="card-avatar-wrap">'
+      +'<img class="card-avatar" src="'+(p.pfp||'')+'" data-n="'+p.name+'" onerror="imgErr(this)" alt="'+p.name+'">'
       +'</div>'
       +'<div class="card-info">'
       +'<div class="card-name">'+p.name+'</div>'
-      +'<div class="card-sub"><span class="card-sub-icon">✦</span><span class="card-sub-text">'+p.title+'</span></div>'
+      +'<div class="card-title"><span class="card-title-icon">✦</span><span class="card-title-text">'+p.title+'</span></div>'
       +'</div>'
       +'<div class="region-badge '+rb.cls+'">'+rb.lbl+'</div>'
       +'</div>'
@@ -267,35 +285,34 @@ function render(){
 function openProfile(id,rank){
   var p=null;for(var i=0;i<PLAYERS.length;i++){if(PLAYERS[i].id===id){p=PLAYERS[i];break;}}
   if(!p)return;
-  var avaCls='modal-ava'+(rank===1?' ava-gold':rank===2?' ava-silver':rank===3?' ava-bronze':'');
-  var pnCls=rank===1?'pos-gold':rank===2?'pos-silver':rank===3?'pos-bronze':'pos-other';
-  var th='';var di=0;for(var m in p.tiers){th+=capHtml(m,p.tiers[m],di*35);di++;}
-  var html=
-    '<div style="padding:18px 18px 0;display:flex;justify-content:flex-end">'
-    +'<button onclick="closeProfile()" style="width:36px;height:36px;background:#21262d;border:1px solid #30363d;border-radius:50%;color:#8b949e;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center">✕</button>'
+  var avaCls='prof-ava'+(rank===1?' ava-gold':rank===2?' ava-silver':rank===3?' ava-bronze':'');
+  var pnCls=rank===1?'pos-gold':rank===2?'pos-silver':rank===3?'pos-bronze':'pos-def';
+  var th='';for(var m in p.tiers)th+=capHtml(m,p.tiers[m]);
+  document.getElementById('profileBody').innerHTML=
+    '<div style="padding:16px 16px 0;display:flex;justify-content:flex-end">'
+    +'<button onclick="closeProfile()" style="width:34px;height:34px;background:#2b2d31;border:1px solid #3a3c42;border-radius:50%;color:#949ba4;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">✕</button>'
     +'</div>'
-    +'<div style="text-align:center;padding:0 20px 18px">'
+    +'<div style="text-align:center;padding:4px 20px 18px">'
     +'<img class="'+avaCls+'" src="'+(p.pfp||'')+'" data-n="'+p.name+'" onerror="imgErr(this)" alt="'+p.name+'">'
-    +'<h2 style="font-size:1.5rem;font-weight:900;color:#e6edf3;margin-top:12px;letter-spacing:-.02em">'+p.name+'</h2>'
-    +'<div style="display:inline-flex;align-items:center;gap:6px;background:#21262d;border:1px solid #30363d;border-radius:20px;padding:6px 16px;margin-top:8px">'
-    +'<span style="color:#f0a500">✦</span><span style="font-size:.8rem;font-weight:700;color:#f0a500">'+p.title+'</span>'
+    +'<h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-.02em">'+p.name+'</h2>'
+    +'<div style="display:inline-flex;align-items:center;gap:5px;background:#2b2d31;border:1px solid #3a3c42;border-radius:20px;padding:5px 14px;margin-top:7px">'
+    +'<span style="color:#f0a500;font-size:.8rem">✦</span><span style="font-size:.78rem;font-weight:700;color:#f0a500">'+p.title+'</span>'
     +'</div>'
-    +'<div style="font-size:.85rem;color:#484f58;font-weight:600;margin-top:8px">'+p.region+'</div>'
+    +'<div style="font-size:.82rem;color:#4e5058;font-weight:600;margin-top:8px">'+p.region+'</div>'
     +'</div>'
-    +'<div style="padding:0 20px 18px">'
+    +'<div style="padding:0 18px 16px">'
     +'<div class="sec-lbl">Position</div>'
     +'<div class="pos-row">'
     +'<div class="pos-num '+pnCls+'">'+rank+'.</div>'
-    +'<div class="pos-info">🏆 OVERALL <span class="pos-pts">('+p._pts+' points)</span></div>'
+    +'<div class="pos-info">🏆 OVERALL<span class="pos-pts" style="margin-left:6px">('+p._pts+' points)</span></div>'
     +'</div>'
     +'</div>'
-    +'<div style="padding:0 20px 32px">'
+    +'<div style="padding:0 18px 32px">'
     +'<div class="sec-lbl">Tiers</div>'
-    +'<div style="background:#161b22;border:1px solid #21262d;border-radius:12px;padding:14px">'
-    +'<div style="display:flex;flex-wrap:wrap;gap:10px">'+th+'</div>'
+    +'<div style="background:#1e1f22;border:1px solid #2b2d31;border-radius:10px;padding:12px">'
+    +'<div style="display:flex;flex-wrap:nowrap;gap:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px">'+th+'</div>'
     +'</div>'
     +'</div>';
-  document.getElementById('profileBody').innerHTML=html;
   var modal=document.getElementById('profileModal');
   modal.style.display='flex';
   requestAnimationFrame(function(){modal.classList.add('open');});
@@ -304,7 +321,7 @@ function openProfile(id,rank){
 function closeProfile(){
   var m=document.getElementById('profileModal');
   m.classList.remove('open');
-  setTimeout(function(){m.style.display='none';},400);
+  setTimeout(function(){m.style.display='none';},300);
 }
 
 function openOthers(){
@@ -316,7 +333,7 @@ function openOthers(){
 function closeOthers(){
   var m=document.getElementById('othersModal');
   m.classList.remove('open');
-  setTimeout(function(){m.style.display='none';},400);
+  setTimeout(function(){m.style.display='none';},300);
 }
 
 function filterBy(mode,el){
@@ -332,3 +349,4 @@ render();
 </script>
 </body>
 </html>
+
