@@ -1,341 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DyncTiers – Ranked Players</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#1e2124;font-family:'Inter',sans-serif;color:#dcddde;overflow-x:hidden;padding-bottom:80px;-webkit-font-smoothing:antialiased;min-height:100vh}
-
-/* ── HEADER ── */
-.site-header{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 0;max-width:860px;margin:0 auto}
-.logo-wrap img{height:48px;object-fit:contain}
-.logo-fallback{font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-0.03em;display:none}
-.others-btn{display:flex;align-items:center;gap:7px;background:#1e1f22;border:1px solid #2b2d31;color:#949ba4;border-radius:8px;padding:8px 14px;font-size:0.73rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer}
-.others-btn:hover{background:#2b2d31;color:#dcddde}
-
-/* ── TAB BAR ── */
-.tab-bar{display:flex;gap:0;overflow-x:auto;padding:0 14px;max-width:860px;margin:14px auto 0;scrollbar-width:none;border-bottom:1px solid #2b2d31}
-.tab-bar::-webkit-scrollbar{display:none}
-.tab-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 12px 12px;font-size:0.73rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;color:#949ba4;border-bottom:2px solid transparent;margin-bottom:-1px;background:transparent}
-.tab-item img{width:24px;height:24px;object-fit:contain;opacity:0.5}
-.tab-item.active{color:#fff;border-bottom-color:#f0a500;font-weight:700}
-.tab-item.active img{opacity:1}
-.tab-emoji{font-size:1.2rem;line-height:1}
-
-/* ── COL HEADERS ── */
-.col-header{display:flex;align-items:center;padding:8px 14px;max-width:860px;margin:0 auto;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#4e5058;gap:12px}
-.col-hash{width:32px;flex-shrink:0}
-.col-player{flex:1}
-.col-region{margin-left:auto}
-
-/* ── PLAYER LIST ── */
-#playerContainer{max-width:860px;margin:0 auto;padding:0 10px;display:flex;flex-direction:column;gap:6px}
-
-/* ── CARD ── */
-.mc-card{background:#25282c;border:1px solid #2e3136;border-radius:12px;overflow:hidden;cursor:pointer}
-.mc-card:hover{border-color:#5865f2}
-
-/* top banner: rank bg + avatar + info + region */
-.card-top{display:flex;align-items:center;gap:0;min-height:80px;position:relative}
-
-/* left colored strip */
-.card-strip{width:100%;height:100%;position:absolute;top:0;left:0;z-index:0}
-.top1 .card-strip{background:#b8860b}
-.top2 .card-strip{background:#4a4a55}
-.top3 .card-strip{background:#7a4a1a}
-
-.card-rank{font-weight:900;font-size:1.7rem;color:#fff;width:52px;flex-shrink:0;text-align:center;position:relative;z-index:1;text-shadow:0 2px 6px rgba(0,0,0,0.6);padding-left:4px}
-
-/* rectangular full-height avatar like mctiers */
-.card-avatar-wrap{position:relative;z-index:1;flex-shrink:0;margin-right:0;align-self:stretch;width:80px;overflow:hidden}
-.card-avatar{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;min-height:80px}
-
-.card-info{flex:1;min-width:0;position:relative;z-index:1;padding:14px 12px}
-.card-name{font-size:1rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-title{display:flex;align-items:center;gap:4px;margin-top:3px}
-.card-title-icon{color:#f0a500;font-size:0.75rem;flex-shrink:0}
-.card-title-text{font-size:0.7rem;color:#949ba4;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.region-badge{flex-shrink:0;margin:0 14px 0 10px;padding:4px 9px;border-radius:6px;font-size:0.68rem;font-weight:800;color:#fff;position:relative;z-index:1}
-.r-NA,.r-AS{background:#7c2020}
-.r-EU{background:#1a6b35}
-.r-SEA{background:#1a3a8b}
-.r-OC{background:#5a1a8b}
-
-/* tiers row */
-.card-tiers{padding:8px 14px 13px;border-top:1px solid #2b2d31}
-.tiers-lbl{font-size:0.58rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#4e5058;margin-bottom:7px}
-.tiers-row{display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.tiers-row::-webkit-scrollbar{display:none}
-
-/* tier capsule — circular icon + label below */
-.tier-cap{display:flex;flex-direction:column;align-items:center;gap:0}
-.tier-ring{width:42px;height:42px;border-radius:50%;background:#1e2124;border:2px solid #3a3c42;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.tier-ring img{width:24px;height:24px;object-fit:contain}
-.tier-lbl{font-size:0.65rem;font-weight:800;margin-top:4px;color:#949ba4}
-.t1 .tier-ring{border-color:#f0a500}.t1 .tier-lbl{color:#f0a500}
-.t2 .tier-ring{border-color:#c0c8d8}.t2 .tier-lbl{color:#c0c8d8}
-.t3 .tier-ring{border-color:#cd7f32}.t3 .tier-lbl{color:#cd7f32}
-.t4 .tier-ring{border-color:#7a5530}.t4 .tier-lbl{color:#7a5530}
-.t5 .tier-ring{border-color:#3a3c42}.t5 .tier-lbl{color:#4e5058}
-
-/* ── MODAL BACKDROP ── */
-.modal-wrap{display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);padding:20px}
-.modal-sheet{background:#25282c;border:1px solid #2e3136;border-radius:18px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;scrollbar-width:none}
-.modal-sheet::-webkit-scrollbar{display:none}
-
-/* others modal */
-#othersModal .modal-sheet{max-width:380px;max-height:80vh}
-
-/* profile avatar */
-.prof-ava{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid #3a3c42;background:#2b2d31}
-.ava-gold{border-color:#f0a500}
-.ava-silver{border-color:#c0c8d8}
-.ava-bronze{border-color:#cd7f32}
-
-/* position banner */
-.pos-row{display:flex;align-items:stretch;border-radius:10px;overflow:hidden;border:1px solid #2e3136}
-.pos-num{padding:14px 20px;font-size:1.5rem;font-weight:900;color:#fff;flex-shrink:0}
-.pos-gold{background:#b8860b}
-.pos-silver{background:#4a4a55}
-.pos-bronze{background:#7a4a1a}
-.pos-def{background:#2e3136;color:#949ba4}
-.pos-info{display:flex;align-items:center;gap:8px;padding:0 16px;font-size:0.88rem;font-weight:800;color:#dcddde;letter-spacing:0.04em}
-.pos-pts{font-size:0.78rem;color:#949ba4;font-weight:500}
-
-.sec-lbl{font-size:1.1rem;font-weight:800;color:#b5bac1;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DyncTiers - Rankings</title>
+    <!-- Importing the clean fonts used by mctiers style sheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="logo-wrap">
-    <img src="Dync_Tiers_Logo.png" alt="DyncTiers"
-         onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
-    <span class="logo-fallback">DYNCTIERS</span>
-  </div>
-  <button class="others-btn" onclick="openOthers()">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-    Others
-    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-  </button>
-</header>
+    <!-- Header containing your custom branding -->
+    <header class="site-header">
+        <div class="logo-wrap">
+            <!-- References your repository image 'Dync Tiers Logo.png' directly -->
+            <img src="Dync Tiers Logo.png" alt="Dync Tier Logo" onerror="this.alt='Dync Tier'">
+        </div>
+        <button class="others-btn" onclick="openOthersModal()">
+            <span>Info Matrix</span>
+        </button>
+    </header>
 
-<!-- TABS -->
-<nav class="tab-bar">
-  <div class="tab-item active" onclick="filterBy('overall',this)"><span class="tab-emoji">🏆</span><span>Overall</span></div>
-  <div class="tab-item" onclick="filterBy('sword',this)"><img src="Sword.png" alt=""><span>Sword</span></div>
-  <div class="tab-item" onclick="filterBy('crystal',this)"><img src="Crystal.png" alt=""><span>Crystal</span></div>
-  <div class="tab-item" onclick="filterBy('mace',this)"><img src="Mace.png" alt=""><span>Mace</span></div>
-  <div class="tab-item" onclick="filterBy('smp',this)"><img src="SMP.png" alt=""><span>SMP</span></div>
-  <div class="tab-item" onclick="filterBy('diapot',this)"><img src="Diapot.png" alt=""><span>Diapot</span></div>
-  <div class="tab-item" onclick="filterBy('nethpot',this)"><img src="NethOp.png" alt=""><span>Nethpot</span></div>
-  <div class="tab-item" onclick="filterBy('axe',this)"><img src="Axe.png" alt=""><span>Axe</span></div>
-  <div class="tab-item" onclick="filterBy('uhc',this)"><img src="UHC.png" alt=""><span>UHC</span></div>
-</nav>
+    <!-- Navigation tier category tab bar -->
+    <nav class="tab-bar">
+        <button class="tab-item active" onclick="filterBy('overall', this)">
+            <span class="tab-emoji">🏆</span>
+            <span>Overall</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('sword', this)">
+            <img src="Sword.png" alt="Sword">
+            <span>Sword</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('crystal', this)">
+            <img src="Crystal.png" alt="Crystal">
+            <span>Crystal</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('mace', this)">
+            <img src="Mace.png" alt="Mace">
+            <span>Mace</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('smp', this)">
+            <img src="SMP.png" alt="SMP">
+            <span>SMP</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('diapot', this)">
+            <img src="Diapot.png" alt="Diapot">
+            <span>Diapot</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('nethpot', this)">
+            <img src="NethOp.png" alt="Nethpot">
+            <span>Nethpot</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('axe', this)">
+            <img src="Axe.png" alt="Axe">
+            <span>Axe</span>
+        </button>
+        <button class="tab-item" onclick="filterBy('uhc', this)">
+            <img src="UHC.png" alt="UHC">
+            <span>UHC</span>
+        </button>
+    </nav>
 
-<!-- COL HEADERS -->
-<div class="col-header">
-  <span class="col-hash">#</span>
-  <span class="col-player">PLAYER</span>
-  <span class="col-region">REGION</span>
-</div>
-
-<!-- LIST -->
-<div id="playerContainer"></div>
-
-<!-- OTHERS MODAL -->
-<div id="othersModal" class="modal-wrap" onclick="closeOthers()">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div style="padding:16px 18px 12px;border-bottom:1px solid #2b2d31;display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-size:0.95rem;font-weight:900;color:#fff">Tier Point Ledger</div>
-        <div style="font-size:0.6rem;color:#5865f2;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Point system</div>
-      </div>
-      <button onclick="closeOthers()" style="width:30px;height:30px;background:#2b2d31;border:1px solid #3a3c42;border-radius:6px;color:#949ba4;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center">✕</button>
+    <!-- Content column layout hints -->
+    <div class="col-header">
+        <span>Rank</span>
+        <span>Player</span>
+        <span>Region</span>
     </div>
-    <div style="padding:14px 18px;max-height:55vh;overflow-y:auto;scrollbar-width:none">
-      <div id="ledger" style="display:grid;grid-template-columns:1fr 1fr;gap:7px"></div>
+
+    <!-- Main dynamic player cards platform feed container -->
+    <main id="playerContainer"></main>
+
+    <!-- Profile Detail Bottom Sheet Modal View Component -->
+    <div id="profileModal" class="universal-modal" onclick="if(event.target===this) closeProfile()">
+        <div class="modal-box" id="modalBody"></div>
     </div>
-    <div style="padding:0 18px 18px">
-      <button onclick="closeOthers()" style="width:100%;padding:11px;background:#2b2d31;border:1px solid #3a3c42;border-radius:8px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#949ba4;cursor:pointer">Dismiss</button>
+
+    <!-- Info/Points Ledger Dialog View Modal Component -->
+    <div id="othersModal" class="universal-modal" onclick="if(event.target===this) closeOthersModal()">
+        <div class="modal-box">
+            <div style="padding:20px 20px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #21262d;">
+                <h3 style="font-size:1.1rem; font-weight:800; color:#e6edf3;">Tier Point Values</h3>
+                <button onclick="closeOthersModal()" style="width:32px; height:32px; background:#21262d; border:1px solid #30363d; border-radius:50%; color:#8b949e; cursor:pointer;">✕</button>
+            </div>
+            <div id="ledgerContainer" style="padding:20px; display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- PROFILE MODAL -->
-<div id="profileModal" class="modal-wrap" onclick="closeProfile()">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div id="profileBody"></div>
-  </div>
-</div>
-
-<script>
-var filter = 'overall';
-
-var PTS = {'HT1':65,'LT1':50,'HT2':40,'LT2':35,'HT3':20,'LT3':15,'HT4':10,'LT4':5,'HT5':3,'LT5':1};
-var ICONS = {sword:'Sword.png',crystal:'Crystal.png',mace:'Mace.png',smp:'SMP.png',diapot:'Diapot.png',nethpot:'NethOp.png',axe:'Axe.png',uhc:'UHC.png'};
-var NAMES = {sword:'Sword',crystal:'Crystal',mace:'Mace',smp:'SMP',diapot:'Diapot',nethpot:'Nethpot',axe:'Axe',uhc:'UHC'};
-
-var PLAYERS = [
-  {id:1,name:'X1an_',title:'Combat Grandmaster',region:'Asia',
-   pfp:'https://i.postimg.cc/zfhd3dML/custom-ava-(6).png',
-   tiers:{sword:'LT1',crystal:'LT3',mace:'HT4',smp:'LT2',diapot:'LT2',nethpot:'HT4',axe:'LT3',uhc:'LT3'}},
-  {id:2,name:'ugood',title:'Average Pros',region:'Asia',
-   pfp:'https://i.postimg.cc/02qqHcHW/custom-ava-(10).png',
-   tiers:{sword:'HT3',smp:'LT3',mace:'LT3'}},
-  {id:3,name:'aozora',title:'Sword Carried',region:'Asia',
-   pfp:'https://i.postimg.cc/mrnwppVs/custom-ava-(8).png',
-   tiers:{sword:'LT4'}},
-  {id:4,name:'Nelllwkwkwk',title:'Top 1 Wannabe',region:'Asia',
-   pfp:'https://i.postimg.cc/bJzzMLv1/custom-ava-(9).png',
-   tiers:{sword:'HT5',uhc:'LT5'}},
-  {id:5,name:'owllyarv',title:'Mace Specialist',region:'Asia',
-   pfp:'https://i.postimg.cc/fT79Sq90/custom-ava-(7).png',
-   tiers:{crystal:'HT5',mace:'LT4',sword:'HT5'}},
-  {id:6,name:'none',title:'Survival Pro',region:'North America',pfp:'',tiers:{smp:'LT5'}},
-  {id:7,name:'none',title:'Rising Star',region:'South East Asia',pfp:'',tiers:{sword:'LT5'}}
-];
-
-function calcPts(tiers){var t=0;for(var k in tiers)t+=(PTS[tiers[k]]||0);return t;}
-
-function getRegion(region){
-  if(!region)return{cls:'r-AS',lbl:'AS'};
-  var r=region.toLowerCase();
-  if(r.indexOf('europe')!==-1||r==='eu')return{cls:'r-EU',lbl:'EU'};
-  if(r.indexOf('north america')!==-1||r==='na')return{cls:'r-NA',lbl:'NA'};
-  if(r.indexOf('south east')!==-1||r==='sea')return{cls:'r-SEA',lbl:'SEA'};
-  if(r.indexOf('oceania')!==-1||r==='oc')return{cls:'r-OC',lbl:'OC'};
-  return{cls:'r-AS',lbl:'AS'};
-}
-
-function imgErr(img){
-  img.onerror=null;
-  img.src='https://api.dicebear.com/7.x/identicon/svg?seed='+encodeURIComponent(img.dataset.n||'x')+'&backgroundType=solid&backgroundColor=111214';
-}
-
-function capHtml(mode,tier){
-  var lv=tier.replace(/\D/g,'');
-  var ic=ICONS[mode]||'';
-  var inner=ic?'<img src="'+ic+'" alt="'+mode+'" onerror="this.style.display=\'none\'">':'';
-  return '<div class="tier-cap t'+lv+'">'
-        +'<div class="tier-ring">'+inner+'</div>'
-        +'<div class="tier-lbl">'+tier+'</div>'
-        +'</div>';
-}
-
-function buildLedger(){
-  var el=document.getElementById('ledger');if(!el)return;
-  var h='';
-  for(var tier in PTS){
-    var lv=tier.replace(/\D/g,'');
-    h+='<div style="background:#1e1f22;border:1px solid #2b2d31;padding:9px 12px;border-radius:8px;display:flex;align-items:center;justify-content:space-between">'
-      +'<span class="tier-lbl t'+lv+'" style="font-size:.72rem;padding:3px 9px;background:#111214;border-radius:5px;border:1px solid #2b2d31">'+tier+'</span>'
-      +'<span style="font-size:.78rem;font-weight:800;color:#dcddde">'+PTS[tier]+'<span style="font-size:.6rem;color:#4e5058;margin-left:3px">PTS</span></span>'
-      +'</div>';
-  }
-  el.innerHTML=h;
-}
-
-function render(){
-  var c=document.getElementById('playerContainer');if(!c)return;
-  c.innerHTML='';
-  for(var i=0;i<PLAYERS.length;i++)PLAYERS[i]._pts=calcPts(PLAYERS[i].tiers);
-  PLAYERS.sort(function(a,b){return b._pts-a._pts;});
-  var shown=0;
-  for(var idx=0;idx<PLAYERS.length;idx++){
-    var p=PLAYERS[idx];var rank=idx+1;
-    var th='';
-    if(filter==='overall'){
-      for(var m in p.tiers)th+=capHtml(m,p.tiers[m]);
-    } else {
-      if(!p.tiers[filter])continue;
-      th=capHtml(filter,p.tiers[filter]);
-    }
-    var rb=getRegion(p.region);
-    var tc=rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
-    var card=document.createElement('div');
-    card.className='mc-card '+tc;
-    card.innerHTML=
-      '<div class="card-top">'
-      +'<div class="card-strip"></div>'
-      +'<div class="card-rank">'+rank+'.</div>'
-      +'<div class="card-avatar-wrap">'
-      +'<img class="card-avatar" src="'+(p.pfp||'')+'" data-n="'+p.name+'" onerror="imgErr(this)" alt="'+p.name+'">'
-      +'</div>'
-      +'<div class="card-info">'
-      +'<div class="card-name">'+p.name+'</div>'
-      +'<div class="card-title"><span class="card-title-icon">✦</span><span class="card-title-text">'+p.title+'</span></div>'
-      +'</div>'
-      +'<div class="region-badge '+rb.cls+'">'+rb.lbl+'</div>'
-      +'</div>'
-      +'<div class="card-tiers"><div class="tiers-lbl">Tiers</div><div class="tiers-row">'+th+'</div></div>';
-    card.onclick=(function(id,r){return function(){openProfile(id,r);};})(p.id,rank);
-    c.appendChild(card);shown++;
-  }
-}
-
-function openProfile(id,rank){
-  var p=null;for(var i=0;i<PLAYERS.length;i++){if(PLAYERS[i].id===id){p=PLAYERS[i];break;}}
-  if(!p)return;
-  var avaCls='prof-ava'+(rank===1?' ava-gold':rank===2?' ava-silver':rank===3?' ava-bronze':'');
-  var pnCls=rank===1?'pos-gold':rank===2?'pos-silver':rank===3?'pos-bronze':'pos-def';
-  var th='';for(var m in p.tiers)th+=capHtml(m,p.tiers[m]);
-  document.getElementById('profileBody').innerHTML=
-    '<div style="padding:18px 18px 0;display:flex;justify-content:flex-end">'
-    +'<button onclick="closeProfile()" style="width:40px;height:40px;background:#36393f;border:none;border-radius:50%;color:#b5bac1;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;font-weight:700">✕</button>'
-    +'</div>'
-    +'<div style="text-align:center;padding:8px 20px 20px">'
-    +'<img class="'+avaCls+'" src="'+(p.pfp||'')+'" data-n="'+p.name+'" onerror="imgErr(this)" alt="'+p.name+'">'
-    +'<h2 style="font-size:1.7rem;font-weight:900;color:#fff;margin-top:14px;letter-spacing:-.02em">'+p.name+'</h2>'
-    +'<div style="display:inline-flex;align-items:center;gap:7px;background:#4a3a0a;border:1px solid #6b5200;border-radius:20px;padding:7px 18px;margin-top:10px">'
-    +'<span style="color:#f0a500;font-size:1rem">✦</span><span style="font-size:0.85rem;font-weight:700;color:#f0a500">'+p.title+'</span>'
-    +'</div>'
-    +'<div style="font-size:.88rem;color:#6d7074;font-weight:600;margin-top:10px">'+p.region+'</div>'
-    +'</div>'
-    +'<div style="padding:0 20px 18px">'
-    +'<div class="sec-lbl">Position</div>'
-    +'<div class="pos-row">'
-    +'<div class="pos-num '+pnCls+'">'+rank+'.</div>'
-    +'<div class="pos-info">🏆 OVERALL<span class="pos-pts" style="margin-left:8px">('+p._pts+' points)</span></div>'
-    +'</div>'
-    +'</div>'
-    +'<div style="padding:0 20px 32px">'
-    +'<div class="sec-lbl">Tiers</div>'
-    +'<div style="background:#1e2124;border:1px solid #2e3136;border-radius:10px;padding:14px">'
-    +'<div style="display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px">'+th+'</div>'
-    +'</div>'
-    +'</div>';
-  var modal=document.getElementById('profileModal');
-  modal.style.display='flex';
-}
-
-function closeProfile(){
-  document.getElementById('profileModal').style.display='none';
-}
-
-function openOthers(){
-  document.getElementById('othersModal').style.display='flex';
-}
-
-function closeOthers(){
-  document.getElementById('othersModal').style.display='none';
-}
-
-function filterBy(mode,el){
-  filter=mode;
-  var tabs=document.querySelectorAll('.tab-item');
-  for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('active');
-  el.classList.add('active');
-  render();
-}
-
-buildLedger();
-render();
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
